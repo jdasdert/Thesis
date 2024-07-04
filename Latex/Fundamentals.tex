@@ -1,0 +1,71 @@
+In this section some additional interpretations and explanations are added to the fundamental equations of the articles.
+\subsection{Kinematic Description of Deformation}
+The deformation of a body $B$ in the current configuration is described with respect to a reference configuration by the deformation gradient $\FF$.  
+\begin{figure}[h!]
+  \centering
+  \includegraphics[]{Figs/DeformationGradient/DeformationGradient.pdf}
+  \label{fig:DeformationGradient}
+  \caption{Deformation gradient}
+\end{figure}
+
+\begin{align}
+  \FF(\XX,t) = \frac{\partial \xx}{\partial \XX} = \Grad{\xx}
+\end{align}
+
+For rate dependent deformation it is meaningful to describe the deformation velocity. The velocity gradient $\ll$ is defined as:
+\begin{align}
+  \ll = \grad{\dot{\uu}} = \dot\FF\FFinv
+\end{align}
+
+Since deformation can have different mechanisms, it often makes sense to decompose the deformation and describe each deformation mechanism separately. For example in crystal plasticity, the deformation is often decomposed into reversible elastic and irreversible plastic parts. In scenarios involving chemistry, often an concentration dependent isotropic chemical swelling/deswelling is assumed which is modelled similar to an isotropic thermal expansion. A graphical interpretation for the two decompositions used in this thesis can be found in Figure~\ref{fig:DeformationGradient}.
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=\textwidth]{Figs/DecompositionF/DecompositionF.pdf}
+  \caption{Decomposition of the deformation gradient}
+  \label{fig:DeformationGradient}
+\end{figure}
+
+The multiplicative decompositions of the deformation gradient used in this thesis are given by:
+\begin{align}
+  \FF = \FF^\e\FF^\p; \qquad \qquad \FF=\FF^\e\FF^\c
+\end{align}
+Combination and further decomposition are of course also possible and made use of. 
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{Figs/CrystalPlasticity/CrystalPlasticity.pdf}
+\end{figure}
+
+\subsection{Balances and Thermodynamic Consistency}
+The minimum requirement for any model is to provide equations for accurately counting the quantities of interest. These laws are referred to as balance laws and in many cases take a similar form, expressing the rate of change of a quantity depending of the in- and outflux and internal sources and drains. For an arbitrary quantity this is schematically depicted in where $z$ denotes the volume density of the quantity, $\jj_\z$ is the quantity's current density and $\omega_\z$ is the density of internal sources.  
+
+The corresponding balance equation in integral form can be transformed to a local form by using the divergence theorem and the argument that the balance must be fulfilled for an arbitrary volume.  
+
+\begin{align}
+  \int_{V} \dot z \ \d v = -\int_{\partial V} \jj_{\z} \cdot \nn \ \d a + \int_{V} \omega_{\z} \ \d v \qquad \Leftrightarrow \qquad \dot z = -\div\jj_{\z} + \omega_{\z} 
+\end{align}
+
+In this thesis, mechanical, chemical and electrical effects are considered. The corresponding balances for particles, charge, momentum and energy as well as the entropy imbalance are given for isothermal ($T=\text{const.}$), quasi static ($\ddot \xx=0$) processes, which read in their respective local forms: 
+\begin{alignat}{2}
+  &\text{Particle balance: } \qquad & \dot c &= -\div\jj + r  \\
+  &\text{Charge balance: } \qquad  & \dot \rho^{\e} & = -\div(\ii) \\
+  &\text{Linear momentum balance: } \qquad& 0 & = \div\ssigma  \\
+  &\text{Angular momentum balance: } \qquad & \ssigma& = \trans{\ssigma} \\
+  &\text{Internal energy balance: } \qquad & \dot e &= \div(\ssigma \dot \uu - \varphi \, \ii - \mu \, \jj - \qq) + \rho \omega \hspace{1cm}\\
+  &\text{Entropy imbalance: } \qquad & \dot s &\geq -\div\Big(\frac{\qq}{T}\Big) + \frac{\rho \omega}{T}
+\end{alignat}
+
+\begin{align}
+  \mathcal{D} = \mathcal{P} - \dot \Psi \geq 0
+\end{align}
+
+\subsection{Material laws}
+\subsubsection{Single Component 1D Fickian Diffusion}
+\begin{align}
+  \jj = -D \ \grad c 
+\end{align}
+\subsubsection{Multi Component 3D Maxwell-Stefan Diffusion}
+  \begin{align}
+    a
+  \end{align}
+\subsection{Multiple phases}

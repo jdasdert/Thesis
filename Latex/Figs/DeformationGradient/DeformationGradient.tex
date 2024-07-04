@@ -1,0 +1,56 @@
+\documentclass[tikz]{standalone}
+
+\usepackage{tikz,tikz-3dplot,pgfplots,xcolor}
+\usetikzlibrary{arrows.meta,calc}
+
+\input{../../Include/formula.tex}
+
+\definecolor{gray1}{rgb}{0.8,0.8,0.8}
+\definecolor{gray2}{rgb}{0.85,0.85,0.85}
+
+\begin{document}
+
+  \begin{tikzpicture}[>=Latex]
+    \path(-7.5,-0.8) rectangle (7.5,5.1);
+    \node[inner sep=1.5] (P) at (-4,2){}; 
+    \node[inner sep=1.5] (Q) at ($(P)+(0.2,0.8)$){}; 
+    \node[inner sep=1.5] (PP) at (4,2){}; 
+    \node[inner sep=1.5] (QQ) at ($(PP)+(-0.3,0.9)$){}; 
+    \node at (-4.5,-0.2){\large Reference configuration};
+    \node at (4.5,-0.2){\large Current configuration};
+    \coordinate (O) at (0,0){};
+
+    % Bodies
+      \draw[fill=gray1] plot[smooth cycle, tension=0.8,shift={(-3.5,2.5)}] coordinates {(2,0)(0,2)(-3,1.5)(-3.5,0)(-2,-1)(0,-2)};
+      \draw[fill=gray1] plot[smooth cycle, tension=0.8,shift={(4.5,2.5)}] coordinates {(2.3,0)(0,2.2)(-2,1.5)(-2.9,0)(-2,-1)(0,-2.2)};
+
+    % Circles
+      \draw[dashed,fill=gray2] ($(P)!0.5!(Q)$) coordinate (c1) circle (1);
+      \draw[fill=gray2] ($(c1)+(-1.5,0)$) coordinate (c2) circle (1pt);
+      \draw[dashed,fill=gray2] ($(PP)!0.5!(QQ)$) coordinate (c3) circle (1);
+      \draw[fill=gray2] ($(c3)+(1.5,0)$) coordinate (c4) circle (1pt);
+
+    % Points
+      \draw[fill] (O) circle (1pt) node[below]{$\mathcal{O}$};
+      \draw[fill] (P) circle (1pt) node[left] {$P$}; 
+      \draw[fill] (Q) circle (1pt) node[left] {$Q$};  
+      \draw[fill] (PP) circle (1pt) node[right] {$P'$}; 
+      \draw[fill] (QQ) circle (1pt) node[right] {$Q'$}; 
+      
+    % Arrows 
+      \draw[->] (O)--(P) node[pos=0.45,below left] {$\XX$};
+      \draw[->] (P)--(Q) node[pos=0.45,right] {$\d\XX$};
+      \draw[->] (P)--(PP) node[pos=0.5,above] {$\uu(\XX,t)$}; 
+      \draw[->] (PP)--(QQ) node[pos=0.5,left] {$\d\xx$}; 
+      \draw[->] (O)--(PP) node[pos=0.45,below right] {$\xx(\XX,t)$};
+
+    % Lines
+      \draw[dashed]($(c2)+(0,-0.5pt)$) -- ($(c1)+(235:1)$);  
+      \draw[dashed]($(c2)+(0,0.5pt)$) -- ($(c1)+(125:1)$);  
+      \draw[dashed]($(c4)+(0,0.5pt)$) -- ($(c3)+(52:1)$);  
+      \draw[dashed]($(c4)+(0,-0.5pt)$) -- ($(c3)+(310:1)$);
+
+  \end{tikzpicture}
+\end{document}
+
+% ,shift={(-4,2)} 

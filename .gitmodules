@@ -1,0 +1,3 @@
+[submodule "Latex/Include"]
+	path = Latex/Include
+	url = https://github.com/jdasdert/Latex-Include.git

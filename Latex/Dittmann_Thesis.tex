@@ -1,0 +1,139 @@
+\documentclass[a4paper, 12pt, twoside]{article}
+\special{papersize=210mm,297mm}
+
+\input{Include/formula.tex}
+
+% pagestyle
+  \usepackage{geometry}
+  \usepackage{fancyhdr}
+  \fancyhf{}
+  \fancyhead[LE,RO]{\nouppercase{\textsl\leftmark}}
+  \fancyfoot[LE,RO]{\thepage}
+  \newcommand{\blankpage}{ \newpage \thispagestyle{empty} \mbox{} \newpage }
+
+% style 
+  % \usepackage{times}
+  \setlength\parindent{0pt} %no indent at the beginning of new paragraph
+  \pretolerance=10000\tolerance=2000\emergencystretch=10pt\sloppy %no linebreaks
+
+% color
+  \usepackage{color,soul}
+
+% figures
+  \usepackage{graphicx}
+
+% tables and list styles
+  \usepackage{tabularx}
+  \usepackage{enumitem}
+  \usepackage{xltabular}
+
+% bibliography and referencing and including
+  \usepackage[autocite=superscript,style=numeric-comp,backend=biber,sorting=none,isbn=false,url=false,eprint=false,doi=false]{biblatex}
+  \usepackage[english,noabbrev,capitalize]{cleveref}
+  \usepackage{pdfpages}
+
+
+
+  % \renewbibmacro{in:}{}
+  % %\renewbibmacro{date}{}
+  % \renewbibmacro{note+pages}{}
+  % \renewbibmacro{journal}{
+  % \printfield{journaltitle}
+  % \addcomma
+  % }
+  % \renewbibmacro*{volume+number+eid}{
+  %   \printfield{volume}
+  %   \printfield{number}
+  %   \printunit{\addcolon}
+  %   \printfield{pages}
+  %   \addcomma
+  %   \addspace
+  %   %\printfield{year}
+  % }
+  % \DeclareFieldFormat[article, inbook, incollection, inproceedings, misc, thesis, unpublished]{title}{#1} 
+  % \DeclareFieldFormat[article, inbook, incollection, inproceedings, misc, thesis, unpublished]
+  % {volume}{#1} 
+  % \DeclareFieldFormat[article, inbook, incollection, inproceedings, misc, thesis, unpublished]
+  % {number}{\mkbibparens{#1}} 
+  % \DeclareFieldFormat[article, inbook, incollection, inproceedings, misc, thesis, unpublished]
+  % {pages}{ #1}
+  % \DeclareFieldFormat[article, inbook, incollection, inproceedings, misc, thesis, unpublished]
+  % {year}{#1}
+
+
+  \bibliography{references.bib}
+
+
+\newcommand \MAtitle {Multi-Physical Continuum Modelling \\ of Medical Implant Materials}
+\newcommand \Author {Jan Dittmann\ }
+\newcommand \Institute {Institute for Materials Science\ }
+\newcommand \Faculty {Faculty of Engineering\ }
+\newcommand \Uni {Kiel University\ }
+\newcommand \CorrectorA {Prof. Dr. Stephan Wulfinghoff\ }
+\newcommand \CorrectorB {Prof. Dr. Stephan Wulfinghoff\ }
+\newcommand \DateOfSubmission {06.04.2024\ }
+
+\begin{document}
+
+  % title page
+    \pagestyle{empty}
+    \input{titlepage.tex}
+    \blankpage
+    \blankpage
+
+  % default geometry for the thesis
+    \newgeometry{top=3cm, bottom=3cm, inner=4cm,outer=2cm}
+    \pagestyle{fancy}
+    \renewcommand{\headrulewidth}{0.2pt}
+
+  % preamble
+    \setcounter{page}{1}
+    \pagenumbering{Roman}
+    \section*{Abstract} \addcontentsline{toc}{section}{\protect Abstract} 
+      \input{Abstract.tex}
+    \newpage
+    \blankpage
+    \section*{Kurzfassung} \addcontentsline{toc}{section}{\protect Kurzfassung} 
+      \input{Kurzfassung.tex}
+    \newpage
+    \blankpage
+    \tableofcontents
+    \newpage
+
+  % main part
+    \setcounter{page}{1}
+    \pagenumbering{arabic}
+    \section{Introduction}
+      \input{Introduction.tex}
+    \newpage
+    \section{Fundamentals}
+		  \input{Fundamentals.tex}
+	  \newpage
+    \section{Publications}
+      \input{Publications.tex}
+    \section{Outlook}
+		  \input{Outlook.tex}
+    \newpage
+    \section{Summary}
+      \input{Summary.tex}
+    \newpage
+
+
+  \newpage
+	\section*{Bibliography}
+  \printbibliography[heading=none]
+  \newpage
+	\section{Appendices}
+  \subsection{Additional Publications}
+    % \input{AdditionalPublications.tex}
+  \newpage
+  \subsection{List of Abbreviations}    
+    %\input{ListOfAbbreviations.tex}
+  \newpage
+  \subsection{List of Publications}     
+    \input{ListOfpublications.tex}
+  \newpage
+  \subsection{List of Contributions}
+    \input{ListOfContributions.tex}
+  \newpage
+\end{document}
