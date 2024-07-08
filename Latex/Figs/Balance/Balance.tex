@@ -1,0 +1,23 @@
+\documentclass{standalone}
+
+\usepackage{tikz,tikz-3dplot,pgfplots,xcolor}
+\usetikzlibrary{arrows.meta,calc}
+\usetikzlibrary{decorations.markings}
+
+\input{../../Include/formula.tex}
+
+%\pgfplotsset{compat=1.18} 
+\definecolor{gray0}{rgb}{0.98,0.98,0.98}
+\definecolor{gray1}{rgb}{0.8,0.8,0.8}
+\definecolor{gray2}{rgb}{0.7,0.7,0.7}
+
+\begin{document}
+
+  \begin{tikzpicture}[>=Latex]
+
+    \draw[fill=gray1] plot[smooth cycle, tension=0.8] coordinates {(2,0)(0,2)(-3,1.5)(-3.5,0)(-2,-1)(0,-2)};
+
+    \draw (-2,-1)--++(-0.3,-0.3) node[below left]{$\partial V_0$};
+
+  \end{tikzpicture}
+\end{document}

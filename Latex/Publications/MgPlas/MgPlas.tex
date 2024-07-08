@@ -1,0 +1,701 @@
+\ \vspace{1cm} \\
+\Large {\bf Article 2}
+\normalsize
+\vspace{0.3cm}
+\hrule
+\section*{\Large \centering Efficient numerical strategies for an implicit
+volume fraction transfer scheme for single \\ crystal plasticity including twinning and secondary plasticity on the example of magnesium}
+\addcontentsline{toc}{section}{\protect4 \hspace{0.15cm} Article 2 - Efficient numerical strategies for an implicit volume fraction transfer scheme for single crystal plasticity including twinning and secondary plasticity on the example of magnesium}
+\hrule
+\vspace{1.5cm}
+
+This Chapter presents a model for single crystal plasticity mechanical deformation including plasticity by slip and twinning and secondary plasticity i.e. slip in newly formed twins. The model makes use of the multiplicative decomposition of the deformation gradient, uses a rate dependent power law for the plastic deformation and a volume fraction transfer scheme for the formation of twins. For the numerical treatment of the large amount of unknowns in the volume fraction transfer scheme, an efficient algorithm is introduced. The advantage of this approach is that twins don't need to be explicitly resolved which allows modelling on larger scales, which is important for investigating the structural behavior of medical implants. The result of the model is a highly anisotropic stress strain behavior, which is observable im metallic implant materials such as magnesium due to the hexagonal structure and the easily activated twinning modes. The model is tested in single crystal and polycrystal tension and compression simulations and compared to experimental results for magnesium and shows excellent agreement. \\
+
+The results have been published in the journal \textit{Numerical Methods in Engineering}. \\
+
+\textbf{Own contribution to the presented article:}
+\begin{itemize}
+\item Conception of the study
+\item Implementation and adjustments of the continuum model
+\item Simulations and data analysis
+\item Figure creation 
+\item Manuscript writing and editing
+\end{itemize}
+\newpage
+
+\subsection*{Abstract}
+In this work an efficient algorithm for a fully implicit single crystal plasticity routine including twinning and secondary plasticity is presented and implemented for the example of magnesium. The material model is based on the framework of \authorcite{kalidindi1998incorporation} and uses the volume fraction transfer scheme for the evolution of twinning, i.e., plastic slip in newly formed twins ('secondary plasticity') is resolved. This is considered particularly important, if the volume fractions of some twins reach the order of magnitude of the parent phase. However the resolution of secondary plasticity also implies a large number of unknowns, which is significantly reduced by a newly proposed algorithm. For magnesium a hardening model proposed by \authorcite{zhang2012phenomenological} is partly adapted which is based on basal, prismatic, pyramidal \pyra and pyramidal \pyrac slip modes as well as a tension and a compression twinning mode and yields a total of 18 slip systems and 12 twinning systems. As a special feature of the proposed algorithm, the total amount of 246 unknowns, due to simultaneous slip in the parent phase and the twinned phases, is reduced to only 31 unknowns. Additionally, thermodynamic consistency is ensured by including the second law with the Clausius-Duhem equation, which considers the change of free energy upon twinning as an additional driving force for twinning. Further, the setup of the time discrete nonlinear equation system using midpoint rule, as well as the analytical solution of the algorithmic tangent are given in detail. Finally, the implemented model is tested in finite element simulations and compared to single- and polycrystal compression and tension experiments. \\
+
+\textbf{Keywords: }~twinning, crystal plasticity, implicit volume transfer scheme, FEM
+
+\subsection{Introduction}
+Material modeling of metals that deform by both slip and twinning and the related complex hardening mechanisms are a long-standing challenge. Especially in hcp metals like magnesium, titanium and zirconium, where the lower symmetry of the hexagonal crystal structure impedes slip deformation in c-axis direction, twinning plays an important role and, in some cases, even is the dominant deformation mechanism\supercite{yoo1981slip,yoo1991deformation,christian1995deformation,barnett2007twinning1,beyerlein2014growth,kannan2018mechanics}. The result is a highly anisotropic deformation behavior. One challenge for including twinning into material models is the reorientation of the lattice, which in turn changes the orientation of slip planes and elastic properties of the crystal. To handle this problem, different approaches have been developed. In his pioneering work \authorcite{vanHoutte1978simulation} used a statistical criterion to select grains to be reoriented into the twin orientations. Based on this method, \authorcite{tome1991model} proposed a predominant twin reorientation (PTR) scheme, in which the parent grain orientation is replaced by the orientation of the most active twin as soon as the twin volume fraction exceeds a critical value. Although this approach makes it possible to efficiently describe the deformation in cases where a single twin system dominates, it has the drawback of neglecting the influence of all other twins, which is problematic in cases where multiple twinning systems contribute similarly to the deformation. An alternative proposed by \authorcite{tome1991model} is the volume fraction transfer (VFT) scheme dividing euler space into cells representing an orientation and containing a volume fraction. A reorientation due to slip and twinning is this way represented by a transfer of volume fractions from one cell to another. \authorcite{kalidindi1998incorporation} later adapted this scheme by describing the deformation in the relaxed intermediate configuration and introducing each twinning variant as a differently oriented grain with a respective volume fraction. Thus, each twinning system is considered to contribute to the deformation and can grow by a transfer of volume fraction from the parent grain. However, the drawback of this scheme is, of course, that the simultaneous deformation in all these grains is elaborate and thus many studies, that consider twinning, neglect reorientation due to twinning\supercite{graff2007yielding,abdolvand2015study} or make use of a reorientation scheme allowing only one orientation per grain\supercite{karaman2000modeling,fernandez2011continuum,zhang2012phenomenological,qiao2016modeling,hama2017crystal,briffod2019numerical,zhang2019multi-scale}. Others have developed methods to introduce discrete twins\supercite{forest2000material,roy2015microscale,ardeljan2015explicit,rezaee-hajidehi_deformation_2022}. Studies considering multiple twinning systems simultaneously allow the formation of either one or multiple child grains\supercite{clausen2008reorientation,abdolvand2011incorporation,mareau2016micromechanical,feather2019mechanical}. All these studies have in common that they either reorient or create a new grain at the end of a discrete time step when a certain criterion is fulfilled. This explicit formulation poses the challenge of handling possible abrupt changes in yield stress and plastic flow due to the newly available slip planes. As an alternative, we present an efficient fully implicit crystal plasticity finite element routine using the volume transfer scheme of \authorcite{kalidindi1998incorporation} for magnesium considering 18 slip systems in the parent and in 12 twinned grains simultaneously.
+
+As a lightweight metal with a high ratio of strength and stiffness to mass, magnesium and its alloys have become a highly researched material as they offer the opportunity to replace steel, titanium and even aluminum to obtain a significant weight reduction\supercite{esmaily2017fundamentals}. This is especially appealing for structural applications, e.g. in automotive and aerospace industry\supercite{friedrich2001research,luo2013applications}. Furthermore, due to its non-toxicity towards the environment and the human body magnesium is considered an excellent candidate for medical applications such as biodegradable orthopedic or cardiovascular implants\supercite{witte2013applications,hermawan2010degradable}.
+
+Like in most hcp metals, in magnesium the main plastic deformation mechanism, with the lowest critical resolved shear stress (CRSS), is dislocation slip on the basal plane \plane{0001}\direction{11\ol{2}0}\supercite{burke1952plastic,obara1973slip}. The next easiest slip systems are prismatic slip \plane{\ol{1}100}\direction{11\ol{2}0} and pyramidal \pyra slip \plane{\ol{1}101}\direction{11\ol{2}0}\supercite{burke1952plastic,reed-hill1958pyramidal} but like the basal slip, they both do no allow for deformation in direction along the c-axis. Only when pyramidal \pyrac slip \plane{\ol{1}\ol{1}22}\direction{11\ol{2}3} is activated, the Taylor criterion of a minimum of five independent slip systems necessary for arbitrary deformations is fulfilled\supercite{yoo1981slip}. However, at room temperature, the CRSS of the pyramidal \pyrac system is orders of magnitude higher than for the basal system\supercite{obara1973slip}. Thus, as an additional deformation mechanism magnesium exhibits deformation twinning. The most common is the tension twinning mode \plane{\ol{1}102}\direction{1\ol{1}01} observed under c-axis tension which has a CRSS only slightly higher than the basal slip. Additionally, a compression twinning mode \plane{\ol{1}101}\direction{1\ol{1}02} observed under c-axis compression plays an important role\supercite{kelly1968plane}. Of course, this variety of slip and twinning systems leads to manifold interactions and thus a very complex hardening.
+
+In this work we present the algorithm for a fully implicit crystal plasticity finite element model based on the rate-dependent framework of \authorcite{kalidindi1998incorporation} using the volume fraction transfer scheme. That is, secondary plasticity in the newly formed twins is also resolved. This feature is required, for example, to capture the significant contribution of basal slip in twins to the overall deformation in situations, where the parent phase's orientation is unfavorable for basal slip for a given stress state. The routine is implemented for magnesium and hardening is included by partly adapting a hardening model proposed by \authorcite{zhang2012phenomenological} based on basal, prismatic, pyramidal \pyra and pyramidal \pyrac slip modes as well as a tension and compression twinning mode. Incorporating the Clausius-Duhem inequality ensures thermodynamic consistency and identifies the change of elastic energy due to lattice rotation as an additional driving force for twinning. The model is explained in detail and a new solution algorithm for the non-linear equation system, reducing the plastic deformation on 13$\times$18 slip systems and 12 twinning systems (in total 246 unknowns) to 31 unknowns, is presented. Finally, FEM simulation results are compared to experimental compression of single-crystal and polycrystal results from \authorcite{kelly1967report} and polycrystal tension experiments from \authorcite{jessen2019mechanical}.  
+
+
+\subsection{Geometrically nonlinear crystal plasticity including twinning}
+\subsubsection{Kinematics}
+  The model is based on the multiplicative decomposition of the deformation gradient $\FF=\partial \xx / \partial \XX$, where $\XX$ denotes the position in the reference configuration and $\xx(\XX,t)$ denotes the position in the current configuration, into elastic and plastic parts\supercite{kroener1959allgemeine,lee1969elastic-plastic}:
+  \begin{equation}
+      \FF = \FFe \FFp.
+      \label{eq:DecompF}
+  \end{equation}
+  From that follows the additive decomposition of the velocity gradient $\ll$:
+  \begin{equation}
+          \ll = \FFdot \FFinv = \FFedot\FFeinv + \FFe \LLp \FFeinv = \lle + \llp.
+  \end{equation}
+  The plastic deformation rate with respect to the elastically relaxed intermediate configuration \mbox{$\LLp=\FFpdot\FFpinv$} of a single-crystal considers slip and twinning in the initial parent phase and additionally slip inside the twinned regions. Twinning is mathematically treated as a pseudo slip mechanism that leads to rotation of the lattice. Each twin that forms from the parent phase is considered to be a separate phase with its own slip systems (compare \authorcite{kalidindi1998incorporation}):   
+  \begin{equation}
+    \LLp = \underbrace{\sumbO \cb \sumaI \nuab \MMab}_{\text{slip}} + \underbrace{\sumbI \nub \MMb}_{\text{twinning}}.
+    \label{eq:LLp}
+  \end{equation}
+  Here, $\alpha$ denotes the slip system index, $\beta$ the phase index, $\cb$ the volume fractions, $\Nsl$ the number of slip systems in each phase, described by $\MMab$, and $\Ntw$ the number of twinning systems, described by $\MMb$. The total number of phases is $\Ntw$+1 and the parent phase is denoted by the index $\beta$=0. The slip and twinning deformation rates are denoted by $\nuab$ and $\nub$, respectively, and the slip and twinning systems are given by the direction $\dd$ and the plane normal $\nn$: 
+  \begin{equation}
+      \MMb = \ddb \otimes \nnb; \qquad \MMab = \ddab \otimes \nnab.
+      \label{eq:MM}
+  \end{equation}
+  The deformation rate due to twinning $\nub$ is assumed to be given by a constant twinning shear parameter $\angleTwb$ and the phase transformation rate $\cbdot$:
+  \begin{equation}
+      \nub = \angleTwb \cbdot.
+      \label{eq:nub}
+  \end{equation}
+  The rotation tensor $\RRb$, that transfers the slip systems of the parent phase into the slip system orientations of the twinned phase $\beta$, is given by
+  \begin{equation}
+      \RRb = -\II + 2\nnb \otimes \nnb.
+      \label{eq:RRb}
+  \end{equation}
+  The corresponding slip systems can then be calculated by
+  \begin{equation}
+      \ddab = \RRb \dda^0; \qquad \nnab = \RRb \nna^0; \qquad \MMab = \RRb \MMa^0 \RRbT.
+      \label{eq:MMab}
+  \end{equation}
+  The fourth order stiffness tensor of each phase $\CCCCb$ is obtained by
+  \begin{equation}
+    \CCCCb = (\RRb \sBox \RRbT) : \CCCC_0 : (\RRbT \sBox \RRb), 
+    \label{eq:CCCCb}
+  \end{equation}
+  where $(\cdot \sBox \cdot)$ is a fourth order tensor with the property $(\AA \sBox \CC) : \BB=\AA \sym{(\BB)} \CC$. Note that we consider for this model primary and secondary slip and primary twinning. That means that twins in twins are currently not considered. In the present model for magnesium \mbox{$\Nsl=18$} slip systems and \mbox{$\Ntw=12$} twinning system are considered which means \mbox{$\alpha\in[1,18]$} and \mbox{$\beta\in[0,12]$}. The orientation of the parent phase is not updated. 
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% DISSIPATION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Dissipation} \label{sec:dissipation}
+  To obtain a thermodynamically consistent theory, the  dissipation density per unit reference volume $\diss$ is evaluated using the purely mechanical form of the Clausius-Duhem equation:
+  \begin{equation}
+      \diss = \PP : \FFdot - \psidot \geq 0.
+      \label{eq:diss}
+  \end{equation}
+  Here, $\PP$ is the first Piola-Kirchhoff stress tensor and $\psi$ is the free energy density per unit reference volume. The free energy is assumed to be dependent on the elastic strains and on the volume fractions of the phases and is chosen as
+  \begin{equation}
+    \psi = \psie(\EEe, \cu)= \half \EEe : \CCCC(\cu) : \EEe,
+    \label{eq:psie}
+  \end{equation}
+  where $\cu=\trans{(c_0, c_1 \ldots, c_{\Ntw})}$ is the vector notation of the volume fractions, \mbox{$\EEe=(\FFeT\FFe-\II)/2$} represents the elastic Green-Lagrange strain tensor and $\CCCC$ denotes the effective stiffness tensor.
+  The effective stiffness is assumed to take the form:
+  \begin{equation}
+    \CCCC(\cu) = \sumbO \cb \CCCCb,
+    \label{eq:CCCC}
+  \end{equation}
+  with the following conditions:
+  \begin{equation}
+    c_0 = 1- \sumbI \cb; \qquad \cb \in [0,1].
+    \label{eq:c_constraints}
+  \end{equation}
+  Inserting \cref{eq:psie} into the dissipation density one can reformulate \cref{eq:diss} as follows
+  \begin{equation}
+    \begin{split}
+      \diss &= \PP : \FFdot - \dpsieDEe : \EEedot - \sumbI \derivative{\psie}{\cb}\cbdot\\ 
+      & = \left( \PP - \FFe \dpsieDEe \FFpinvT \right) : \FFdot + \CCe \dpsieDEe : \LLp - \sumbI \derivative{\psie}{\cb}\cbdot \geq 0,
+    \end{split}
+    \label{eq:diss2}
+  \end{equation}
+  with $\CCe=\FFeT\FFe$ as the elastic right Cauchy-Green tensor. For virtually frozen internal variables ($\FFp$, $\cu$) it is assumed that the dissipation vanishes:
+  \begin{equation}
+      \disse = \left( \PP - \FFe \dpsieDEe \FFpinvT \right) : \FFdot = 0.
+  \end{equation}
+  Using $\PP = \ttau \FFinvT$ and $\SSe = \FFeinv \ttau \FFeinvT$, where $\ttau$ is the Kirchhoff stress and $\SSe$ is the second Piola Kirchhoff stress tensor with respect to the intermediate configuration, it is possible to identify
+  \begin{equation}
+    \SSe = \dpsieDEe.
+    \label{eq:SSe}
+  \end{equation}
+  Defining the Mandel stress with respect to the intermediate configuration $\SSigmae=\CCe\SSe$, and its projection onto the slip and twinning systems $\tauab=\SSigmae:\MMab$ and $\taub = \SSigmae:\MMb$ and using \cref{eq:LLp,eq:nub} the dissipation reads
+  \begin{equation}
+      \begin{split}
+      \diss &= \SSigmae : \LLp -\sumbI \derivative{\psie}{\cb}\cbdot \\
+      &= \sumbO \cb \sumaI \nuab \tauab  + \sumbI \Big( \angleTwb \taub - \dpsieDcb \Big) \cbdot \geq 0.
+      \end{split}
+  \end{equation}
+  And finally, defining 
+  \begin{equation}
+    \xib = \gammatwb\taub-\partial\psie/\partial\cb,
+    \label{eq:xib}
+  \end{equation}
+  one obtains
+  \begin{equation}
+      \diss = \sumbO \cb \sumaI \nuab \tauab + \sumbI \xib \cbdot \geq 0.
+      \label{eq:redDiss}
+  \end{equation}
+  Note, that from \cref{eq:xib} follows that in general the driving force for twinning is not only given by the projection of the stress onto the twinning system but also by the change of elastic energy due to the lattice rotation, which is usually neglected when formulating the twin evolution equations (leading to thermodynamic inconsistency). The influence of this additional term on twinning is later discussed in \cref{sec:EvalEnegeryChange}.
+
+  Guided by the reduced dissipation inequality (\ref{eq:redDiss}), the shear rate $\nuab$ and phase transformation rate $\cbdot$ are assumed to follow the Norton power law as follows
+  \begin{equation}
+    \nuab = \sign{\tauab} \nuOa \left( \frac{\abs{\tauab}}{\tauacb} \right)^{\psl} \qquad \qquad \cbdot= 
+    \begin{cases}
+      c_0 \cbOdot \left( \frac{\xib}{\xibc} \right)^{\ptw} &\quad \text{if} \quad \xib > 0 \\
+      0 &\quad \text{if} \quad \xib < 0
+    \end{cases},
+    \label{eq:nuab_cbdot}
+  \end{equation}
+  where $\nuOa$, $\cbOdot$ are the reference slip and twin evolution rates, respectively, $\psl$ and $\ptw$ are the rate sensitivity exponents and $\tauacb$ and $\xibc$ are the critical stresses for slip and twinning, respectively. Note that in our case the phase transformation rate depends on the concentration of the parent phase $c_0$ which automatically impedes further twinning when no parent phase exists anymore. This ensures that the constraints from \cref{eq:c_constraints} are satisfied. Furthermore, as can be seen from \cref{eq:nuab_cbdot}, de-twinning is not considered in this example but could be included by using an appropriate law for the case $\xib < 0$.
+
+  \subsubsection{Deformation mechanisms and hardening in hcp magnesium} \label{sec:hardening}
+  Magnesium has a hexagonal close-packed structure with a transverse isotropic elastic behaviour. The elastic properties can be characterized by the five elastic constants $C_{11}$, $C_{12}$, $C_{13}$, $C_{33}$ and $C_{44}$ which were taken from \authorcite{slutsky1957elastic} and are given in \cref{tab:elasticConstantsMg}. The fourth order stiffness tensor in Mandel notation $\Cu$ is given by \cref{eq:Cu}.
+  \begin{table}[h!]
+  \begin{minipage}{0.28\textwidth}      
+       \caption{Elastic constants Mg \supercite{slutsky1957elastic}}
+       \begin{tabularx}{\textwidth}{| l | Y |}
+           \hline \hline
+           \ $C_{11}$ \ & 59.40 GPa \\
+           \ $C_{12}$ \ & 25.61 GPa \\
+           \ $C_{13}$ \ & 21.44 GPa\\
+           \ $C_{33}$ \ & 61.60 GPa\\
+           \ $C_{44}$ \ & 16.40 GPa\\
+           \hline
+       \end{tabularx}
+       \label{tab:elasticConstantsMg}
+  \end{minipage}
+  \hfill
+  \begin{minipage}{0.71\textwidth}
+    \begin{equation}
+        \Cu = \pmat{
+            C_{11} & C_{12} & C_{13} & 0 & 0 & 0 \\
+            C_{12} & C_{11} & C_{13} & 0 & 0 & 0 \\
+            C_{13} & C_{13} & C_{33} & 0 & 0 & 0 \\
+            0 & 0 & 0 & 2C_{44} & 0 & 0 \\ 
+            0 & 0 & 0 & 0 & 2C_{44} & 0 \\
+            0 & 0 & 0 & 0 & 0 &(C_{11}-C_{12})
+        }
+        \label{eq:Cu}
+    \end{equation}
+  \end{minipage}
+  \end{table}
+  \\
+  Plastic deformation in magnesium occurs due to dislocation slip and deformation twinning. The relevant slip and twinning systems for this work are basal slip \plane{0001}\direction{11\ol{2}0}, prismatic slip \plane{\ol{1}100}\direction{11\ol{2}0}, pyramidal~\pyra slip \plane{\ol{1}101}\direction{11\ol{2}0} and pyramidal~\pyrac slip \plane{\ol{1}\ol{1}22}\direction{11\ol{2}3} as well as a tension twinning \plane{\ol{1}102}\direction{1\ol{1}01} and compression twinning \plane{\ol{1}101}\direction{1\ol{1}02} mode as suggested in the model by \authorcite{zhang2012phenomenological} and explained in the introduction. The respective slip and twinning systems are summarized in \cref{tab:mgParameters} and depicted in \cref{fig:SlipTwinningSystems}. The constant twinning shear $\gammatt$ and $\gammact$ for tension twinning (TT) and compression twinning (CT) respectively are given by\supercite{yoo1981slip}
+  
+  \begin{equation}
+    \gammatwb = \begin{cases} 
+      \displaystyle\gammatt = \frac{\sqrt{3}}{\chi} - \frac{\chi}{\sqrt{3}} \quad = 0.129 \qquad \text{(tension twinning)}\\[10pt]
+      \displaystyle\gammact = \frac{4 \chi^2-9}{4\sqrt{3}\chi} \qquad = 0.137 \qquad \text{(compression twinning)}
+    \end{cases}
+    \label{eq:twinAngles}
+  \end{equation}
+  where $\chi=c/a$ denotes the ratio between the lattice parameters. The lattice parameters and twinning shear are also summarized in \cref{tab:mgParameters}.
+
+  % Slip/twinning systems
+  \begin{figure}[h!]
+    \includegraphics[width=\textwidth]{Publications/MgPlas/slipTwinningSystems.pdf}
+    \caption{Slip systems (a-d) and twinning systems (e-f) of magnesium considered in this study.}
+    \label{fig:SlipTwinningSystems}
+  \end{figure}
+
+
+
+  % Slip/twinning systems and lattice parameters/twinning angles 
+  \begin{table}[!ht]
+    \setlength\tabcolsep{0.5pt}
+    \caption{Slip/twinning systems, lattice parameters and twinning shear of magnesium}
+    \begin{tabularx}{\textwidth}{c c}
+      \hline \hline
+      {\begin{tabular}[t]{| l Y Y Y |}
+        Type & Plane & Direction & Systems \\
+        \hline
+        Basal & \plane{0001} & \direction{11\ol{2}0} & 3 \\
+        Prismatic & \plane{\ol{1}100} & \direction{11\ol{2}0} & 3 \\
+        Pyramidal \pyra & \plane{\ol{1}101} & \direction{11\ol{2}0} & 6 \\
+        Pyramidal \pyrac & \plane{\ol{1}\ol{1}22} & \direction{11\ol{2}3} & 6 \\
+        Tension twin & \plane{\ol{1}102} & \direction{1\ol{1}01} & 6\\
+        Compression twin & \plane{\ol{1}101} & \direction{1\ol{1}02} & 6 \\
+      \end{tabular}}
+      \setlength\tabcolsep{10pt}
+      {\begin{tabular}[t]{| c c |}
+
+        &\\
+        \hline
+        &\\
+        $a$ & 0.321nm \\
+        $\chi$ & 1.624 \\
+        $\gammatt$ & 0.129 \\
+        $\gammact$ & 0.137 \\
+        & \\
+      \end{tabular}} \\
+      \hline
+    \end{tabularx}
+    \label{tab:mgParameters}
+  \end{table}
+
+  To include hardening and to satisfy the complex interactions between the different slip and twinning modes three kinds of accumulated plastic shear deformation are introduced: the accumulated slip deformation in each phase $\gammaaccb$ and the accumulated tension twinning and accumulated compression twinning deformation $\gammaacctt$ and $\gammaaccct$. The evolution equations are given by
+  \begin{equation}
+    \gammaaccbdot = \sumaI \abs{\nuab}, \qquad \gammaaccttdot = \sum_{\beta \in \Itt} \gammatt \cbdot, \qquad \gammaaccctdot = \sum_{\beta \in \Ict} \gammact \cbdot,
+  \end{equation}
+  where $\Itt$ denote the indices of tension twinning and $\Ict$ denote the indices of compression twinning. In the following, the critical shear stress $\tauacb$ is additively decomposed into three parts that each depend on a different kind of accumulated plastic shear deformation (compare \authorcite{zhang2012phenomenological}):
+  \begin{equation}
+    \tauacb = \Ab \left( \tauCslslb(\gammaaccb) + \tauCttsl(\gammaacctt) + \tauCctsl(\gammaaccct) \right)
+    \label{eq:tauacb}
+  \end{equation}
+  with
+  \begin{align}
+    \tauCslslb &=
+    \begin{cases}
+        \tauO + \hO \gammaaccb & \text{\quad (Basal)}  \\
+        \displaystyle \tauO + (\taus-\tauO) \tanh{\frac{\hO \gammaaccb}{\taus-\tauO}} & \text{\quad (Non basal)}
+    \end{cases} \\
+    \tauCttslb &= \taus \tanh{\frac{\hO \gammaacctt}{\taus}} \label{eq:tauCttsl}\\
+    \tauCctsl &= \hO \sqrt{\gammaaccct} \\
+    \Ab & =  \left( a + \frac{1-a}{\sqrt{\cb}} \right) \label{eq:Ab}
+  \end{align}
+  Additionally, a factor $A_\beta$ dependent on the concentration impedes the slip deformation in twinned phases with very low concentration. This improves the numerical convergence and is physically related to the Hall-Petch effect. In case of the critical stress for twinning $\xibc$ only self hardening is considered. Similar to the slip case twinning is impeded for low concentrations of the parent phase by a concentration dependent term. The constitutive equations here are given by:
+  \begin{equation}
+      \xibc = 
+      \begin{cases}
+          \displaystyle A_0 \gammatt \left( \tauO + (\taus - \tauO) \tanh{\frac{\hO \gammaacctt}{\taus-\tauO}} \right)& \text{(TT)}\\[15pt]
+          \displaystyle A_0 \gammact \frac{\hO (\gammaaccct)^{b+1}}{(b+1){(\gammact})^b}  & \text{(CT)}
+      \end{cases}
+  \end{equation}
+
+  Note that the hardening model does not yet include any inheritance of slip hardening in the parent phase to forming twins. The parameters of the model are listed in \cref{tab:modelParams}. They are obtained by a refitting of the parameters given by \authorcite{zhang2012phenomenological}. Note that the rate sensitivity exponents $\psl$ and $\ptw$ are chosen such that quasi rate-independent behavior is obtained which is reasonable for comparison to the experiments in this work but especially for slip not generally true.
+
+
+\begin{table}[h!]
+  \setlength\tabcolsep{0.5pt}
+  \caption{Fitted model parameters}
+  \begin{tabularx}{\textwidth}{c c}    
+    \hline \hline
+    {\begin{tabular}[t]{| l Y Y Y Y |}
+        % \hline \hline
+        Type & Index & $h_0$ [MPa]& $\tauO$ [MPa]& $\taus$ [MPa]\\
+        \hline
+        Basal& $\rm B$ & 15 & 1.0 & - \\
+        Prismatic & $\rm P$  & 5000 & 10 & 80 \\
+        Pyram. \pyra & \pyra & 5000 & 10 & 80 \\
+        Pyram. \pyrac & \pyrac& 4000 & 20 & 150 \\
+        TT on slip & $\rm tt\rightarrow sl$ & 2000 & - & 11 \\
+        CT on slip & $\rm ct\rightarrow sl$ & 10 & - & - \\
+        TT & TT & 100 & 2.0 & 20 \\
+        CT & CT & 5000 & 55 & - \\
+        \hline
+    \end{tabular}} &
+    \setlength\tabcolsep{15pt} 
+    {\begin{tabular}[t]{ | c  c |}
+        % \hline \hline
+        & \\
+        % \rule{0pt}{2.625ex}
+        \hline
+        &\\
+        \ $\nuOa$ &  $10^{-3}\persecond$ \\
+        \ $\cbOdot$ &  $10^{-4}\persecond$\\
+        $\psl$ & 20 \\
+        $\ptw$ & 20 \\
+        $a$ & 0.9 \\
+        $b$ & 0.05 \\
+        &\\
+
+        \hline
+    \end{tabular}}
+    \label{tab:modelParams}
+  \end{tabularx}
+\end{table}
+
+
+\subsubsection{Discretization and midpoint rule}\label{sec:discMidPt}
+  The time discretization using midpoint integration is adopted from \authorcite{steimann1996numerical} and reads as follows:
+  \begin{equation}
+    \FFpdot = \LLp \FFp \approx \frac{1}{\Delta t} (\FFp -\FFpn).
+  \end{equation}
+  Introducing $\hhp = \Delta t \LLp$ one obtains: 
+  \begin{equation}
+    \FFp-\FFpn = \half \hhp (\FFp + \FFpn).
+    \label{eq:midpointIntegration}
+  \end{equation}
+  Introducing $\ffp=\FFp\FFpninv$ one can rearrange \cref{eq:midpointIntegration} into 
+  \begin{equation}
+      \ffp = \inv{\left(\II-\half\hhp\right)} \left(\II+\half\hhp\right) \quad \Leftrightarrow \quad 
+      \ffpinv = \inv{\left(\II+\half\hhp\right)} \left(\II-\half\hhp\right).
+      \label{eq:ffp}
+  \end{equation}
+  Additionally, introducing $\FFetr=\FF\FFpninv$ and $\CCetr = \FFetrT\FFetr$ one finds
+  \begin{equation}
+    \CCe = \ffpinvT \CCetr \ffpinv.
+    \label{eq:CCe}
+  \end{equation}
+  Note that this integration scheme does not exactly fulfill \mbox{$\det{\FFp}=1$} but the deviations are sufficiently small to consider the plastic deformation isochoric (see \cref{sec:EvalIsoPlas}). Finally, the discretized plastic slip and twin increments $\Delta\gammaab$ and $\Delta\gammab$ are given by
+  \begin{align}
+    \Delta\gammaab &= \Delta t \nuab, \qquad  \Delta\gammab = \Delta t \gammatwb \cbdot \label{eq:dgamma}
+  \end{align}
+  and the vector vector notation $\Delta\gammau$ of the accumulated plastic slip deformations and (not accumulated) twinning deformations is introduced:
+  \begin{equation}
+    \Delta \gammau = \vphantom{\underbrace{\sumaI}_{\gamma}} 
+    \trans{\pmat{\dstyle \vphantom{\sumaI}\smash{\underbrace{\sumaI\abs{ \Delta \gamma^0_{\alpha}}}_{\Delta\gamma_{\rm acc}^0}},& \ldots , & \dstyle \smash{\underbrace{\sumaI \abs{\Delta \gamma_{\alpha}^{\Ntw}}}_{\Delta\gamma_{\rm acc}^{\Ntw}}}, & \Delta \gamma_1, & \ldots , & \Delta \gamma_{\Ntw}}}.
+    \label{eq:dgammau}
+  \end{equation}
+  In this case the vector contains $\Ntw+1=13$ entries for the accumulated slip deformation and $\Ntw=12$ entries for the twinning deformation.
+
+\subsubsection{Residuals and algorithmic tangent}
+  In most numerical algorithms for the treatment of crystal plasticity, the plastic slip increments $\Delta\gammaab$ are treated as primary unknowns (which would have to be extended by the twin deformation increments $\Delta\gammab$ in the presence of twinning). A natural choice for the nonlinear equation to be solved would then be the time-discrete versions of \cref{eq:nuab_cbdot}, where $\tauab$, $\tauacb$, $\xib$ and $\xibc$ would be expressed in terms of the primary unknowns. However, the resulting number of 246 primary unknowns in case of Mg seems to be highly unattractive for the numerical solution. One remedy consists in neglecting secondary slip in the twins and thus reducing the number of unknowns to 18+12=30. However this approach may become inaccurate once the twin volume fractions reach the order of magnitude of the parent phase, which requires further algorithmic treatment like switching the 'plastically active' phase from the parent phase to, e.g., the twin with the highest volume fraction. In order to circumvent inaccuracies resulting from such approximations we keep all 246 slip/twin increments, but reduce significantly the number of primary unknowns. Instead of the plastic slip/twin increments we choose the pair ($\SSe$,$\Delta\gammautilde$) as primary unknowns, where $\Delta\gammautilde$ is further specified below. It is emphasized that the algorithm is neither restricted to Mg nor to the hexagonal symmetry or the hardening model outlined in section \ref{sec:hardening}.
+
+  Note that the entries of $\Delta\gammau$ in \cref{eq:dgammau} are dependent on the stress and the plastic deformation itself, as described in the following. The formulation of \cref{eq:dgamma} in terms of the primary unknowns ($\SSe$, $\Delta\gammautilde$) is given by: 
+  \begin{align}
+    \Delta\gammaab (\SSe, \Delta\gammautilde) &= \Delta t \ \sign{\tauab(\SSe)} \nuOa \left( \frac{\abs{\tauab(\SSe)}}{\tauacb(\Delta\gammautilde)} \right)^{\psl}, \label{eq:dgammaab}\\
+    \Delta\gammab (\SSe, \Delta\gammautilde) &= \Delta t \gammatwb c_0(\Delta\gammautilde) \cbOdot \left( \frac{\xib(\SSe)}{\xibc(\Delta\gammautilde)} \right)^{\ptw} \label{eq:dgammab}
+  \end{align}
+  with
+  \begin{equation}
+    \Delta\gammautilde = \trans{\pmat{\Delta\tilde\gamma_{\rm acc}^0,& \ldots, & \Delta\tilde\gamma_{\rm acc}^{\Ntw},& \Delta\tilde\gamma_1,& \ldots, & \Delta\tilde\gamma_{\Ntw}}}.
+  \end{equation}
+  The tilde in this case indicates that $\Delta\gammautilde$ is a vector of unknowns which are mathematically distinct from $\Delta\gammau$, which is a function of $\SSe$ and $\Delta\gammautilde$. In analogy to \cref{eq:dgammau} $\Delta\gammautilde$ contains 25 entries in this example. Furthermore, the elastic strain in \cref{eq:CCe} is dependent on the overall deformation and the plastic deformation, which again is dependent on the unknowns introduced above. Based on this reasoning, we can write:
+  \begin{equation}
+    \EEe(\CCetr,\SSe, \Delta\gammautilde) = \half\Big(\ffpinvT \CCetr \ffpinv- \II\Big),
+  \end{equation}
+  where $\ffp=\ffp(\SSe,\Delta\gammautilde)$ (see \cref{eq:LLp,eq:ffp,eq:dgamma,eq:dgammaab,eq:dgammab}).
+  Considering \cref{eq:SSe} one additionally finds $\EEe = \CCCCinv:\SSe$, and with $\SSSS = \CCCCinv$ the residuals for the Newton iteration $\rrS$ and $\rg$ read:
+  \begin{equation}
+          \rrS = \EEe(\CCetr,\SSe, \Delta \gammautilde) - \SSSS(\Delta\gammautilde) : \SSe, \qquad \rg = \Delta \gammau(\SSe,  \Delta \gammautilde) - \Delta \gammautilde,
+  \end{equation}
+  where $\Delta\gammau(\SSe,\Delta\gammautilde)$ corresponds to \cref{eq:dgammau} expressed in terms of \cref{eq:dgammaab,eq:dgammab}.
+  In case of a given deformation gradient, the linearization of the nonlinear equation system reads:
+  \begin{align}
+    \rrS + \d \rrS &= \rrS + \left(\dEEeDSSe-\SSSS\right):\d \SSe + \left(\dEEeDDeltagammau-\SSe:\derivative{\SSSS}{\Delta\gammautilde} \right)\d \Delta \gammautilde \label{eq:rrS} = \zzero; \\ %+ \dEEeDCCetr : \dCCetr \\ 
+    \rg + \d \rg &= \rg + \dDeltagammauDSSe:\d \SSe + \left( \dDeltagammauDDeltagammau - \II \right) \d \Delta \gammautilde = \zerou \label{eq:rg}.
+  \end{align}
+  The partial derivatives are given in the appendix. Introducing the vector notation $\ru$ for the residuals and $\xu$ for the unknowns as well as the Mandel-notations $\rSu$ and $\Seu$, the linearization of the Newton-scheme is given by:
+  \begin{equation}
+    \ru + \druDxu \d\xu = \zerou \qquad \text{with} \qquad \ru = \pmat{\rSu \\ \rg}; \quad \xu = \pmat{\Seu \\ \Delta\gammautilde}.
+  \end{equation}
+
+  The algorithmic tangent $\calgo$ (see appendix) for the global iteration is calculated by:
+  \begin{align}
+    \FFetr \d\SSebar \FFetrT = \underbrace{\FFetr \sBox \FFetrT : \dSSebarDxu \dxuDCCetr : \FFetrT \sBox \FFetr}_{\calgo} : \ddd
+    \label{eq:calgo}
+  \end{align}
+  where $\SSebar=\FFetrinv \ttau \FFetrinvT$ is the second Piola-Kirchhoff stress tensor with respect to the intermediate trial configuration and $\ddd=\sym{(\d\FF\FFinv)}$. As before, the partial derivatives are given in the appendix. \\
+ 
+  \subsection{Simulation results and discussion} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  The material routine was implemented into the finite element analysis program FEAP\supercite{taylor2014feap} and tested in FEM simulations using quadratic tetrahedral elements and hexahedral elements with reduced integration and hourglass stabilization. In this section the simulation results are compared to experimental data of single-crystal and polycrystal deformation. Since the model does not resolve individual twins, the focus lies on the effective material response rather than on the material behavior on the sub-grain scale. One of the most sophisticated characterizations for crystal plasticity of magnesium are the experiments of \authorcite{kelly1967report} in which single-crystal as well as polycrystal compression experiments were performed for several different loading directions and constraints which were designed to activate and impede different slip and twinning modes. Furthermore, the influence of the change of elastic energy upon twinning and the compliance to plastic incompressibility are discussed.
+  
+  \subsubsection{Single crystal compression} \label{sec:SCcompression}%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  In case of single-crystal compression the loading directions and constraints are listed in \cref{tab:loadCases} and the stress-strain relation obtained with a mesh consisting of one cubic element is given and compared to the experimental data in \cref{fig:StressStrainSC}. Note, that simulations performed with meshes consisting of $4\times4\times4$ elements and $16\times16\times16$ elements showed identical results. 
+  
+  \begin{table}[h!]
+    \centering
+    \caption{Loading directions and constraints for single crystal compression cases A-G}
+    \begin{tabularx}{\textwidth}{|l | Y Y Y Y Y Y c|}
+      \hline \hline
+      & A & B & C & D & E & F & G\\
+      \hline
+      Loading direction & \direction{0001} & \direction{0001} &  \direction{10\ol{1}0} & \direction{1\ol{2}10} & \direction{10\ol{1}0} & \direction{1\ol{2}10} & \direction{0001}@$45^\circ$\\
+      Constraint & \direction{10\ol{1}0} & \direction{1\ol{2}10} & \direction{0001} & \direction{0001} & \direction{1\ol{2}10} & \direction{10\ol{1}0} & \direction{10\ol{1}0}\\
+      \hline 
+    \end{tabularx}
+    \label{tab:loadCases}
+  \end{table}
+  
+  \begin{figure}[!ht]
+    \centering
+    \includegraphics[width=\textwidth]{Publications/MgPlas/stressStrainSC.pdf}
+    \caption{Comparison of simulated single crystal compression stress-strain behavior to experiments from \authorcite{kelly1967report} for different loading directions (A-G).}
+    \label{fig:StressStrainSC}
+  \end{figure}
+  Apparently, the present model is capable of representing the highly anisotropic stress-strain behavior for all seven loading cases correctly with good accuracy. Further, it should be noted that the algorithm shows quadratic convergence except for stages of extreme nonlinear behavior e.g. at the abrupt stress increase of cases E and F. To make sure that the contributions from the different deformation mechanisms are plausible the relative activity $\gammareli$ of each slip and twinning mode with index $i$ is calculated as follows:
+  \begin{equation}
+    \gammareli = 
+    \begin{cases}
+      \displaystyle \frac{\sumbI \summ \cb \abs{\D\gammaab}}{\sumbI \cb \D\gammaaccb + \sumbI \D\gammab} \qquad \text{(slip modes)}\\[15pt]
+      \displaystyle \frac{\sum_{\beta \in I^i} \D\gammab}{\sumbI \cb \D\gammaaccb + \sumbI \D\gammab} \qquad \text{(twinning modes)}
+    \end{cases}
+  \end{equation}
+  where $I^i$ denotes all indices $\alpha$ of one slip mode or indices $\beta$ of one twinning mode.  
+  The relative activity as well as the twin volume fraction $\cb$ for each loading case A-G are given in \cref{fig:relAct}.
+  
+  \begin{figure}[ht!]
+    \centering
+    \includegraphics[width=\textwidth]{Publications/MgPlas/relActivitySC.pdf}
+    \caption{Relative activity and twin volume fractions for single crystal compression.}
+    \label{fig:relAct}
+  \end{figure}
+  
+  
+  In cases A and B the loading is applied in direction of the c-axis, perpendicular to the basal plane, which impedes activation of basal, prismatic and pyramidal \pyra slip as well as tension twinning in the parent phase. In the beginning, this leaves only pyramidal \pyrac slip and compression twinning as possible deformation modes, but as soon as compression twinning starts, the rotation of the lattice inside the twins allows for the activation of other slip modes. At this point activation of basal slip is observed which is plausible due to the very low CRSS (see \cref{tab:modelParams}). However, due to the low twin concentration, hardening inside the twinned regions is increased (see \cref{eq:tauacb,eq:Ab}), which results in the decrease of basal slip activity at higher strains. \\ \\
+  In cases C and D the load is applied parallel to the basal plane and the deformation is constrained in c-axis direction. This again impedes basal slip in the parent phase but in contrast to A and B now allows for prismatic and pyramidal \pyra slip which are both easier to activate than pyramidal \pyrac slip and are therefore dominating the deformation. Additionally, in the beginning tension twinning is predicted although it seems to be impeded due to the constraint c-axis. An explanation why it still occurs is the low CRSS and the possibility to compensate for a c-axis elongation by slip in opposite direction inside the twins.\\ \\ 
+  In cases E and F the load is applied parallel to the basal plane which again impedes basal slip but this time the elongation in c-axis direction is not constrained which makes both cases favorable for tension twinning. Indeed, tension twinning is the dominating deformation mechanism until the concentration of the parent phase has reached zero and no further twinning is possible. At this point the stress rapidly increases until a threshold is reached at which slip inside the twinned regions can be activated. Note, that the transition is not abrupt but smooth due to the concentration dependent hardening factor (see \cref{eq:Ab}). A noticeable difference between the cases E and F is, that the orientation of the twins in case F are more favorable for basal slip which leads to an earlier onset of slip and the much lower observed maximum stress. \\ \\
+  In Case G the orientation of the parent phase is optimal for basal slip which leads to the very low observed stress and the absence of any other deformation mode. \\ \\
+  Note that although basal slip is initially impeded in cases A-F, it plays a significant role in all cases except C due to the reorientation of the lattice inside twinned regions and its very low CRSS.
+  
+  \subsubsection{Polycrystal compression} \label{sec:PCcompression} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  To simulate the compression of polycrystalline textured magnesium a cube consisting of approximately 12500 quadratic tetrahedral elements and 100 grains with different orientations was investigated (see \cref{fig:cubeCompression}). The mesh was created using the tesselation software Neper\supercite{quey2011neper,quey2022neper}.
+  
+  \begin{figure}[!ht]
+    \includegraphics[width=\textwidth]{Publications/MgPlas/rve_simPC.pdf}
+    \caption{Polycrystal compression on RVE with \texttilde12500 elements and 100 grains.}
+    \label{fig:cubeCompression}
+  \end{figure}
+  
+  \begin{figure}[!ht]
+    \centering
+    \includegraphics[width=\textwidth]{Publications/MgPlas/stressStrainPC.pdf}
+    \caption{(a) Stress-strain behaviour for textured polycrystal with different loading direction and constraints and (b) representative polefigure for orientation of the basal pole.}
+    \label{fig:stressStrainPC}
+  \end{figure}
+  
+  The orientation of the basal pole was chosen to resemble the texture of roll-textured magnesium from \authorcite{kelly1967report}. A representative polefigure indicating the orientations of the basal pole is given in \cref{fig:stressStrainPC}b. Six different loading direction and constraints (ZT, ZR, TR, RT, TZ, RZ), related to the single-crystal cases A-F were investigated. Here, the first letter denotes the loading direction and the second letter denotes the unconstrained direction, where Z is the thickness direction, R is the rolling direction and T is the transverse direction. The predicted stress-strain behavior is given in \cref{fig:stressStrainPC}a. Note that no grain shape, grain size or grain boundary effects are considered and all parameters are kept as in the single crystal compression. As in the single-crystal compression the contributions to deformation are calculated by the relative activity and the average of all elements is given in \cref{fig:relActPC}.
+  
+  \begin{figure}[!ht]
+    \centering
+    \includegraphics[width=\textwidth]{Publications/MgPlas/relActivityPC.pdf}
+    \caption{Relative activity and twin volume fractions for polycrstalline compression.}
+    \label{fig:relActPC}
+  \end{figure}
+  
+  Even without a refitting of parameters or considering any additional effects, the polycrystalline stress strain behaviour coincides well with the experimental data. Due to the misalignment of the grains in comparison to the single crystal case there are no slip or twinning systems strictly impeded in any case. Thus, it is reasonable that almost all deformation modes contribute to some extend to the deformation but basal slip is the most prominent.
+  
+  \subsubsection{Polycrystal tension of sputter deposited columnar thin films} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+  Finally, the possibility to incorporate solid solution hardening into the model was investigated. Tensile test simulations of polycrystalline sputter deposited magnesium-silver \mbox{(Mg-Ag)} thin films that exhibit a columnar grain structure and c-axis alignment were compared to experimental data by \authorcite{jessen2019mechanical}. As depicted in \cref{fig:voronoi}, for pure magnesium the grain structure is approximated by a quasi 2D Voronoi-structure with 200 grains and a mesh consisting of $316\times316\times1$ elements. Each grain is oriented with the c-axis perpendicular to the plane and has a random rotation angle about the c-axis. The tension is applied perpendicular to the c-axis. For the Mg-Ag alloy films the mesh size was reduced to $10\times10\times1$ elements with 100 grains to decrease computational effort. \cref{fig:voronoiAg}a shows that the reduction is reasonable and leads to almost identical results.
+  
+  
+  \begin{figure}[!ht]
+    \includegraphics[width=\textwidth]{Publications/MgPlas/rve_simTF.pdf}
+    \caption{(a) Schematic structure of sputter deposited c-axis aligned columnar thin-film, (b) mesh of 200 grains with different orientation consisting of $316\times316\times1$ hexahedral elements representing thin-film cross section and (c) Cauchy stress $\sigma_{\rm zz}$ in tensile direction }
+    \label{fig:voronoi}
+  \end{figure}
+  
+  \begin{figure}[!ht]
+    \centering
+    \includegraphics[width=\textwidth]{Publications/MgPlas/stressStrainTF.pdf}
+    \caption{(a) Mesh size reduction of Voronoi-structure for polycrystal c-axis aligned Mg thin film and (b) stress-strain behavior for Mg-Ag thin-films including solid solution hardening.}
+    \label{fig:voronoiAg}
+  \end{figure}
+  
+  In general, solid solution hardening is given by the following relation:
+  \begin{equation}
+    \tauc = \tau_0^{\rm c} + k\sqrt{c}
+  \end{equation}
+  where $\tauc$ denotes the critical resolved shear stress, $k$ is a material constant and $c$ denotes the concentration of the alloying material. To obtain this relation the parameters $\tauO$, $\taus$ and $\hO$ in the hardening laws were modified as follows: 
+  \begin{align}
+    \tauO^{\text{Mg-Ag}} &= \tauO (1+k\sqrt{\cAg}) \\
+    \taus^{\text{Mg-Ag}} &= \taus (1+k\sqrt{\cAg}) \\
+    \hO^{\text{Mg-Ag}} &= \hO (1+k\sqrt{\cAg})^2 
+  \end{align}
+  with the fitting parameter $k=3.2$. The resulting stress-strain behavior for a silver concentration of 2~wt\%, 6~wt\%, 8~wt\% and 10~wt\% is given in \cref{fig:voronoiAg}b. 
+  
+  For pure magnesium the predicted stress-strain behavior coincides very well with the experimentally obtained results. Note that the decrease in stress is no softening effect but is found because it is given here as the component of the first Piola-Kirchhoff stress $P_{zz}$ in compression direction to make it comparable to the experiments. For the Mg-Ag thin films the deviations are more pronounced but still show a reasonably accurate estimate. Of course, for a more precise prediction the simple implementation of solid solution hardening would need to be replaced by a more elaborate model. 
+  
+  \subsubsection{Evaluation of elastic energy change upon twinning} \label{sec:EvalEnegeryChange} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+  \begin{figure}[!ht]
+    \centering
+    \includegraphics[width=\textwidth]{Publications/MgPlas/YMS.pdf}
+    \caption{(a) 3D Young's modulus surface plot for Mg and Zn and (b) 2D projection onto the xz-plane, showing almost isotropic elastic behavior for Mg and strong anisotropy for Zn. (c) Proportion of the elastic energy change due to rotation of the lattice in the total twinning driving force is less than 2\% for all single crystal loading cases A-F. }
+    \label{fig:YMS}
+  \end{figure}
+  
+  The requirement of consistency with the second law, leads to the finding that the driving force for twinning is not only given by the projected stress on the twinning systems $\tau$, but additionally by the change of elastic energy $\partial_{\cb}\psie$ due to the rotation of the lattice and therefore the rotation of the effective stiffness tensor (see \cref{sec:dissipation}). Of course, the influence of this term strongly depends on the degree of anisotropy of the stiffness tensor and will completely vanish for an elastically isotropic material. To determine the anisotropy of the stiffness tensor a 3D Young's modulus surface (YMS) is calculated by determining the elastic modulus for uniaxial tension with different orientations. The direction dependent Young's modulus $E(\nn)$ is calculated according to the following equation: 
+  
+  \begin{align}
+    E(\nn) = \inv{\big((\nn \otimes \nn) : \SSSS : (\nn \otimes \nn)\big)}.
+  \end{align}
+  
+  The resulting 3D YMS-plot and the 2D projection onto the xz-plane, displayed in \cref{fig:YMS}(a) and (b), shows for Magnesium an almost spherical shape, indicating close to isotropic elastic behavior. Thus, it is not surprising, that the influence of the elastic energy change is negligibly small. The proportion of the elastic energy change in the total driving force for the single crystal simulations, depicted in \cref{fig:YMS}(c), is less than 2\% for all loading cases and therefore does not contribute significantly to the observed stress-strain behavior. However, for other materials, for example zinc, exhibiting a much higher elastic anisotropy (compare \authorcite{ledbetterElasticPropertiesZinc1977}), we expect the term to be relevant . 
+  
+  
+  \subsubsection{Evaluation of plastic incompressibility using midpoint rule}\label{sec:EvalIsoPlas} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+  To be consistent with the experimentally observed plastic incompressibility, appropriate time integration methods have been discussed by many authors\supercite{dafaliasPlasticSpinNecessity1998,ortizVariationalFormulationViscoplastic1999,motaLiegroupInterpolationVariational2013}. The midpoint rule from \authorcite{steimann1996numerical} used in this work (see \cref{sec:discMidPt}) in general does not exactly fulfill the plastic incompressibility condition $\det{\FFp}=1$. The development of $\det{\FFp}$ is shown in \cref{fig:detFFp}(a) for the single crystal compression simulations in \cref{sec:SCcompression} and in (b) for the maximum and minimum values of $\det{\FFp}$ for the polycrystal compression simulations in \cref{sec:PCcompression}. The deviations from 1 are for all cases in the order of $10^{-8}$ which we consider sufficiently close to the isochoric case. 
+  
+  \begin{figure}[!ht]
+    \centering
+    \includegraphics[width=\textwidth]{Publications/MgPlas/detFFp.pdf}
+    \caption[]{(a) Development of $\det{\FFp}$ for single crystal compression simulations and (b)~maximum and minimum values of $\det{\FFp}$ for polycrystal compression simulations.}
+    \label{fig:detFFp}
+  \end{figure}
+
+
+
+  \subsection{Conclusion}
+
+  In this work, a single-crystal plasticity finite element model for magnesium including slip and twinning at finite strains was presented. The implemented algorithm uses a volume transfer scheme, considers 18 slip systems with 13 orientations (parent + 12 twinning systems) simultaneously and is fully implicit. By a special choice of the primary unknowns and residuals, it was possible to reduce the number of nonlinear equations to be solved from 246 to 31. This enabled to resolve important secondary slip in all twins at a reasonable computational cost. Thermodynamic consistency is ensured by deriving the model from the Clausius-Duhem inequality, which identifies the change of elastic energy with the lattice rotation upon twinning as an additional driving force for twinning. Considering basal, prismatic, pyramidal \pyra and pyramidal \pyrac slip modes as well as a tension and a compression twinning mode, the simulations of single-crystal compression reproduce the highly anisotropic behavior and are in excellent agreement with the experimental data. Furthermore, without including any additional effects or refitting of parameters, the model is also capable to reproduce polycrystalline stress-strain behavior with good accuracy. Additionally, an easy modification of the hardening parameters allows for a reasonable estimate of solid solution hardening. The volume transfer scheme with implicit update exhibits robust behavior even for the strong assumption of quasi rate-independent slip and twinning behavior and smooth transitions when slip inside newly developed twins becomes possible. Thus, there are no sudden "jumps" in stress which we assume to be advantageous for larger polycrystalline simulations. The limitations of the approach are that individual twins are not explicitly modelled, which of course neglects important physical mechanisms on the micro-scale but on the other hand allows to approximate grains in a polycrystalline material by single elements with good accuracy. The model therefore is not suited for detailed microscopic predictions, such as nucleation and propagation of individual twins but predicts the mechanical material behavior on a larger scale. \\
+
+  \textbf{Acknowledgements: }~Funding by the German Research Foundation (DFG) within the framework of the research training group GRK 2154 'Materials for Brain' is gratefully acknowledged. \\
+  
+
+  \subsection{Appendix}
+  To obtain the linearization of the residuals in \cref{eq:rrS,eq:rg} the linearizations of $\SSSS$, $\EEe$ and $\gammau$ are needed.
+  
+  \subsubsection*{Linearization of $\SSSS$}
+  The linearization of the compliance $\SSSS$ is given by:
+  \begin{equation}
+    \d\SSSS = - \sumbI \frac{1}{\gammatwb} \SSSS : \left( \CCCCb - \CCCC_0 \right) : \SSSS \ \d\gammab.
+  \end{equation}
+  
+  \subsubsection*{Linearization of $\EEe$}
+  
+  The partial derivatives of $\EEe$ with respect to the unknowns $\SSe$ and $\D\gammautilde$ needed for the linearization of the residual are given by:
+  
+  \begin{align}
+    \dEEeDSSe &= \sumbO \sumaI \dEEeDDeltagammaab \dDeltagammaabDtauab \dtauabDSSe + \sumbI \dEEeDDeltagammab \dDeltagammabDxib \dxibDSSe \label{eq:dEEeDSSe}\\
+    \dEEeDDeltagammau &= \sumbO \sumaI \dEEeDDeltagammaab \dDeltagammaabDtauacb \dtauacbDDeltagammau + \sumbI \dEEeDDeltagammab \left(\dDeltagammabDxibc \dxibcDDeltagammau + \derivative{\D\gammab}{c_0}\derivative{c_0}{\D\gammau} \right)
+  \end{align}
+  
+  They are derived by the linearization of $\EEe$ as follows:
+  \begin{equation}
+    \dEEe = \half \total(\ffpinvT \CCetr \ffpinv - \II) = \sym{\CCe \ffp \dffpinv} + \half \ffpinvT \sBox \ffpinv : \d\CCetr.
+    \label{eq:dEEe}
+  \end{equation}
+  With
+  \begin{equation}
+    \ffp \dffpinv = -\inv{\left(\II-\half\hhp\right)} \dhhp \inv{\left(\II+\half\hhp\right)}
+    \label{eq:ffpdffpinv}
+  \end{equation}
+
+  and
+  \begin{equation}
+      \dhhp =  \sumbO \cb \sumaI \MMab \d \D \gammaab + \sumbI \left(\MMb + \frac{1}{\gammatwb}\sumaI\left(\MMab\D\gammaab-\MMaO\D\gammaaO\right)\right)  \d \D \gammab
+      \label{eq:dhhp}
+  \end{equation}
+  and 
+  \begin{equation}
+    \begin{split}
+      \MMabtilde = \inv{\IIminus} \MMab \inv{\IIplus} \\
+      \MMbtilde = \inv{\IIminus} \MMb \inv{\IIplus}
+    \end{split}
+  \end{equation}
+  
+  one obtains the partial derivatives of $\EEe$ with respect to the plastic shear and twinning increments $\D\gammaab$ and $\D\gammab$ and the elastic trial Green strain tensor $\CCetr$
+  \begin{align}
+    \dEEeDDeltagammaab &= - \cb \sym{\CCe \MMabtilde} \label{eq:dEEeDDeltagammaab}\\
+    \dEEeDDeltagammab &= - \sym{\CCe \left(\MMbtilde+\frac{1}{\gammatwb}\sumaI \left(\MMabtilde\Delta\gammaab-\MMaOtilde\D\gammaab\right)\right)} \label{eq:dEEeDDeltagammab}\\
+    \derivative{\EEe}{\CCetr} &= \half \ffpinvT \sBox \ffpinv
+  \end{align}
+  
+  The partial derivatives of $\D\gammaab$ and $\D\gammab$ are given by 
+  \begin{align}
+    \derivative{\D\gammaab}{\tauab} &= \frac{\Dt \nu_0 \psl}{\tauacb} \left(\frac{\abs{\tauab}}{\tauacb} \right)^{\psl-1} \\
+    \derivative{\D\gammab}{\xib} &= c_0 \gammatwb \frac{\Dt \nu_0 \ptw}{\xibc} \left(\frac{\xib}{\xibc} \right)^{\ptw-1} \\
+    \derivative{\D\gammab}{c_0} &= \Dt \nu_0 \left(\frac{\xib}{\xibc} \right)^{\ptw}
+  \end{align}
+  and
+  \begin{align}
+    \derivative{\D\gammaab}{\tauacb} &= - \frac{\tauab}{\tauacb} \derivative{\D\gammaab}{\tauab} \\
+    \derivative{\D\gammab}{\xibc} &= -\frac{\xib}{\xibc} \derivative{\D\gammab}{\xib}
+  \end{align}
+  
+  The linearization for $\tauCslslb$, $\tauCttsl$ and $\tauCctsl$ reads: 
+  \begin{align}
+          \d\tauCslslb &= 
+          \begin{cases}  \displaystyle h_0 \ \d\D\gammaaccb & \qquad \qquad \text{(Basal)} 
+            \\ \displaystyle h_0 \ \sech^2\left(\frac{h_0 \gammaaccb}{\taus - \tauO}\right) \d\D\gammaaccb & \qquad \qquad \text{(Non basal)}
+          \end{cases}\\
+          \d\tauCttslb &= \hO \ \sech^2\left(\frac{\hO\gammaacctt}{\taus}\right) \d\gammab \\
+          \d\tauCctsl &= 0.5 \hO \left(\gammact\right)^{-0.5} \d\gammab
+  \end{align}
+  
+  The partial derivatives then read:
+  \begin{align}
+    \derivative{\tauacb}{\D\gammaaccb} & = \Ab \derivative{\tauCslslb}{\D\gammaaccb} \\[10pt]
+    \derivative{\tauacb}{\D\gammab} & = \derivative{\Ab}{\D\gammab} (\tauCslslb + \tauCttslb + \tauCctsl)
+  \end{align}
+  with
+  \begin{equation}
+    \derivative{\Ab}{\D\gammab} = 
+    \begin{cases}
+      \displaystyle 0.5 \left( \frac{(1-a)}{\gammatwb(\cb)^{1.5}} \right) & \qquad \text{if} \quad \beta = 0  \\
+      \displaystyle - 0.5 \left( \frac{(1-a)}{\gammatwb(\cb)^{1.5}} \right) & \qquad \text{if} \quad \beta \neq 0  
+    \end{cases}
+  \end{equation}
+  The partial derivative of $\xib$ is given by:
+  \begin{equation}
+    \derivative{\xibc}{\D\gammab} = 
+    \begin{cases}
+      \displaystyle A_0 \gammatt \hO \ \sech^2\left(\frac{\hO \gammaacctt}{\taus-\tauO}\right) + \derivative{A_0}{\D\gammab}  \gammatt (\taus-\tauO) \tanh{\frac{\hO \gammaacctt}{\taus-\tauO}} & \qquad \text{(TT)} \\[10pt]
+      \displaystyle \gammact \hO (\cb)^{b} + \derivative{A_0}{\D\gammab} \gammact \frac{\hO (\gammaaccct)^{b+1}}{(b+1){(\gammact})^b} & \qquad \text{(CT)} 
+    \end{cases}
+  \end{equation}
+  
+  The linearization of $\tauab$ and $\xib$ reads:
+  \begin{align}
+    \derivative{\tauab}{\SSe} &= \left(2 \SSSS:\sym{\MMab \SSe} + \sym{\CCe \MMab}\right) \\
+    \derivative{\xib}{\SSe} &= \angleTwb \left(2 \SSSS:\sym{\MMb \SSe}  + \sym{\CCe \MMb}\right) \\
+  \end{align}
+  
+  \subsubsection*{Linearization of $\gammau$}
+  
+  The partial derivatives of $\gammau$ with respect to the unknowns $\SSe$ and $\D\gammau$ needed for the linearization of the residual are given by:
+  
+  \begin{align}
+    \dDeltagammauDSSe &= \sumbO \sumaI \dDeltagammauDDeltagammaab \dDeltagammaabDtauab \dtauabDSSe + \sumbI \dDeltagammauDDeltagammab \dDeltagammabDxib \dxibDSSe \\
+    \dDeltagammauDDeltagammau &= \sumbO \sumaI \dDeltagammauDDeltagammaab \dDeltagammaabDtauacb \dtauacbDDeltagammau + \sumbI \dDeltagammauDDeltagammab \left( \dDeltagammabDxibc \dxibcDDeltagammau + \derivative{\D\gammab}{c_0}\derivative{c_0}{\D\gammau} \right)
+  \end{align}
+  
+
+  The partial derivatives are then given by:
+  \begin{align}
+    \frac{\partial \D\gammau_i}{\partial \D\gammaab} &= \delta_{i\beta} \ \sign{\tauab} \\
+    \frac{\partial \D\gammau_i}{\partial \D\gammab} &= \delta_{ij} \quad \text{with} \quad j=\Ntw+1+\beta
+  \end{align}
+  
+  \subsubsection*{Algorithmic tangent}
+  For the linearization of the weak form of the linear momentum balance 
+  \begin{equation}
+    \int_{V_0} \ttau :\dd_\delta \d V - \int_{\partial V_{0t}} \ttbar \cdot \delta \uu \d A = 0,
+  \end{equation}
+  with $\dd_\delta = \sym{\ll_\delta} = \sym{\delta\FF\FFinv}$ and the traction vector $\ttbar$ given on $\delta V_{0t}$, we consider the well-known result 
+  \begin{equation}
+    \d(\ttau:\dd_\delta) = (\ll_\d \ttau \trans{\ll_\delta}):\II + \dd_\delta:\calgo:\dd_\d,
+  \end{equation}
+  where $\ll_\d=\d\FF\FFinv$ and $\calgo$ is given in \cref{eq:calgo}. \\
+  For the global iteration one has:
+  \begin{equation}
+    \d\ru = \derivative{\ru}{\xu} \d\xu + \derivative{\ru}{\CCetr} : \d\CCetr = 0.
+  \end{equation}
+  From that one finds the partial derivative
+  \begin{equation}
+    \derivative{\xu}{\CCetr} = - \inv{\left(\derivative{\ru}{\xu}\right)} \derivative{\ru}{\CCetr}
+  \end{equation}
+  
+  with
+  
+  \begin{align}
+    \derivative{\rrS}{\CCetr} & = \derivative{\EEe}{\CCetr}; \\
+    \derivative{\rg}{\CCetr} & = \zzero.
+  \end{align}
+  
+  The partial derivative of $\SSebar$ with respect to the vector of unknowns $\xu$ is given by: 
+  \begin{align}
+      \derivative{\SSebar}{\SSe} &= \sumbO \sumaI \derivative{\SSebar}{\D \gammaab} \derivative{\D \gammaab}{\tauab} \derivative{\tauab}{\SSe}
+      + \sumbI \derivative{\SSebar}{\D \gammab}\derivative{\D \gammab}{\xib}\derivative{\xib}{\SSe} + \ffpinv \sBox \ffpinvT;\\
+      \derivative{\SSebar}{\gammau} &= \sumbO \sumaI \derivative{\SSebar}{\D \gammaab} \derivative{\D \gammaab}{\tauacb} \derivative{\tauacb}{\gammau}
+      + \sumbI \derivative{\SSebar}{\D \gammab} \left(\dDeltagammabDxibc \dxibcDDeltagammau + \derivative{\D\gammab}{c_0}\derivative{c_0}{\D\gammau} \right).
+  \end{align}
+  
+  It is calculated from the linearization of $\SSebar$ as follows:
+  \begin{align}
+      \d \SSebar = \d \left( \ffpinv \SSe \ffpinvT \right) = \ffpinv \sBox \ffpinvT : \left( \d\SSe + 2 \sym{\SSe\trans{(\ffp\d\ffpinv)}} \right).
+  \end{align}
+  
+  In analogy to \cref{eq:dEEe,eq:ffpdffpinv,eq:dhhp,eq:dEEeDDeltagammaab,eq:dEEeDDeltagammab} one finds for the partial derivatives of $\SSebar$:
+  
+  \begin{align}
+    \derivative{\SSebar}{\gammaab} &= - \ffpinv \sBox \ffpinvT : 2 \sym{ \SSe \trans{\MMabtilde}}; \\
+    \derivative{\SSebar}{\gammab} &= - \ffpinv \sBox \ffpinvT : 2 \sym{ \SSe \left(\trans{\MMbtilde}+\frac{1}{\gammatwb}\sumaI\left(\trans{\MMabtilde} \D\gammaab-\trans{\MMaOtilde}\D\gammaaO\right)\right)}.
+  \end{align}
+  
+  The linearization of $\CCetr$ is given by:
+  \begin{equation}
+    \d\CCetr = 2 \FFetrT \sBox \FFetr : \ddd.
+  \end{equation}
+
+ 

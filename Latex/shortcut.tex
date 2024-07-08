@@ -1,0 +1,442 @@
+\newcommand{\dA}{\,\d A}
+\newcommand{\dV}{\,\d V}
+
+\newcommand{\intVO}{\int_{V_0}}
+\newcommand{\intdVO}{\int_{\partial V_0}}
+
+%%
+\newcommand \bbe{\elas{\vect{b}}}
+\newcommand \bbetr{\trial{\elas{\vect{b}}}}
+\newcommand \bbp {\plas{\vect{b}}}
+
+\newcommand \calgo{\tenss{c}^{\rm algo}}
+\newcommand \calgou{\underline{c}^{\rm algo}}
+\newcommand \cccc{\tens{c}}
+\newcommand \CCCC{\tens{C}}
+\newcommand \CCCCinv{\inv{\tens{C}}}
+\newcommand \ccp{\plas{\vect{c}}}
+\newcommand \CCe{\elas{\vect{C}}}
+\newcommand \CCp{\plas{\vect{C}}}
+\newcommand \CCpinv{\plasinv{\vect{C}}}
+\newcommand \CCpn{\plasn{\vect{C}}}
+\newcommand \CCpninv{\plasninv{\vect{C}}}
+\newcommand \CCpdot{\plas{\sdot{\vect{C}}}}
+\newcommand \CCetr{\trial{\elas{\vect{C}}}}
+
+\newcommand \ddd {\vect{d}_{\rm d}}
+\newcommand \ddu {\underline{d}_{\rm d}}
+\newcommand \ddeltau{\underline{d}_{\partial}}
+\newcommand \dddelta {\vect{d}_{\partial}}
+\newcommand \DDp {\plas{\vect{D}}}
+\newcommand \diss{\mathcal{D}}
+
+\newcommand \EEe {\elas{\vect{E}}}
+\newcommand \EEedot {\elas{\sdot{\vect{E}}}}
+\newcommand \eps {\varepsilon}
+\newcommand \eepse {\elas{\vect{\varepsilon}}}
+\newcommand \eepsetr {\trial{\elas{\vect{\varepsilon}}}}
+\newcommand \eepsp {\plas{\vect{\varepsilon}}}
+
+\newcommand \ffp {\plas{\vect{f}}}
+\newcommand \ffpinv {\plasinv{\vect{f}}}
+\newcommand \ffpinvT {\plasinvT{\vect{f}}}
+\newcommand \ffpT {\plasT{\vect{f}}}
+\newcommand \FFdot {\dot{\vect{F}}}
+\newcommand \FFe {\elas{\vect{F}}}
+\newcommand \FFeT {\elasT{\vect{F}}}
+\newcommand \FFetr {\elastr{\vect{F}}}
+\newcommand \FFetrT {\elastrT{\vect{F}}}
+\newcommand \FFetrinv {\elastrinv{\vect{F}}}
+\newcommand \FFetrinvT {\elastrinvT{\vect{F}}}
+\newcommand \FFedot{\elas{\sdot{\vect{F}}}}
+\newcommand \FFeinv{\elasinv{\vect{F}}}
+\newcommand \FFeinvT{\elasinvT{\vect{F}}}
+\newcommand \FFp {\plas{\vect{F}}}
+\newcommand \FFpdot{\plas{\sdot{\vect{F}}}}
+\newcommand \FFpn {\plasn{\vect{F}}}
+\newcommand \FFpnT {\plasnT{\vect{F}}}
+\newcommand \FFpninv {\plasninv{\vect{F}}}
+\newcommand \FFpninvT {\plasninvT{\vect{F}}}
+\newcommand \FFpnMP {\plasnMP{\vect{F}}}
+\newcommand \FFpnMPdot{\plasnMP{\sdot{\vect{F}}}}
+\newcommand \FFpinv{\plasinv{\vect{F}}}
+\newcommand \FFpinvdot{{\plasinvdot{\vect{F}}}}
+\newcommand \FFpinvT{\plasinvT{\vect{F}}}
+\newcommand \FFpT{\plasT{\vect{F}}}
+
+\newcommand \hhp {\plas{\vect{h}}}
+
+%\newcommand \IIII {\tens{I}}
+%\newcommand \IIIIs {\tens{I}^{\rm s}}
+
+\newcommand \Ku{\underline{K}}
+
+\newcommand \lambdadot {\dot{\lambda}}
+\newcommand \lle {\elas{\vect{l}}}
+\newcommand \llp {\plas{\vect{l}}}
+\newcommand \LLe {\elas{\vect{L}}}
+\newcommand \LLp {\plas{\vect{L}}}
+
+\newcommand \OOmega {\vect{\Omega}}
+
+\newcommand \PPPP {\tens{P}}
+\newcommand \psidot {\dot{\psi}}
+\newcommand \psie {\elas{\psi}}
+\newcommand \psiedot {\elas{\sdot{\psi}}}
+\newcommand \psin {\psi_{\rm n}}
+\newcommand \persecond{{\rm s^{-1}}}
+
+\newcommand \rrp {\plas{\vect{r}}}
+\newcommand \rrpT {\plasT{\vect{r}}}
+\newcommand \RRe {\elas{\vect{R}}}
+\newcommand \RReT {\elasT{\vect{R}}}
+
+\newcommand \SSbar {\overline{\vect{S}}}
+\newcommand \SSe {\elas{\vect{S}}}
+\newcommand \SSebar {\vphantom{\overline{\vect{S}}}\elas{\soverline{\vect{S}}}}
+\newcommand \Sebaru {\vphantom{\overline{\underline{S}}}{\elas{\soverline{\underline{S}}}}}
+\newcommand \SSigma {\vect{\Sigma}}
+\newcommand \SSigmae {\elas{\vect{\Sigma}}}
+\newcommand \sigmay {\sigma_{\rm y}}
+\newcommand \sigmayO {\sigma_{\rm y0}}
+\newcommand \SSSS {\tens{S}}
+
+\newcommand \tn {\n{t}}
+\newcommand \ttbar{\bar{\vect{t}}}
+\newcommand \ttautr {\trial{\vect{\tau}}}
+
+% \newcommand \uul {\underline{u}}
+\newcommand \uup {\plas{\vect{u}}}
+
+\newcommand \VVe {\elas{\vect{V}}}
+
+\newcommand \zerou{\underline{0}}
+
+
+% increments
+\newcommand \dCCe {\total \CCe}
+\newcommand \dCCetr {\total \CCetr}
+\newcommand \dEEe {\total \EEe}
+\newcommand \dffpinv{\total\ffpinv}
+\newcommand \dffpinvT{\total\ffpinvT}
+\newcommand \dhhp {\total\hhp}
+\newcommand \dSSe {\total \SSe}
+\newcommand \dt{\total t}
+
+\newcommand \Dt{\Delta t}
+
+
+\newcommand \Ab{A_{\beta}}
+\newcommand \Aij {A_{ij}}
+\newcommand \Aijb {A_{ij}^{\beta}}
+\newcommand \angleTw {\gamma^{\rm tw}}
+\newcommand \angleTwb {\gamma^{\rm tw}_{\beta}}
+\newcommand \angleTT {\gamma^{\rm tt}}
+\newcommand \angleCT {\gamma^{\rm ct}}
+
+\newcommand \Bij {B_{ij}}
+
+\newcommand \ca {c_{\alpha}}
+\newcommand \cadot {\dot{c}_{\alpha}}
+\newcommand \caOdot {\dot{c}_{0\alpha}}
+\newcommand \cAg {c_{\rm Ag}}
+\newcommand \cb {c_{\beta}}
+\newcommand \cbdot {\dot{c}_{\beta}}
+\newcommand \cbOdot {\dot{c}_{r}}
+\newcommand \CCCCb {\CCCC_{\beta}}
+\newcommand \Cetru{\elastr{\underline{C}}}
+\newcommand \ctsl {\ensuremath{\rm ct \rightarrow sl}}
+\newcommand \cTT{\ensuremath{c_{\rm TT}}}
+\newcommand \cCT{\ensuremath{c_{\rm CT}}}
+\newcommand \cu {\underline{c}}
+\newcommand \Cu {\underline{C}}
+\newcommand \cutw {\underline{c}^{\rm tw}}
+\newcommand \cutwdot {\underline{\sdot{c}}^{\rm tw}}
+\newcommand \cudot {\underline{\sdot{c}}}
+
+\newcommand \dda {\vect{d}_{\alpha}}
+\newcommand \ddb {\vect{d}_{\beta}}
+\newcommand \ddab {\vect{d}_{\alpha}^{\beta}}
+\newcommand \ddbdot {\sdot{\vect{d}}_{\beta}}
+\newcommand \ddabdot {\sdot{\vect{d}}_{\alpha}^{\beta}}
+\newcommand \disse {\diss \big|_{\FFp, \cu}}
+\newcommand \direction[1]{$\langle#1\rangle$}
+
+\newcommand \EEeab{\vect{E}^{{\rm e} \beta}_{\alpha}}
+\newcommand \EEeb{\vect{E}^{\rm e}_{\beta}}
+\newcommand \epsemax{\eps^{\rm e}_{\rm max}}
+
+\newcommand \fsl {f_{\rm sl}}
+\newcommand \ftw {f_{\rm tw}}
+
+\newcommand \gammaab {\gamma^{\beta}_{\alpha}}
+\newcommand \gammaaO {\gamma^{0}_{\alpha}}
+\newcommand \gammaabu {\underline{\gamma}^{\beta}_{\alpha}}
+\newcommand \gammaabtilde {\stilde{\gamma}^{\beta}_{\alpha}}
+\newcommand \gammaacc {\gamma_{\rm acc}}
+\newcommand \gammaaccb {\gamma_{\rm acc}^{\beta}}
+\newcommand \gammaaccbdot {\sdot{\gamma}_{\rm acc}^{\beta}}
+\newcommand \gammaaccct {\gamma_{\rm acc}^{\rm CT}}
+\newcommand \gammaaccctdot {\sdot{\gamma}_{\rm acc}^{\rm CT}}
+\newcommand \gammaaccdot {\sdot{\gamma}_{\rm acc}}
+\newcommand \gammaacctt {\gamma_{\rm acc}^{\rm TT}}
+\newcommand \gammaaccttdot {\sdot{\gamma}_{\rm acc}^{\rm TT}}
+\newcommand \gammaaccu {\underline{\gamma}_{\rm acc}}
+\newcommand \gammaaccudot {\sdot{\underline{\gamma}}_{\rm acc}}
+\newcommand \gammab {\gamma_{\beta}}
+\newcommand \gammau {\underline{\gamma}}
+\newcommand \gammautilde {\underline{\tilde{\gamma}}}
+\newcommand \gammaudot {\dot{\underline{\gamma}}}
+\newcommand \gammatw {\gamma^{\rm tw}}
+\newcommand \gammatwb {\gamma^{\rm tw}_{\beta}}
+\newcommand \gammatt {\gamma^{\rm TT}}
+\newcommand \gammact {\gamma^{\rm CT}}
+\newcommand \gammatwtilde {\stilde{\gamma}^{\rm tw}}
+\newcommand \gammatwdot {\sdot{\gamma}^{\rm tw}}
+\newcommand \gammatwu {\underline{\gamma}^{\rm tw}}
+\newcommand \gammatwudot {\sdot{\underline{\gamma}}^{\rm tw}}
+\newcommand \gammabtilde {\stilde{\gamma}_{\beta}}
+\newcommand \gammabdot {\sdot{\gamma}^{\beta}}
+\newcommand \gammaOa {\gamma_{0\alpha}}
+\newcommand \gammaOb {\gamma_{0\beta}}
+\newcommand \gammareli{\gamma_{rel}^{i}}
+
+\newcommand \hab {H_{\alpha}^{\beta}}
+\newcommand \haslsl {H_{\alpha}^{sl\rightarrow sl}}
+\newcommand \hb {H^{\beta}}
+\newcommand \hB {H_{\rm B}}
+\newcommand \hP {H_{\rm P}}
+\newcommand \hac {H_{\rm \langle a+c \rangle }}
+\newcommand \ha {H_{\rm \langle a \rangle}}
+\newcommand \hBu {\underline{H}_{\rm B}}
+\newcommand \hPu {\underline{H}_{\rm P}}
+\newcommand \hacu {\underline{H}_{\rm \langle a+c \rangle}}
+\newcommand \hau {\underline{H}_{\rm \langle a \rangle}}
+\newcommand \httu {\underline{H}_{\rm tt}}
+\newcommand \hctu {\underline{H}_{\rm ct}}
+\newcommand \hO {{h}_{0}}
+\newcommand \hOB {h_0^{\rm B}}
+\newcommand \hOP {h_{0}^{\rm P}}
+\newcommand \hOA {h_0^{\rm \langle a \rangle}}
+\newcommand \hOAC {h_0^{\rm \langle a+c \rangle}}
+\newcommand \hOtt {h_0^{\rm tt}}
+\newcommand \hOct {h_0^{\rm ct}}
+\newcommand \hOttsl {h_0^{\rm tt \rightarrow sl}}
+\newcommand \hOctsl {h_0^{\rm ct \rightarrow sl}}
+\newcommand \hct {H^{\rm ct}}
+\newcommand \hctsl {H^{\rm ct \rightarrow sl}}
+\newcommand \htt {H^{\rm tt}}
+\newcommand \httsl {H^{\rm tt \rightarrow sl}}
+\newcommand \hbB {H_{\rm B}^{\beta}}
+\newcommand \hbP {H_{\rm P}^{\beta}}
+\newcommand \hba {H_{\rm \langle a \rangle}^{\beta}}
+\newcommand \hbac {H_{\rm \langle a+c \rangle}^{\beta}}
+\newcommand \hslslB {H_{\rm B}^{\rm sl\rightarrow sl}}
+\newcommand \hslslP {H_{\rm P}^{\rm sl\rightarrow sl}}
+\newcommand \hslsla {H_{\rm \langle a \rangle}^{\rm sl\rightarrow sl}}
+\newcommand \hslslac {H_{\rm \langle a+c \rangle}^{\rm sl\rightarrow sl}}
+
+\newcommand \FFb {\FF_{\beta}}
+
+\newcommand \Hu {\underline{H}}
+
+\newcommand \IB {I^{\rm B}}
+\newcommand \IP {I^{\rm P}}
+\newcommand \IA {I^{\rm \langle a \rangle}}
+\newcommand \IAC {I^{\rm \langle a+c \rangle}}
+\newcommand \Itt {I^{\rm TT}}
+\newcommand \Ict {I^{\rm CT}}
+\newcommand \IIplus {\left(\II+\half\hhp \right)}
+\newcommand \IIminus {\left(\II-\half\hhp \right)}
+\newcommand \IIplusinv {\inv{\left(\II+\half\hhp \right)}}
+\newcommand \IIminusinv {\inv{\left(\II-\half\hhp \right)}}
+
+\newcommand \lambdau{\underline{\lambda}}
+\newcommand \lambdaadot{\lambda_{\alpha}}
+\newcommand \lambdaudot{\underline{\dot{\lambda}}}
+
+% \renewcommand \Ku{\underline{K}}
+
+\newcommand \MMa {\MM_{\alpha}}
+\newcommand \MMab {\MM_{\alpha}^{\beta}}
+\newcommand \MMabtilde {\smash{\tilde{\MM}}_{\alpha}^{\beta}}
+\newcommand \MMaO {\MM_{\alpha}^{0}}
+\newcommand \MMaOtilde {\smash{\tilde{\MM}}_{\alpha}^{0}}
+\newcommand \MMb {\MM_{\beta}}
+\newcommand \MMbtilde {\smash{\tilde{\MM}}_{\beta}}
+\newcommand \msl {m_{\rm sl}}
+\newcommand \mtw {m_{\rm tw}}
+
+\newcommand \nna {\vect{n}_{\alpha}}
+\newcommand \nnb {\vect{n}_{\beta}}
+\newcommand \nnab {\vect{n}_{\alpha}^{\beta}}
+\newcommand \nnabdot {\sdot{\vect{n}}_{\alpha}^{\beta}}
+\newcommand \nnbdot {\sdot{\vect{n}}_{\beta}}
+\newcommand \nua {\nu_{\alpha}}
+\newcommand \nub {\nu_{\beta}}
+\newcommand \nuab {\nu_{\alpha}^{\beta}}
+\newcommand \nuOa {\nu_{r}}
+\newcommand \Nsl {{\rm N_{sl}}}
+\newcommand \Ntw {{\rm N_{tw}}}
+\newcommand \Ntt {{\rm N_{tt}}}
+\newcommand \Nct {{\rm N_{ct}}}
+
+\newcommand \ol[1]{\overline{#1}}
+\newcommand \Omegae{\elas{\vect{\Omega}}}
+
+\newcommand \plane[1] {$\{#1\}$}
+\newcommand \psl {p_{\rm s}}
+\newcommand \ptw {p_{\rm t}}
+\newcommand \psiemax {\psi^{\rm e}_{\rm max}}
+\newcommand \pyra {$\langle$a$\rangle$ }
+\newcommand \pyrac {$\langle$c+a$\rangle$ }
+
+\newcommand \QQb {\vect{Q}_{\beta}}
+\newcommand \QQbT {\trans{\vect{Q}_{\beta}}}
+
+\newcommand \rrS {\vect{r}^{\rm S}}
+\newcommand \rg {\underline{r}^{\gamma}}
+\newcommand \ru {\underline{r}}
+\newcommand \rSu {\underline{r}^{\rm S}}
+\newcommand \rtaua {r^{\tau}_{\alpha}}
+\newcommand \rtauab {r^{\tau \beta}_{\alpha}}
+\newcommand \RRb {\vect{R}_{\beta}}
+\newcommand \RRbT {\trans{\vect{R}_{\beta}}}
+
+\newcommand \slsl {\ensuremath{\rm sl \rightarrow sl}}
+\newcommand \SSel {\elas{\smash{\overline{\vect{S}}}}}
+\newcommand \Ssl {S_{\rm sl}}
+\newcommand \Seu {\elas{\underline{S}}}
+\newcommand \Sslb {S_{\rm sl}^{\beta}}
+\newcommand \Stw {S_{\rm tw}}
+
+% \newcommand \suma {\sum_{\alpha}}
+\newcommand \sumasl {\sum_{\alpha \in \Ssl}}
+\newcommand \sumatw {\sum_{\alpha \in \Stw}}
+\newcommand \sumaI {\sum_{\alpha=1}^{\Nsl}}
+\newcommand \sumaslb {\sum_{\alpha \in \Sslb}}
+\newcommand \sumb {\sum_{\beta}}
+\newcommand \sumbtw {\sum_{\beta \in \Stw}}
+\newcommand \sumbO {\sum_{\beta=0}^{\Ntw}}
+\newcommand \sumbI {\sum_{\beta=1}^{\Ntw}}
+% \newcommand \summ {\sum_{\alpha \in I^i}}
+
+\newcommand \tauD {\tau^{\rm D}}
+\newcommand \tauc {\tau^{\rm c}}
+\newcommand \taucb {\tau^{\rm c \beta}}
+\newcommand \taucu {\underline{\tau}^{\rm c}}
+\newcommand \taucnu {\underline{\tauc_{\rm n}}}
+\newcommand \taua {\tau_{\alpha}}
+\newcommand \tauab {\tau_{\alpha}^{\beta}}
+\newcommand \tauabn {\tau_{\alpha,n}^{\beta}}
+\newcommand \tauabtilde {\tilde{\tau}_{\alpha}^{\beta}}
+\newcommand \tauacb {\tau_{\alpha}^{c\beta}}
+\newcommand \tauacbn {\tau_{\alpha,n}^{c\beta}}
+\newcommand \tauacbdot {\sdot{\tau}_{\alpha}^{c\beta}}
+\newcommand \tauacbtilde {\tilde{\tau}_{\alpha}^{c\beta}}
+\newcommand \tauaDb {\tau_{\alpha}^{{\rm D} \beta}}
+\newcommand \tauaRb {\tau_{\alpha}^{{\rm R} \beta}}
+\newcommand \taub {\tau_{\beta}}
+\newcommand \tauO {\tau_0}
+\newcommand \taus {\tau_s}
+\newcommand \tauCslslb {\tau^{\rm c\beta}_{\rm sl\rightarrow sl}}
+\newcommand \tauCctsl {\tau^{\rm c}_{\rm ct\rightarrow sl}}
+\newcommand \tauCttsl {\tau^{\rm c}_{\rm tt\rightarrow sl}}
+\newcommand \tauCttslb {\tau^{\rm c \beta}_{\rm tt\rightarrow sl}}
+\newcommand \tauOttsl {\tau_0^{\rm tt\rightarrow sl}}
+\newcommand \tausttsl {\tau_{\rm s}^{\rm tt\rightarrow sl}}
+\newcommand \taucdot {\sdot{\tau}^{\rm c}}
+\newcommand \taucdotu {\underline{\sdot{\tau}}^{\rm c}}
+\newcommand \taucbdot {\sdot{\tau}^{{\rm c}\beta}}
+\newcommand \taucbdotu {\underline{\sdot{\tau}}^{{\rm c}\beta}}
+\newcommand \taucbdotB {{\sdot{\tau}^{{\rm c}\beta}_{\rm B}}}
+\newcommand \taucbdotP {\sdot{\tau}^{{\rm c}\beta}_{\rm P}}
+\newcommand \taucbdota {\sdot{\tau}^{{\rm c}\beta}_{\rm \langle a \rangle}}
+\newcommand \taucbdotac {\sdot{\tau}^{{\rm c}\beta}_{\rm \langle a+c \rangle}}
+\newcommand \taucdotB {{\sdot{\tau}^{\rm c}_{\rm B}}}
+\newcommand \taucdotP {\sdot{\tau}^{\rm c}_{\rm P}}
+\newcommand \taucdota {\sdot{\tau}^{\rm c}_{\langle a \rangle}}
+\newcommand \taucdotac {\sdot{\tau}^{\rm c}_{\rm \langle a+c \rangle}}
+\newcommand \taucdotuB {{\underline{\sdot{\tau}}^{\rm c}_{\rm B}}}
+\newcommand \taucdotuP {\underline{\sdot{\tau}}^{\rm c}_{\rm P}}
+\newcommand \taucdotua {\underline{\sdot{\tau}}^{\rm c}_{\rm \langle a \rangle}}
+\newcommand \taucdotuac {\underline{\sdot{\tau}}^{\rm c}_{\rm \langle a+c \rangle}}
+\newcommand \twsl {$\rm tw \rightarrow sl$}
+\newcommand \ttsl {$\rm tt \rightarrow sl$}
+
+\newcommand \xia {\xi_\alpha}
+\newcommand \xic {\xi^{\rm c}}
+\newcommand \xiD {\xi^{\rm D}}
+\newcommand \xib {\xi_\beta}
+\newcommand \xibc {\xi_{\beta}^{\rm c}}
+\newcommand \xibcdot {\sdot{\xi}_{\beta}^{\rm c}}
+\newcommand \xibD {\xi_{\beta}^{\rm D}}
+\newcommand \xibR {\xi_{\beta}^{\rm R}}
+\newcommand \xicdotu {\sdot{\underline{\xi}}^{\rm c}}
+\newcommand \xicu {\underline{\xi}^{\rm c}}
+\newcommand \xicnu {\underline{\xi}^{\rm c}_{\rm n}}
+\newcommand \xu{\underline{x}}
+
+%increments and derivatives
+\newcommand \dcb {\total \cb}
+\newcommand \dgammaabdot {\total \gammaabdot}
+\newcommand \dgammabdot {\total \gammabdot}
+\newcommand \dtauab {\total \tauab}
+\newcommand \dtauacb {\total \tauacb}
+
+
+\newcommand \dDeltagammaabDtauab{\frac{\partial \Delta \gammaab}{\partial \tauab}}
+\newcommand \dDeltagammaabDtauacb{\frac{\partial \Delta \gammaab}{\partial \tauacb}}
+\newcommand \dDeltagammabDxib{\frac{\partial \Delta \gammab}{\partial \xib}}
+\newcommand \dDeltagammabDxibc{\frac{\partial \Delta \gammab}{\partial \xibc}}
+\newcommand \dDeltagammauDDeltagammaab{\frac{\partial \Delta \gammau}{\partial \Delta \gammaab}}
+\newcommand \dDeltagammauDDeltagammab{\frac{\partial \Delta \gammau}{\partial \Delta \gammab}}
+
+\newcommand \dDeltagammauDSSe{\frac{\partial \Delta \gammau}{\partial \SSe}}
+\newcommand \dDeltagammauDDeltagammau{\frac{\partial \Delta \gammau}{\partial \Delta \gammautilde}}
+
+\newcommand \dDeltanuabDtauab{\frac{\partial \Delta \nuab}{\partial \tauab}}
+\newcommand \dDeltanuabDtauacb{\frac{\partial \Delta \nuab}{\partial \tauacb}}  
+
+\newcommand \dEEeDdd {\derivative{\EEe}{\dd}}
+
+\newcommand \dEEeDCCetr{\frac{\partial \EEe}{\partial \CCetr}}
+\newcommand \dEEeDDeltagammaab{\frac{\partial \EEe}{\partial \Delta \gammaab}}
+\newcommand \dEEeDDeltagammab{\frac{\partial \EEe}{\partial \Delta \gammab}}
+\newcommand \dEEeDDeltagammau{\frac{\partial \EEe}{\partial \Delta \gammautilde}}
+\newcommand \dEEeDSSe{\frac{\partial \EEe}{\partial \SSe}}
+
+\newcommand \mab{m_{\alpha}^{\beta}}
+\newcommand \mb{m_{\beta}}
+
+\newcommand \dpsieDEe {\frac{\partial \psie}{\partial \EEe}}
+\newcommand \dpsieDc {\frac{\partial \psie}{\partial \cutw}}
+\newcommand \dpsieDca {\frac{\partial \psie}{\partial \ca}}
+\newcommand \dpsieDcb {\frac{\partial \psie}{\partial \cb}}
+\newcommand \dtauabDSSe {\frac{\partial \tauab}{\partial \SSe}}
+\newcommand \dtauacbDDeltagammau {\frac{\partial \tauacb}{\partial \Delta \gammautilde}}
+\newcommand \dxibDSSe {\frac{\partial \xib}{\partial \SSe}}
+\newcommand \dtaucuDDeltagammau{\frac{\partial \taucu}{\partial \Delta \gammautilde}}
+
+
+\newcommand \druDCetru{\frac{\partial \ru}{\partial \Cetru}}
+\newcommand \drrSDSSe{\frac{\partial \rrS}{\partial \SSe}}
+\newcommand \drrSDDeltagammau{\frac{\partial \rrS}{\partial \Delta \gammau}}
+\newcommand \drSuDSeu{\frac{\partial \rSu}{\partial \Seu}}
+\newcommand \drSuDDeltagammau{\frac{\partial \rSu}{\partial \Delta \gammau}}
+\newcommand \druDxu{\frac{\partial \ru}{\partial \xu}}
+
+\newcommand \drgDSSe{\frac{\partial \rg}{\partial \SSe}}
+\newcommand \drgDSeu{\frac{\partial \rg}{\partial \Seu}}
+\newcommand \drgDDeltagammau{\frac{\partial \rg}{\partial \Delta \gammau}}
+
+
+\newcommand \dSSebarDDeltagammaabtilde{\frac{\partial \SSebar}{\partial \Delta \gammaabtilde}}
+\newcommand \dSSebarDDeltagammabtilde{\frac{\partial \SSebar}{\partial \Delta \gammaabtilde}}
+\newcommand \dSSebarDSSe {\frac{\partial}{}}
+\newcommand \dSSebarDxu{\derivative{\SSebar}{\xu}}
+
+\newcommand \dSSeDEEe {\derivative{\SSe}{\EEe}}
+
+\newcommand \dxibcDDeltagammau{\frac{\partial \xibc}{\partial \Delta \gammautilde}}
+\newcommand \dxuDCCetr{\derivative{\xu}{\CCetr}}

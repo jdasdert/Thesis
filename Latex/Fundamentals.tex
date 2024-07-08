@@ -1,35 +1,37 @@
-In this section some additional interpretations and explanations are added to the fundamental equations of the articles.
+In this section some additional explanations and interpretations are given to support the model equations in the articles. In the following, a brief overview over the kinematic description, the fundamental equations ensuring thermodynamic consistency and the used material laws are given. 
 \subsection{Kinematic Description of Deformation}
-The deformation of a body $B$ in the current configuration is described with respect to a reference configuration by the deformation gradient $\FF$.  
+The deformation of a body can be described by the deformation gradient $\FF$.  
+\begin{align}
+  \FF(\XX,t) = \Grad{\xx} = \frac{\partial \xx}{\partial \XX} 
+\end{align}
+where $\XX$ is a position vector of a material point in the (undeformed) reference configuration, $\xx(\XX,t)$ is the corresponding position vector in the (deformed) current configuration and $t$ is the time. A graphical interpretation is given in \cref{fig:DeformationGradient}. \\
 \begin{figure}[h!]
   \centering
   \includegraphics[]{Figs/DeformationGradient/DeformationGradient.pdf}
+  \caption{The local deformation of a material can be described by the change in distance and orientation of two material points $P$ and $Q$ in an infinitesimal distance. }
   \label{fig:DeformationGradient}
-  \caption{Deformation gradient}
 \end{figure}
 
+With $\FF$ and \mbox{$J=\det{\FF}$} it is possible to map any infinitesimal vector $\d\XX$, area $\d\AA$, and volume $\dV$ from the reference configuration to the current configuration and vice versa:
 \begin{align}
-  \FF(\XX,t) = \frac{\partial \xx}{\partial \XX} = \Grad{\xx}
+  \d\xx = \FF\d\XX; \qquad \d\aa = J \FFinvT \d\AA; \qquad \d v = J\dV.
 \end{align}
-
-For rate dependent deformation it is meaningful to describe the deformation velocity. The velocity gradient $\ll$ is defined as:
+The deformation rate is given by the velocity gradient $\ll$ is defined as:
 \begin{align}
-  \ll = \grad{\dot{\uu}} = \dot\FF\FFinv
+  \ll = \grad{\dot{\uu}} = \dot\FF\FFinv.
 \end{align}
-
-Since deformation can have different mechanisms, it often makes sense to decompose the deformation and describe each deformation mechanism separately. For example in crystal plasticity, the deformation is often decomposed into reversible elastic and irreversible plastic parts. In scenarios involving chemistry, often an concentration dependent isotropic chemical swelling/deswelling is assumed which is modelled similar to an isotropic thermal expansion. A graphical interpretation for the two decompositions used in this thesis can be found in Figure~\ref{fig:DeformationGradient}.
+where \mbox{$\uu(\XX,t)=\xx-\XX$} is the displacement. 
+Since deformation can have different origins and mechanisms, it often makes sense to decompose the deformation to be able to describe each deformation mechanism separately. In crystal plasticity, the deformation is often decomposed into a reversible elastic part and an irreversible plastic part. In scenarios involving chemistry, often an concentration dependent isotropic chemical swelling/deswelling is assumed which is modelled similar to an isotropic thermal expansion. The multiplicative decompositions of the deformation gradient used in this thesis are given by:
+\begin{align}
+  \FF = \FF^\e\FF^\p; \qquad \qquad \FF=\FF^\e\FF^\c
+\end{align}
+A graphical interpretation for the two decompositions can be found in Figure~\ref{fig:DecompositionF}.
 \begin{figure}[h!]
   \centering
   \includegraphics[width=\textwidth]{Figs/DecompositionF/DecompositionF.pdf}
   \caption{Decomposition of the deformation gradient}
-  \label{fig:DeformationGradient}
+  \label{fig:DecompositionF}
 \end{figure}
-
-The multiplicative decompositions of the deformation gradient used in this thesis are given by:
-\begin{align}
-  \FF = \FF^\e\FF^\p; \qquad \qquad \FF=\FF^\e\FF^\c
-\end{align}
-Combination and further decomposition are of course also possible and made use of. 
 
 \begin{figure}[h!]
   \centering
@@ -37,35 +39,76 @@ Combination and further decomposition are of course also possible and made use o
 \end{figure}
 
 \subsection{Balances and Thermodynamic Consistency}
-The minimum requirement for any model is to provide equations for accurately counting the quantities of interest. These laws are referred to as balance laws and in many cases take a similar form, expressing the rate of change of a quantity depending of the in- and outflux and internal sources and drains. For an arbitrary quantity this is schematically depicted in where $z$ denotes the volume density of the quantity, $\jj_\z$ is the quantity's current density and $\omega_\z$ is the density of internal sources.  
-
-The corresponding balance equation in integral form can be transformed to a local form by using the divergence theorem and the argument that the balance must be fulfilled for an arbitrary volume.  
-
+The requirement for any model is to provide equations that define the system and balance the quantities of interest. In this thesis the systems are defined such that the total mass $m$ of the system is conserved, i.e. there are no internal or external sources for mass. 
 \begin{align}
-  \int_{V} \dot z \ \d v = -\int_{\partial V} \jj_{\z} \cdot \nn \ \d a + \int_{V} \omega_{\z} \ \d v \qquad \Leftrightarrow \qquad \dot z = -\div\jj_{\z} + \omega_{\z} 
+  \dot m = \intVO \dot\rho_0 \dV = 0 \qquad \Leftrightarrow \qquad \dot\rho_0 = 0
 \end{align}
+Here and in the following the Lagrangian formulation is used, corresponding to a description in the reference configuration. The mass density $\rho_0$ is therefore mass per unit reference volume $V_0$. For such a system the change of an arbitrary quantity $Z$ can be balanced by the external supply and internal sources. The corresponding balance equation in integral form can be transformed to a local form by using the divergence theorem and the argument that the balance must be fulfilled for an arbitrary volume.  
+\begin{align}
+  \dot Z  \ = \ \underbrace{ \intVO \dot z \dV}_{\mathclap{\text{Rate of change}}} \ = \ \underbrace{\intdVO -\JJ^{\z} \cdot \NN\dA}_{\text{External supply}} + \underbrace{\intVO \omega^{\z} \dV}_{\mathclap{\text{Internal sources}}} 
+  \qquad \Leftrightarrow \qquad \dot z = \Div(\JJ^{\z}) + \omega^{\z}
+  \label{eq:balanceZ}
+\end{align}
+A graphical interpretation is given in \cref{fig:Balance}.
+\begin{figure}[h!]
+  \centering
+  \includegraphics{Figs/Balance/Balance.pdf}
+  \caption[]{}
+  \label{fig:Balance}
+\end{figure}
 
-In this thesis, mechanical, chemical and electrical effects are considered. The corresponding balances for particles, charge, momentum and energy as well as the entropy imbalance are given for isothermal ($T=\text{const.}$), quasi static ($\ddot \xx=0$) processes, which read in their respective local forms: 
-\begin{alignat}{2}
-  &\text{Particle balance: } \qquad & \dot c &= -\div\jj + r  \\
-  &\text{Charge balance: } \qquad  & \dot \rho^{\e} & = -\div(\ii) \\
-  &\text{Linear momentum balance: } \qquad& 0 & = \div\ssigma  \\
-  &\text{Angular momentum balance: } \qquad & \ssigma& = \trans{\ssigma} \\
-  &\text{Internal energy balance: } \qquad & \dot e &= \div(\ssigma \dot \uu - \varphi \, \ii - \mu \, \jj - \qq) + \rho \omega \hspace{1cm}\\
-  &\text{Entropy imbalance: } \qquad & \dot s &\geq -\div\Big(\frac{\qq}{T}\Big) + \frac{\rho \omega}{T}
+Since this thesis considers mechanical, electrical and chemical effects, the relevant quantities are species $N_i$, electric charge $Q^\e$, linear momentum $\pp$, angular momentum $\LL$, internal energy $U$ and entropy $S$. The corresponding (im)balance laws can be given in analogy to .
+
+
+\begin{alignat}{3}
+  \dot N_i  & \ = \ && \intVO \dot C_i \dV                            && \ = \ \intdVO -\JJ_i \cdot \NN\dA \ + \   \intVO \sum_r \nu_{ir } R_r \dV \\
+  \dot Q^\e & \ = \ && \intVO \dot \rho^\e_0 \dV                      && \ = \ \intdVO \Big(\JJ^\e-\sum_i Fz_i\,\JJ_i\Big) \cdot \NN\dA\\
+  \dot \pp  & \ = \ && \intVO \rho_0 \,\ddot\xx \dV  && \ = \ \intdVO \PP\NN \dA \ + \ \intVO \rho_0\,\bb \dV\\
+  \dot \LL  & \ = \ && \intVO \xx \times \rho_0 \,\ddot\xx \dV        && \ = \ \intdVO \xx \times \PP\NN \dA \ + \ \intVO \xx \times \rho_0\,\bb \dV\\
+  \dot S    & \ = \ && \intVO \dot s \dV                              && \ \geq \ \intdVO -\Big(\frac{\QQ}{T} + \sum_i \eta_i\JJ_i\Big) \cdot \NN \dA 
 \end{alignat}
 
 \begin{align}
-  \mathcal{D} = \mathcal{P} - \dot \Psi \geq 0
+  \begin{aligned}
+  \dot U \ = \ \intVO \dot e \dV \ &= \ \intdVO (\trans{\PP}\dot\uu-\sum_i e_i \JJ_i-\QQ) \cdot \NN \dA \\
+          & \ + \intVO \EE\cdot(\PP_0+\JJ^\e-\sum_i Fz_i\,\JJ_i) \dV \\
+  \end{aligned}
+\end{align}
+Further in analogy to \cref{eq:balanceZ}, we can derive a local form for the equations. In this thesis, 
+% \quad \Leftrightarrow \quad \dot C_i = -\Div\JJ_i + \sum_r \nu_{ir} R_r \\
+
+In this thesis, mechanical, chemical and electrical effects are considered. The corresponding balances for particles, charge, momentum and energy as well as the entropy imbalance are given for isothermal ($T=\text{const.}$), quasi static ($\ddot \xx=0$) processes, which read in their respective local forms: 
+\begin{align}
+  & \vphantom{\sum_i} \dot\rho_0 = 0 \\
+  & \vphantom{\sum_i} \dot C = -\Div\JJ_i + \sum_r \nu_{ir} R_{r}  \\
+  & \vphantom{\sum_i} \dot \rho^{\e} = \Div(F\JJ^\e - \sum_i Fz_i\, \JJ_i) \\
+  & \vphantom{\sum_i} \Div\PP = 0  \\
+  & \vphantom{\sum_i} \SS = \trans{\SS} \\
+  & \vphantom{\sum_i} \dot e = \PP:\dot\FF - \Div\Big(\sum_i e_i \JJ_i+ \QQ \Big)+ \EE\cdot\Big(\dot \PP_0+\JJ^\e-\sum_i Fz_i\JJ_i\Big) \\
+  & \vphantom{\sum_i} \dot s \geq -\Div\Big(\frac{\QQ}{T}+\sum_i \eta_i \JJ_i \Big)
+\end{align}
+
+Using the definition for free energy densitiy $\psi=e-Ts$ for chemical potential $\mu_i=e_i-T\eta_i$, for  $\EE=\Grad\varphi$ and $(\Delta_R\mu)_r=\sum_i \mu_i\nu_{ir}$
+the dissipation $\mathcal{D}$ can be given as:
+
+\begin{align}
+  \mathcal{D} = \PP:\dot\FF + \EE\cdot\Big(\dot\PP_0+\JJ^\e-\sum_i Fz_i\,\JJ_i\Big) + \Div\Big(\sum_i\mu_i\JJ_i\Big)+ \frac{1}{T} \QQ\cdot\Grad(T) + s\dot T -\dot \psi\geq 0
+\end{align}
+
+In this thesis the influence of temperature is neglected since all processes are assumed to take place in a very narrow temperature range which the simplification
+$T=\text{const}$.  
+
+\begin{align}
+  \mathcal{D} = \PP:\dot\FF + \EE\cdot\Big(\dot\PP_0+\JJ^\e-\sum_i Fz_i\,\JJ_i\Big) + \sum_i \mu_i\,\dot C_i - \sum_r (\Delta_R\mu)_r \,R_r - \dot\psi\geq 0
 \end{align}
 
 \subsection{Material laws}
-\subsubsection{Single Component 1D Fickian Diffusion}
+Up to this point the given equations are valid for any material. The material laws are needed to give 
+
 \begin{align}
   \jj = -D \ \grad c 
 \end{align}
-\subsubsection{Multi Component 3D Maxwell-Stefan Diffusion}
-  \begin{align}
-    a
-  \end{align}
-\subsection{Multiple phases}
+
+\begin{align}
+  \jj_i = -\sum_j D_{ij} \grad{\mu_j}
+\end{align}
