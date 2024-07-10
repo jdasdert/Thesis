@@ -21,35 +21,54 @@ The deformation rate is given by the velocity gradient $\ll$ is defined as:
   \ll = \grad{\dot{\uu}} = \dot\FF\FFinv.
 \end{align}
 where \mbox{$\uu(\XX,t)=\xx-\XX$} is the displacement. 
-Since deformation can have different origins and mechanisms, it often makes sense to decompose the deformation to be able to describe each deformation mechanism separately. In crystal plasticity, the deformation is often decomposed into a reversible elastic part and an irreversible plastic part. In scenarios involving chemistry, often an concentration dependent isotropic chemical swelling/deswelling is assumed which is modelled similar to an isotropic thermal expansion. The multiplicative decompositions of the deformation gradient used in this thesis are given by:
+Since deformation can have different origins and mechanisms, it often makes sense to decompose the deformation to be able to describe each deformation mechanism separately. In scenarios involving chemistry the deformation is often decomposed into an elastic mechanical part and a chemical part, where the chemical part is assumed to be an concentration dependent isotropic swelling, similar to an isotropic thermal expansion.
 \begin{align}
-  \FF = \FF^\e\FF^\p; \qquad \qquad \FF=\FF^\e\FF^\c
+  \FF=\FF^\e\FF^\c \qquad \text{with}\qquad \FF^\c = (\J^\c)^{\third}\II.
+\end{align} 
+Here, $\II$ is the identity tensor and $J^\c(C)=\det{\FF^\c}$ is the concentration dependent determinant of the chemical deformation. In crystal plasticity on the other hand, the deformation is usually decomposed into an elastic part and an irreversible plastic part, where the plastic part is assumed to be a volume conserving shear deformation:
+\begin{align}
+  \FF = \FF^\e\FF^\p \qquad \text{with}\qquad \det\FFp = 1
 \end{align}
-A graphical interpretation for the two decompositions can be found in Figure~\ref{fig:DecompositionF}.
+This opens the possibility to define an intermediate configuration which can be interpreted as the configuration of a virtual elastic unloading i.e. the deformation that would be obtained if the stress was elastically released to get a stress free state. A graphical interpretation for the two decompositions and the intermediate configuration can be found in Figure~\ref{fig:DecompositionF}. 
 \begin{figure}[h!]
   \centering
   \includegraphics[width=\textwidth]{Figs/DecompositionF/DecompositionF.pdf}
-  \caption{Decomposition of the deformation gradient}
+  \caption{Common decompositions of the deformation gradient for chemical swelling and crystal plasticity}
   \label{fig:DecompositionF}
 \end{figure}
 
+ For rate dependent crystal plasticity, we then obtain the decomposition of the deformation rate given by the velocity gradient as follows:
+\begin{align}
+  \ll = \FFedot\FFeinv + \FFe \FFpdot \FFpinv \FFeinv = \lle + \FFe\LLp\FFeinv.
+\end{align}
+The plastic deformation can now be described in the intermediate configuration. The advantage is that elastic distortions and rotations do not have to be considered in this configuration and therefore the lattice has a well defined orientation. The plastic deformation mechanisms slip and twinning can both be described by a direction $\dd$ and a plane with normal $\nn$ leading to a volume conserving shear deformation (see \cref{fig:CrystalPlasticity} a). This means, that although the mechanisms are profoundly different they can be treated mathematically similar. The velocity gradient in the intermediate configuration for a slip system or for a twinning systems is given by:
+\begin{align}
+  \LLp = \dot\gamma \, \dd\otimes\nn = \dot\gamma\,\MM
+\end{align}
+where $\MM=\dd\otimes\nn$ is the slip/twinning system and $\dot\gamma$ is the shear deformation rate. Although both deformation mechanisms are treated similarly, one key difference is that slip preserves the lattice orientation but can lead to arbitrary deformation angles and twinning leads to a rotation of the lattice but by a well defined angle. This means that a twinned region has its slip and twinning systems rotated by a defined angle (see \cref{fig:CrystalPlasticity} b). \\ 
 \begin{figure}[h!]
   \centering
   \includegraphics[width=0.75\textwidth]{Figs/CrystalPlasticity/CrystalPlasticity.pdf}
+  \caption{(a) Slip and twinning can be treated mathematically similar and (b) twinning leads to rotation of the lattice which gives rotated slip and twinning systems.}
+  \label{fig:CrystalPlasticity}
 \end{figure}
 
+In some metals such as Magnesium, twinning is a pronounced deformation mechanism, which means the reorientation of the lattice and slip deformation in newly formed twins can not be neglected. To accurately model the rotation of the lattice it is possible to assign volume fractions to assign volume fractions. Starting 
+\begin{equation}
+  \LLp = \underbrace{\sumbO \cb \sumaI \nuab \MMab}_{\text{slip}} + \underbrace{\sumbI \nub \MMb}_{\text{twinning}}.
+  \label{eq:LLp}
+\end{equation}
+The shear deformation rates $\nuab$ and $\nub$ depend on the stress and are material dependent.
+
+
 \subsection{Balances and Thermodynamic Consistency}
-The requirement for any model is to provide equations that define the system and balance the quantities of interest. In this thesis the systems are defined such that the total mass $m$ of the system is conserved, i.e. there are no internal or external sources for mass. 
-\begin{align}
-  \dot m = \intVO \dot\rho_0 \dV = 0 \qquad \Leftrightarrow \qquad \dot\rho_0 = 0
-\end{align}
-Here and in the following the Lagrangian formulation is used, corresponding to a description in the reference configuration. The mass density $\rho_0$ is therefore mass per unit reference volume $V_0$. For such a system the change of an arbitrary quantity $Z$ can be balanced by the external supply and internal sources. The corresponding balance equation in integral form can be transformed to a local form by using the divergence theorem and the argument that the balance must be fulfilled for an arbitrary volume.  
+To be consistent with fundamental principles from physics and thermodynamics, balance laws are used, which have always a similar structure. This is examplary shown for an arbitrary quantity $Z$. The rate of change of $Z$ depends on the external supply and internal sources. The corresponding balance equation can be given in integral form or equivalently in the local form as:
 \begin{align}
   \dot Z  \ = \ \underbrace{ \intVO \dot z \dV}_{\mathclap{\text{Rate of change}}} \ = \ \underbrace{\intdVO -\JJ^{\z} \cdot \NN\dA}_{\text{External supply}} + \underbrace{\intVO \omega^{\z} \dV}_{\mathclap{\text{Internal sources}}} 
   \qquad \Leftrightarrow \qquad \dot z = \Div(\JJ^{\z}) + \omega^{\z}
   \label{eq:balanceZ}
-\end{align}
-A graphical interpretation is given in \cref{fig:Balance}.
+\end{align} 
+where, $z$ is the volume density, $\JJ^\z$ is the current density and $\omega^\z$ is the internal source density of $Z$ and $\NN$ is the surface normal of the surface increment $\d A$. Here and in the following, the Lagrangian formulation is used, corresponding to a description in the reference configuration, which means densities are given per unit reference volume or reference area. The transformation from the integral form to the local form uses the divergence theorem and the argument that the balance must hold for an arbitrary volume. A graphical interpretation of \cref{eq:balanceZ} is given in \cref{fig:Balance}.
 \begin{figure}[h!]
   \centering
   \includegraphics{Figs/Balance/Balance.pdf}
@@ -57,58 +76,147 @@ A graphical interpretation is given in \cref{fig:Balance}.
   \label{fig:Balance}
 \end{figure}
 
-Since this thesis considers mechanical, electrical and chemical effects, the relevant quantities are species $N_i$, electric charge $Q^\e$, linear momentum $\pp$, angular momentum $\LL$, internal energy $U$ and entropy $S$. The corresponding (im)balance laws can be given in analogy to .
+Depending on the considered effects, the contributions to the balance laws below can be extended or reduced. Here, they are given considering the relevant mechanical, chemical and electric effects considered in this thesis. The first fundamental quantity to be balanced is mass. Defining a system such that it conserves its total mass $m$, the balance equation reads:
+\begin{align}
+  \dot m = \intVO \dot\rho_0 \dV = 0 \qquad \Leftrightarrow \qquad \dot\rho_0 = 0
+  \label{eq:balanceM}
+\end{align}
+where $\rho_0$ is the mass density per unit reference volume $V_0$. Note that this does not mean that mass can not move nor that the mass density can not change in the current configuration. Any movement of mass is now defined as a displacement $\uu$ (see \cref{fig:DeformationGradient}) which changes the shape of the infinitesimal volume element of the current configuration. The average mass velocity of each material point is thus given by $\dot \uu$. The balances for the number of species $N_i$ considering diffusion and chemical reactions are given by:
+\begin{align}
+  \begin{aligned}
+  \dot N_i  &= \intVO \dot C_i \dV  = \intdVO -\JJ_i \cdot \NN\dA  +  \intVO \sum_r \nu_{ir } R_r \dV \\
+            &\Leftrightarrow \qquad \dot C_i = -\Div\JJ_i + \sum_r \nu_{ir } R_r 
+  \end{aligned}
+  \label{eq:balanceC}
+\end{align}  
+where $\C_i$ is the concentration $\JJ_i$ is the particle current density, $R_r$ is the reaction rate density for a chemical reaction and $\nu_{ir}$ are the stoichiometric coefficients. Similarly, the balance for charge $\Q^\e$, assuming there are no internal sources, is given by:
+\begin{align}
+  \begin{aligned}
+  \dot Q^\e &= \intVO \dot \rho^\e_0 \dV = \intdVO \Big(\JJ^\e-\sum_i Fz_i\,\JJ_i\Big) \cdot \NN\dA \\
+            &\Leftrightarrow \qquad \dot \rho^{\e} = \Div(\JJ^\e - \sum_i Fz_i\, \JJ_i)
+  \end{aligned}
+\end{align}
+where $\rho^\e$ is the electric charge density, $\JJ^\e$ is the electric current due to electrons, $F$ is Faraday's constant and $z_i$ is the charge number of a species. The balance for linear momentum $\pp$, considering that the mass density of the reference configuration does not change (\cref{eq:balanceM}), is given by:
+\begin{align}
+  \begin{aligned}
+    \dot \pp  & = \intVO \rho_0 \,\ddot\xx \dV = \intdVO \hat\tt \dA + \intVO \bb \dV \\
+              & \Leftrightarrow  \qquad \rho_0 \ddot\xx = \Div\PP + \bb
+    \label{eq:balancep}
+  \end{aligned}
+\end{align}
+where $\hat\tt=\PP\NN$ are tractions, $\PP$ is the first Piola-Kirchhoff stress tensor and $\bb$ are body forces. The balance for angular momentum $\LL$ reads:
+\begin{align}
+  \begin{aligned}
+    \dot \LL  &= \intVO \xx \times \rho_0 \,\ddot\xx \dV  = \intdVO \xx \times \hat\tt \dA + \intVO \xx \times \bb \dV\\
+              &\Rightarrow \qquad \SS = \SST
+  \end{aligned}
+\end{align}
+where $\SS$ is the second Piola-Kirchhoff stress tensor and the linear momentum balance (\cref{eq:balancep}) has been used. The balance for  kinetic energy $E_{\rm kin}$ and internal energy $U$ reads: 
+\begin{align}
+  \begin{aligned}
+  &\begin{aligned}
+  \dot E_{\rm kin} + \dot U = \intVO \rho_0(\dot\xx\cdot\ddot\xx + \dot e) \dV &= \intdVO \Big(\hat\tt\cdot\dot\uu -\big(\sum_i e_i \JJ_i+\QQ\big) \cdot \NN \Big) \dA \\
+          & \ + \intVO \bb\cdot \dot\uu + \EE\cdot\big(\dot\DD+\JJ^\e-\sum_i Fz_i\,\JJ_i\big) \dV \\
+  \end{aligned} \\
+  &\begin{aligned}
+    \Leftrightarrow \qquad \rho_0(\dot\xx\cdot\ddot\xx+\dot e) &= \PP:\dot\FF + \bb \cdot \dot\uu - \Div\Big(\sum_i e_i \JJ_i+ \QQ \Big) \\
+    & \ + \EE\cdot\Big(\dot \DD+\JJ^\e-\sum_i Fz_i\JJ_i\Big) 
+  \end{aligned}
+  \end{aligned}
+\end{align}
+where $e$ is the specific internal energy, $e_i$ is the molar internal energy of a species, $\QQ$ is an energy flux density, and $\DD$ is the electric displacement. Finally, for the entropy $S$ the imbalance is given by: 
+\begin{align}
+  \begin{aligned}
+    \dot S & = \intVO \rho_0 \dot s \dV \geq \intdVO -\Big(\frac{\QQ}{T} + \sum_i \eta_i\JJ_i\Big) \cdot \NN \dA \\
+           & \Leftrightarrow \qquad \dot s \geq -\Div\Big(\frac{\QQ}{T}+\sum_i \eta_i \JJ_i \Big)
+  \end{aligned}
+\end{align}
+where $s$ is the specific entropy, $T$ is the temperature and $\eta_i$ is the molar entropy for a species. In this thesis the processes are assumed to be quasi static ($\ddot\xx=0$) and isothermal ($T=\text{const.}$; $\Grad T = 0$). Further we neglect body forces ($\bb=\zzero$). Thus, the local form of the (im)balance equations used in this thesis therefore can be summarized by:
+\begin{align}
+  \vphantom{\sum_i}& \dot\rho_0 = 0 \\
+  \vphantom{\sum_i}& \dot C_i = -\Div\JJ_i + \sum_r \nu_{ir} \R_r \\
+  \vphantom{\sum_i}& \dot \rho^{\e} = \Div(\JJ^\e - \sum_i Fz_i\, \JJ_i) \\
+  \vphantom{\sum_i}& \Div\PP = \zzero \\
+  \vphantom{\sum_i}& \SS = \SST \\
+  \vphantom{\sum_i}& \rho_0\,\dot e = \PP:\dot\FF - \Div\Big(\sum_i e_i \JJ_i+ \QQ \Big)+ \EE\cdot\Big(\dot \DD+\JJ^\e-\sum_i Fz_i\JJ_i\Big) \\
+  \vphantom{\sum_i}& \rho_0\,\dot s \geq -\Div\Big(\frac{\QQ}{T}+\sum_i \eta_i \JJ_i \Big)
+\end{align}
 
-
-\begin{alignat}{3}
-  \dot N_i  & \ = \ && \intVO \dot C_i \dV                            && \ = \ \intdVO -\JJ_i \cdot \NN\dA \ + \   \intVO \sum_r \nu_{ir } R_r \dV \\
-  \dot Q^\e & \ = \ && \intVO \dot \rho^\e_0 \dV                      && \ = \ \intdVO \Big(\JJ^\e-\sum_i Fz_i\,\JJ_i\Big) \cdot \NN\dA\\
-  \dot \pp  & \ = \ && \intVO \rho_0 \,\ddot\xx \dV  && \ = \ \intdVO \PP\NN \dA \ + \ \intVO \rho_0\,\bb \dV\\
-  \dot \LL  & \ = \ && \intVO \xx \times \rho_0 \,\ddot\xx \dV        && \ = \ \intdVO \xx \times \PP\NN \dA \ + \ \intVO \xx \times \rho_0\,\bb \dV\\
-  \dot S    & \ = \ && \intVO \dot s \dV                              && \ \geq \ \intdVO -\Big(\frac{\QQ}{T} + \sum_i \eta_i\JJ_i\Big) \cdot \NN \dA 
-\end{alignat}
+Using the definition for free energy densitiy $\psi=\rho_0(e-sT)$, for chemical potential $\mu_i=e_i-\eta_iT$, for the reaction chemical potential difference $(\Delta_R\mu)_r=\sum_i \mu_i\nu_{ir}$ and for the electrochemical potential gradient $\Grad{\mu^\e_i}=\Grad{\mu_i} + Fz_i\EE$, we can use the above given (im)balance equations to obtain the dissipation equation which we require to be satisfied. 
 
 \begin{align}
   \begin{aligned}
-  \dot U \ = \ \intVO \dot e \dV \ &= \ \intdVO (\trans{\PP}\dot\uu-\sum_i e_i \JJ_i-\QQ) \cdot \NN \dA \\
-          & \ + \intVO \EE\cdot(\PP_0+\JJ^\e-\sum_i Fz_i\,\JJ_i) \dV \\
+    \mathcal{D} = &\PP:\dot\FF + \sum_i \mu_i\,\dot C_i - \sum_r (\Delta_R\mu)_r \,R_r - \Grad{\mu_i^\e}\cdot\JJ_i  \\
+                + &\EE\cdot\Big(\dot\DD+\JJ^\e-\sum_i Fz_i\,\JJ_i\Big)- \dot\psi\geq 0
   \end{aligned}
-\end{align}
-Further in analogy to \cref{eq:balanceZ}, we can derive a local form for the equations. In this thesis, 
-% \quad \Leftrightarrow \quad \dot C_i = -\Div\JJ_i + \sum_r \nu_{ir} R_r \\
-
-In this thesis, mechanical, chemical and electrical effects are considered. The corresponding balances for particles, charge, momentum and energy as well as the entropy imbalance are given for isothermal ($T=\text{const.}$), quasi static ($\ddot \xx=0$) processes, which read in their respective local forms: 
-\begin{align}
-  & \vphantom{\sum_i} \dot\rho_0 = 0 \\
-  & \vphantom{\sum_i} \dot C = -\Div\JJ_i + \sum_r \nu_{ir} R_{r}  \\
-  & \vphantom{\sum_i} \dot \rho^{\e} = \Div(F\JJ^\e - \sum_i Fz_i\, \JJ_i) \\
-  & \vphantom{\sum_i} \Div\PP = 0  \\
-  & \vphantom{\sum_i} \SS = \trans{\SS} \\
-  & \vphantom{\sum_i} \dot e = \PP:\dot\FF - \Div\Big(\sum_i e_i \JJ_i+ \QQ \Big)+ \EE\cdot\Big(\dot \PP_0+\JJ^\e-\sum_i Fz_i\JJ_i\Big) \\
-  & \vphantom{\sum_i} \dot s \geq -\Div\Big(\frac{\QQ}{T}+\sum_i \eta_i \JJ_i \Big)
+  \label{eq:dissipation}
 \end{align}
 
-Using the definition for free energy densitiy $\psi=e-Ts$ for chemical potential $\mu_i=e_i-T\eta_i$, for  $\EE=\Grad\varphi$ and $(\Delta_R\mu)_r=\sum_i \mu_i\nu_{ir}$
-the dissipation $\mathcal{D}$ can be given as:
-
-\begin{align}
-  \mathcal{D} = \PP:\dot\FF + \EE\cdot\Big(\dot\PP_0+\JJ^\e-\sum_i Fz_i\,\JJ_i\Big) + \Div\Big(\sum_i\mu_i\JJ_i\Big)+ \frac{1}{T} \QQ\cdot\Grad(T) + s\dot T -\dot \psi\geq 0
-\end{align}
-
-In this thesis the influence of temperature is neglected since all processes are assumed to take place in a very narrow temperature range which the simplification
-$T=\text{const}$.  
-
-\begin{align}
-  \mathcal{D} = \PP:\dot\FF + \EE\cdot\Big(\dot\PP_0+\JJ^\e-\sum_i Fz_i\,\JJ_i\Big) + \sum_i \mu_i\,\dot C_i - \sum_r (\Delta_R\mu)_r \,R_r - \dot\psi\geq 0
-\end{align}
+At this point it is necessary to define functions for the expressions given in the dissipation equation. These functions will define the material behavior and are therefore called material laws. 
 
 \subsection{Material laws}
-Up to this point the given equations are valid for any material. The material laws are needed to give 
+The three models in this thesis 
+
+\subsubsection{Diffusion Controlled Drug Delivery System}
+
+As the material law we assume Fick's first law for one dimension:
+\begin{align}
+  j = -D \ \frac{\partial c}{\partial x} 
+\end{align}
+where $c$ is the concentration, $j$ is the current density and $x$ is the position. Since deformations are not considered in this case the current configuration is equivalent to the reference configuration. The balance equation for the diffusing species (compare \cref{eq:balanceC}) in one dimension is given by:
+\begin{align}
+  \dot c = - \frac{\partial j}{\partial x}
+\end{align}
+where $D$ is the Diffusion coefficient which is assumed constant. Inserting the material law into the balance equation gives Fick's second law and the partial differential equation to be solved: 
+\begin{align}
+  \dot c = D \frac{\partial^2 c}{\partial x^2}.
+\end{align}
+Since it is not discussed in the article, it should be said here that of course Fickean diffusion also satisfies the dissipation equation (compare \cref{eq:dissipation}) which reads for one dimension considering only diffusion of one species.
+\begin{align}
+  \mathcal{D} = \mu \dot c - \frac{\partial \mu}{\partial x} \, j - \dot \psi \geq 0
+\end{align} 
+Assuming the total concentration of particles to be constant and the free energy to be a function only of the concentration one has:
+\begin{align}
+  \partial_c \psi = \mu = \mu^{\circ} + R T \ln{\chi} \qquad \Rightarrow \qquad \frac{\partial \mu}{\partial x} = \frac{R T}{\chi} \frac{\partial \chi}{\partial x} = \frac{RT}{c} \frac{\partial c}{\partial x}
+\end{align}
+where, $R$ is the gas constant and $\chi$ is the molar fraction we obtain
+\begin{align}
+  \mathcal{D} = \frac{RTD}{c} \bigg(\frac{\partial c}{\partial x}\bigg)^2 \geq 0
+\end{align}
+which is always true since $R$, $T$, $D$ and $c$ are always positive.
+
+\subsubsection{Crystal plasticity including twinning}
 
 \begin{align}
-  \jj = -D \ \grad c 
+  \SS = \CCCC:\EEe
+\end{align}
+
+\subsubsection{Electro-Chemo-Mechanical Degradation}
+
+
+
+
+In the multi-component case 
+\begin{align}
+  \jj_i = -\sum_j D_{ij} \, \grad{\mu_j^\e}
 \end{align}
 
 \begin{align}
-  \jj_i = -\sum_j D_{ij} \grad{\mu_j}
+  \ssigma^\m = 
+\end{align}
+
+\begin{align}
+  p = -\third\trace\ssigma^\m
+\end{align}
+
+\begin{align}
+  \mu_i = \munordi + RT \ln{\chi_i}
+\end{align}
+
+\begin{align}
+  \DD = -\epsilon \, \grad \varphi
+\end{align}
+
+\begin{align}
+  \jj^\e = -\ssigma^\e \, \grad \varphi
 \end{align}

@@ -79,7 +79,7 @@ In this work we present the algorithm for a fully implicit crystal plasticity fi
     \CCCCb = (\RRb \sBox \RRbT) : \CCCC_0 : (\RRbT \sBox \RRb), 
     \label{eq:CCCCb}
   \end{equation}
-  where $(\cdot \sBox \cdot)$ is a fourth order tensor with the property $(\AA \sBox \CC) : \BB=\AA \sym{(\BB)} \CC$. Note that we consider for this model primary and secondary slip and primary twinning. That means that twins in twins are currently not considered. In the present model for magnesium \mbox{$\Nsl=18$} slip systems and \mbox{$\Ntw=12$} twinning system are considered which means \mbox{$\alpha\in[1,18]$} and \mbox{$\beta\in[0,12]$}. The orientation of the parent phase is not updated. 
+  where $(\cdot \sBox \cdot)$ is a fourth order tensor with the property $(\AA \sBox \CC) : \BB=\AA \,\sym{(\BB)} \CC$. Note that we consider for this model primary and secondary slip and primary twinning. That means that twins in twins are currently not considered. In the present model for magnesium \mbox{$\Nsl=18$} slip systems and \mbox{$\Ntw=12$} twinning system are considered which means \mbox{$\alpha\in[1,18]$} and \mbox{$\beta\in[0,12]$}. The orientation of the parent phase is not updated. 
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -414,8 +414,8 @@ In this work we present the algorithm for a fully implicit crystal plasticity fi
   \begin{equation}
     \gammareli = 
     \begin{cases}
-      \displaystyle \frac{\sumbI \summ \cb \abs{\D\gammaab}}{\sumbI \cb \D\gammaaccb + \sumbI \D\gammab} \qquad \text{(slip modes)}\\[15pt]
-      \displaystyle \frac{\sum_{\beta \in I^i} \D\gammab}{\sumbI \cb \D\gammaaccb + \sumbI \D\gammab} \qquad \text{(twinning modes)}
+      \displaystyle \frac{\sumbI \summ \cb \abs{\Delta\gammaab}}{\sumbI \cb \Delta\gammaaccb + \sumbI \Delta\gammab} \qquad \text{(slip modes)}\\[15pt]
+      \displaystyle \frac{\sum_{\beta \in I^i} \Delta\gammab}{\sumbI \cb \Delta\gammaaccb + \sumbI \Delta\gammab} \qquad \text{(twinning modes)}
     \end{cases}
   \end{equation}
   where $I^i$ denotes all indices $\alpha$ of one slip mode or indices $\beta$ of one twinning mode.  
@@ -543,16 +543,16 @@ In this work we present the algorithm for a fully implicit crystal plasticity fi
   
   \subsubsection*{Linearization of $\EEe$}
   
-  The partial derivatives of $\EEe$ with respect to the unknowns $\SSe$ and $\D\gammautilde$ needed for the linearization of the residual are given by:
+  The partial derivatives of $\EEe$ with respect to the unknowns $\SSe$ and $\Delta\gammautilde$ needed for the linearization of the residual are given by:
   
   \begin{align}
     \dEEeDSSe &= \sumbO \sumaI \dEEeDDeltagammaab \dDeltagammaabDtauab \dtauabDSSe + \sumbI \dEEeDDeltagammab \dDeltagammabDxib \dxibDSSe \label{eq:dEEeDSSe}\\
-    \dEEeDDeltagammau &= \sumbO \sumaI \dEEeDDeltagammaab \dDeltagammaabDtauacb \dtauacbDDeltagammau + \sumbI \dEEeDDeltagammab \left(\dDeltagammabDxibc \dxibcDDeltagammau + \derivative{\D\gammab}{c_0}\derivative{c_0}{\D\gammau} \right)
+    \dEEeDDeltagammau &= \sumbO \sumaI \dEEeDDeltagammaab \dDeltagammaabDtauacb \dtauacbDDeltagammau + \sumbI \dEEeDDeltagammab \left(\dDeltagammabDxibc \dxibcDDeltagammau + \derivative{\Delta\gammab}{c_0}\derivative{c_0}{\Delta\gammau} \right)
   \end{align}
   
   They are derived by the linearization of $\EEe$ as follows:
   \begin{equation}
-    \dEEe = \half \total(\ffpinvT \CCetr \ffpinv - \II) = \sym{\CCe \ffp \dffpinv} + \half \ffpinvT \sBox \ffpinv : \d\CCetr.
+    \dEEe = \half \total(\ffpinvT \CCetr \ffpinv - \II) = \sym{(\CCe \ffp \dffpinv)} + \half \ffpinvT \sBox \ffpinv : \d\CCetr.
     \label{eq:dEEe}
   \end{equation}
   With
@@ -563,7 +563,7 @@ In this work we present the algorithm for a fully implicit crystal plasticity fi
 
   and
   \begin{equation}
-      \dhhp =  \sumbO \cb \sumaI \MMab \d \D \gammaab + \sumbI \left(\MMb + \frac{1}{\gammatwb}\sumaI\left(\MMab\D\gammaab-\MMaO\D\gammaaO\right)\right)  \d \D \gammab
+      \dhhp =  \sumbO \cb \sumaI \MMab \d \Delta \gammaab + \sumbI \left(\MMb + \frac{1}{\gammatwb}\sumaI\left(\MMab\Delta\gammaab-\MMaO\Delta\gammaaO\right)\right)  \d \Delta \gammab
       \label{eq:dhhp}
   \end{equation}
   and 
@@ -574,30 +574,30 @@ In this work we present the algorithm for a fully implicit crystal plasticity fi
     \end{split}
   \end{equation}
   
-  one obtains the partial derivatives of $\EEe$ with respect to the plastic shear and twinning increments $\D\gammaab$ and $\D\gammab$ and the elastic trial Green strain tensor $\CCetr$
+  one obtains the partial derivatives of $\EEe$ with respect to the plastic shear and twinning increments $\Delta\gammaab$ and $\Delta\gammab$ and the elastic trial Green strain tensor $\CCetr$
   \begin{align}
-    \dEEeDDeltagammaab &= - \cb \sym{\CCe \MMabtilde} \label{eq:dEEeDDeltagammaab}\\
-    \dEEeDDeltagammab &= - \sym{\CCe \left(\MMbtilde+\frac{1}{\gammatwb}\sumaI \left(\MMabtilde\Delta\gammaab-\MMaOtilde\D\gammaab\right)\right)} \label{eq:dEEeDDeltagammab}\\
+    \dEEeDDeltagammaab &= - \cb \, \sym{(\CCe \MMabtilde)} \label{eq:dEEeDDeltagammaab}\\
+    \dEEeDDeltagammab &= - \sym{\left(\CCe \left(\MMbtilde+\frac{1}{\gammatwb}\sumaI \left(\MMabtilde\Delta\gammaab-\MMaOtilde\Delta\gammaab\right)\right)\right)} \label{eq:dEEeDDeltagammab}\\
     \derivative{\EEe}{\CCetr} &= \half \ffpinvT \sBox \ffpinv
   \end{align}
   
-  The partial derivatives of $\D\gammaab$ and $\D\gammab$ are given by 
+  The partial derivatives of $\Delta\gammaab$ and $\Delta\gammab$ are given by 
   \begin{align}
-    \derivative{\D\gammaab}{\tauab} &= \frac{\Dt \nu_0 \psl}{\tauacb} \left(\frac{\abs{\tauab}}{\tauacb} \right)^{\psl-1} \\
-    \derivative{\D\gammab}{\xib} &= c_0 \gammatwb \frac{\Dt \nu_0 \ptw}{\xibc} \left(\frac{\xib}{\xibc} \right)^{\ptw-1} \\
-    \derivative{\D\gammab}{c_0} &= \Dt \nu_0 \left(\frac{\xib}{\xibc} \right)^{\ptw}
+    \derivative{\Delta\gammaab}{\tauab} &= \frac{\Dt \nu_0 \psl}{\tauacb} \left(\frac{\abs{\tauab}}{\tauacb} \right)^{\psl-1} \\
+    \derivative{\Delta\gammab}{\xib} &= c_0 \gammatwb \frac{\Dt \nu_0 \ptw}{\xibc} \left(\frac{\xib}{\xibc} \right)^{\ptw-1} \\
+    \derivative{\Delta\gammab}{c_0} &= \Dt \nu_0 \left(\frac{\xib}{\xibc} \right)^{\ptw}
   \end{align}
   and
   \begin{align}
-    \derivative{\D\gammaab}{\tauacb} &= - \frac{\tauab}{\tauacb} \derivative{\D\gammaab}{\tauab} \\
-    \derivative{\D\gammab}{\xibc} &= -\frac{\xib}{\xibc} \derivative{\D\gammab}{\xib}
+    \derivative{\Delta\gammaab}{\tauacb} &= - \frac{\tauab}{\tauacb} \derivative{\Delta\gammaab}{\tauab} \\
+    \derivative{\Delta\gammab}{\xibc} &= -\frac{\xib}{\xibc} \derivative{\Delta\gammab}{\xib}
   \end{align}
   
   The linearization for $\tauCslslb$, $\tauCttsl$ and $\tauCctsl$ reads: 
   \begin{align}
           \d\tauCslslb &= 
-          \begin{cases}  \displaystyle h_0 \ \d\D\gammaaccb & \qquad \qquad \text{(Basal)} 
-            \\ \displaystyle h_0 \ \sech^2\left(\frac{h_0 \gammaaccb}{\taus - \tauO}\right) \d\D\gammaaccb & \qquad \qquad \text{(Non basal)}
+          \begin{cases}  \displaystyle h_0 \ \d\Delta\gammaaccb & \qquad \qquad \text{(Basal)} 
+            \\ \displaystyle h_0 \ \sech^2\left(\frac{h_0 \gammaaccb}{\taus - \tauO}\right) \d\Delta\gammaaccb & \qquad \qquad \text{(Non basal)}
           \end{cases}\\
           \d\tauCttslb &= \hO \ \sech^2\left(\frac{\hO\gammaacctt}{\taus}\right) \d\gammab \\
           \d\tauCctsl &= 0.5 \hO \left(\gammact\right)^{-0.5} \d\gammab
@@ -605,12 +605,12 @@ In this work we present the algorithm for a fully implicit crystal plasticity fi
   
   The partial derivatives then read:
   \begin{align}
-    \derivative{\tauacb}{\D\gammaaccb} & = \Ab \derivative{\tauCslslb}{\D\gammaaccb} \\[10pt]
-    \derivative{\tauacb}{\D\gammab} & = \derivative{\Ab}{\D\gammab} (\tauCslslb + \tauCttslb + \tauCctsl)
+    \derivative{\tauacb}{\Delta\gammaaccb} & = \Ab \derivative{\tauCslslb}{\Delta\gammaaccb} \\[10pt]
+    \derivative{\tauacb}{\Delta\gammab} & = \derivative{\Ab}{\Delta\gammab} (\tauCslslb + \tauCttslb + \tauCctsl)
   \end{align}
   with
   \begin{equation}
-    \derivative{\Ab}{\D\gammab} = 
+    \derivative{\Ab}{\Delta\gammab} = 
     \begin{cases}
       \displaystyle 0.5 \left( \frac{(1-a)}{\gammatwb(\cb)^{1.5}} \right) & \qquad \text{if} \quad \beta = 0  \\
       \displaystyle - 0.5 \left( \frac{(1-a)}{\gammatwb(\cb)^{1.5}} \right) & \qquad \text{if} \quad \beta \neq 0  
@@ -618,33 +618,33 @@ In this work we present the algorithm for a fully implicit crystal plasticity fi
   \end{equation}
   The partial derivative of $\xib$ is given by:
   \begin{equation}
-    \derivative{\xibc}{\D\gammab} = 
+    \derivative{\xibc}{\Delta\gammab} = 
     \begin{cases}
-      \displaystyle A_0 \gammatt \hO \ \sech^2\left(\frac{\hO \gammaacctt}{\taus-\tauO}\right) + \derivative{A_0}{\D\gammab}  \gammatt (\taus-\tauO) \tanh{\frac{\hO \gammaacctt}{\taus-\tauO}} & \qquad \text{(TT)} \\[10pt]
-      \displaystyle \gammact \hO (\cb)^{b} + \derivative{A_0}{\D\gammab} \gammact \frac{\hO (\gammaaccct)^{b+1}}{(b+1){(\gammact})^b} & \qquad \text{(CT)} 
+      \displaystyle A_0 \gammatt \hO \ \sech^2\left(\frac{\hO \gammaacctt}{\taus-\tauO}\right) + \derivative{A_0}{\Delta\gammab}  \gammatt (\taus-\tauO) \tanh{\frac{\hO \gammaacctt}{\taus-\tauO}} & \qquad \text{(TT)} \\[10pt]
+      \displaystyle \gammact \hO (\cb)^{b} + \derivative{A_0}{\Delta\gammab} \gammact \frac{\hO (\gammaaccct)^{b+1}}{(b+1){(\gammact})^b} & \qquad \text{(CT)} 
     \end{cases}
   \end{equation}
   
   The linearization of $\tauab$ and $\xib$ reads:
   \begin{align}
-    \derivative{\tauab}{\SSe} &= \left(2 \SSSS:\sym{\MMab \SSe} + \sym{\CCe \MMab}\right) \\
-    \derivative{\xib}{\SSe} &= \angleTwb \left(2 \SSSS:\sym{\MMb \SSe}  + \sym{\CCe \MMb}\right) \\
+    \derivative{\tauab}{\SSe} &= \left(2 \SSSS:\sym{(\MMab \SSe)} + \sym{(\CCe \MMab)}\right) \\
+    \derivative{\xib}{\SSe} &= \angleTwb \left(2 \SSSS:\sym{(\MMb \SSe)}  + \sym{(\CCe \MMb)}\right) \\
   \end{align}
   
   \subsubsection*{Linearization of $\gammau$}
   
-  The partial derivatives of $\gammau$ with respect to the unknowns $\SSe$ and $\D\gammau$ needed for the linearization of the residual are given by:
+  The partial derivatives of $\gammau$ with respect to the unknowns $\SSe$ and $\Delta\gammau$ needed for the linearization of the residual are given by:
   
   \begin{align}
     \dDeltagammauDSSe &= \sumbO \sumaI \dDeltagammauDDeltagammaab \dDeltagammaabDtauab \dtauabDSSe + \sumbI \dDeltagammauDDeltagammab \dDeltagammabDxib \dxibDSSe \\
-    \dDeltagammauDDeltagammau &= \sumbO \sumaI \dDeltagammauDDeltagammaab \dDeltagammaabDtauacb \dtauacbDDeltagammau + \sumbI \dDeltagammauDDeltagammab \left( \dDeltagammabDxibc \dxibcDDeltagammau + \derivative{\D\gammab}{c_0}\derivative{c_0}{\D\gammau} \right)
+    \dDeltagammauDDeltagammau &= \sumbO \sumaI \dDeltagammauDDeltagammaab \dDeltagammaabDtauacb \dtauacbDDeltagammau + \sumbI \dDeltagammauDDeltagammab \left( \dDeltagammabDxibc \dxibcDDeltagammau + \derivative{\Delta\gammab}{c_0}\derivative{c_0}{\Delta\gammau} \right)
   \end{align}
   
 
   The partial derivatives are then given by:
   \begin{align}
-    \frac{\partial \D\gammau_i}{\partial \D\gammaab} &= \delta_{i\beta} \ \sign{\tauab} \\
-    \frac{\partial \D\gammau_i}{\partial \D\gammab} &= \delta_{ij} \quad \text{with} \quad j=\Ntw+1+\beta
+    \frac{\partial \Delta\gammau_i}{\partial \Delta\gammaab} &= \delta_{i\beta} \ \sign{\tauab} \\
+    \frac{\partial \Delta\gammau_i}{\partial \Delta\gammab} &= \delta_{ij} \quad \text{with} \quad j=\Ntw+1+\beta
   \end{align}
   
   \subsubsection*{Algorithmic tangent}
@@ -652,7 +652,7 @@ In this work we present the algorithm for a fully implicit crystal plasticity fi
   \begin{equation}
     \int_{V_0} \ttau :\dd_\delta \d V - \int_{\partial V_{0t}} \ttbar \cdot \delta \uu \d A = 0,
   \end{equation}
-  with $\dd_\delta = \sym{\ll_\delta} = \sym{\delta\FF\FFinv}$ and the traction vector $\ttbar$ given on $\delta V_{0t}$, we consider the well-known result 
+  with $\dd_\delta = \sym{(\ll_\delta)} = \sym{(\delta\FF\FFinv)}$ and the traction vector $\ttbar$ given on $\delta V_{0t}$, we consider the well-known result 
   \begin{equation}
     \d(\ttau:\dd_\delta) = (\ll_\d \ttau \trans{\ll_\delta}):\II + \dd_\delta:\calgo:\dd_\d,
   \end{equation}
@@ -675,22 +675,22 @@ In this work we present the algorithm for a fully implicit crystal plasticity fi
   
   The partial derivative of $\SSebar$ with respect to the vector of unknowns $\xu$ is given by: 
   \begin{align}
-      \derivative{\SSebar}{\SSe} &= \sumbO \sumaI \derivative{\SSebar}{\D \gammaab} \derivative{\D \gammaab}{\tauab} \derivative{\tauab}{\SSe}
-      + \sumbI \derivative{\SSebar}{\D \gammab}\derivative{\D \gammab}{\xib}\derivative{\xib}{\SSe} + \ffpinv \sBox \ffpinvT;\\
-      \derivative{\SSebar}{\gammau} &= \sumbO \sumaI \derivative{\SSebar}{\D \gammaab} \derivative{\D \gammaab}{\tauacb} \derivative{\tauacb}{\gammau}
-      + \sumbI \derivative{\SSebar}{\D \gammab} \left(\dDeltagammabDxibc \dxibcDDeltagammau + \derivative{\D\gammab}{c_0}\derivative{c_0}{\D\gammau} \right).
+      \derivative{\SSebar}{\SSe} &= \sumbO \sumaI \derivative{\SSebar}{\Delta \gammaab} \derivative{\Delta \gammaab}{\tauab} \derivative{\tauab}{\SSe}
+      + \sumbI \derivative{\SSebar}{\Delta \gammab}\derivative{\Delta \gammab}{\xib}\derivative{\xib}{\SSe} + \ffpinv \sBox \ffpinvT;\\
+      \derivative{\SSebar}{\gammau} &= \sumbO \sumaI \derivative{\SSebar}{\Delta \gammaab} \derivative{\Delta \gammaab}{\tauacb} \derivative{\tauacb}{\gammau}
+      + \sumbI \derivative{\SSebar}{\Delta \gammab} \left(\dDeltagammabDxibc \dxibcDDeltagammau + \derivative{\Delta\gammab}{c_0}\derivative{c_0}{\Delta\gammau} \right).
   \end{align}
   
   It is calculated from the linearization of $\SSebar$ as follows:
   \begin{align}
-      \d \SSebar = \d \left( \ffpinv \SSe \ffpinvT \right) = \ffpinv \sBox \ffpinvT : \left( \d\SSe + 2 \sym{\SSe\trans{(\ffp\d\ffpinv)}} \right).
+      \d \SSebar = \d \left( \ffpinv \SSe \ffpinvT \right) = \ffpinv \sBox \ffpinvT : \left( \d\SSe + 2 \,\sym{\big(\SSe\trans{(\ffp\d\ffpinv)}\big)} \right).
   \end{align}
   
   In analogy to \cref{eq:dEEe,eq:ffpdffpinv,eq:dhhp,eq:dEEeDDeltagammaab,eq:dEEeDDeltagammab} one finds for the partial derivatives of $\SSebar$:
   
   \begin{align}
-    \derivative{\SSebar}{\gammaab} &= - \ffpinv \sBox \ffpinvT : 2 \sym{ \SSe \trans{\MMabtilde}}; \\
-    \derivative{\SSebar}{\gammab} &= - \ffpinv \sBox \ffpinvT : 2 \sym{ \SSe \left(\trans{\MMbtilde}+\frac{1}{\gammatwb}\sumaI\left(\trans{\MMabtilde} \D\gammaab-\trans{\MMaOtilde}\D\gammaaO\right)\right)}.
+    \derivative{\SSebar}{\gammaab} &= - \ffpinv \sBox \ffpinvT : 2 \,\sym{(\SSe \trans{\MMabtilde})}; \\
+    \derivative{\SSebar}{\gammab} &= - \ffpinv \sBox \ffpinvT : 2 \,\sym{\left(\SSe \left(\trans{\MMbtilde}+\frac{1}{\gammatwb}\sumaI\left(\trans{\MMabtilde} \Delta\gammaab-\trans{\MMaOtilde}\Delta\gammaaO\right)\right)\right)}.
   \end{align}
   
   The linearization of $\CCetr$ is given by:

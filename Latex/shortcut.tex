@@ -1,9 +1,6 @@
 \newcommand{\dA}{\,\d A}
 \newcommand{\dV}{\,\d V}
 
-\newcommand{\intVO}{\int_{V_0}}
-\newcommand{\intdVO}{\int_{\partial V_0}}
-
 %%
 \newcommand \bbe{\elas{\vect{b}}}
 \newcommand \bbetr{\trial{\elas{\vect{b}}}}
@@ -15,7 +12,7 @@
 \newcommand \CCCC{\tens{C}}
 \newcommand \CCCCinv{\inv{\tens{C}}}
 \newcommand \ccp{\plas{\vect{c}}}
-\newcommand \CCe{\elas{\vect{C}}}
+\newcommand \CCe{\CC^\e}
 \newcommand \CCp{\plas{\vect{C}}}
 \newcommand \CCpinv{\plasinv{\vect{C}}}
 \newcommand \CCpn{\plasn{\vect{C}}}
@@ -42,7 +39,7 @@
 \newcommand \ffpinvT {\plasinvT{\vect{f}}}
 \newcommand \ffpT {\plasT{\vect{f}}}
 \newcommand \FFdot {\dot{\vect{F}}}
-\newcommand \FFe {\elas{\vect{F}}}
+\newcommand \FFe {\FF^\e}
 \newcommand \FFeT {\elasT{\vect{F}}}
 \newcommand \FFetr {\elastr{\vect{F}}}
 \newcommand \FFetrT {\elastrT{\vect{F}}}
@@ -440,3 +437,497 @@
 
 \newcommand \dxibcDDeltagammau{\frac{\partial \xibc}{\partial \Delta \gammautilde}}
 \newcommand \dxuDCCetr{\derivative{\xu}{\CCetr}}
+
+%%%
+
+
+
+\usepackage[T1]{fontenc}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\XDelta}[1]{#1_{\sDelta}}
+\newcommand{\XDeltaa}[1]{\smash{\XDelta{#1}}_{\alpha}}
+\newcommand{\XDeltai}[1]{\smash{\XDelta{#1}}_i}
+\newcommand{\XDeltaia}[1]{\smash{\XDelta{#1}}_{i\alpha}}
+\newcommand{\XDeltas}[1]{#1_{\sDelta}^{*}}
+\newcommand{\XDeltaas}[1]{\smash{\XDeltas{#1}}_{\alpha}}
+\newcommand{\XDeltaO}[1]{\smash{\XDelta{#1}}_0}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\Aa}{A_{\alpha}}
+\newcommand{\ab}{\alpha\beta}
+\newcommand{\Aia}{A_{i\alpha}}
+\newcommand{\Aua}{\underline{A}_{\alpha}}
+
+\newcommand{\Ba}{B_{\alpha}}
+\newcommand{\Bab}{B_{\alpha\beta}}
+\newcommand{\Babtilde}{\tilde B_{\alpha\beta}}
+\newcommand{\BaO}{B_{\alpha0}}
+\newcommand{\Buu}{\underline{\underline{B}}}
+
+\newcommand{\Ca}{C_{\alpha}}
+\newcommand{\Cai}{C_{\alpha i}}
+\newcommand{\caO}{c_{\alpha}^{\circ}}
+\newcommand{\CCea}{\CC^{\e}_{\alpha}}
+%\newcommand{\CCm}{\CC^{\m}}
+%\newcommand{\CCma}{\CC^{\m}_{\alpha}}
+\newcommand{\CCminva}{\CC^{\m-1}_{\alpha}}
+\newcommand{\Ce}{C^\e}
+\newcommand{\Cen}{C^\e_\n}
+\newcommand{\chii}{\chi_{i}}
+\newcommand{\chiia}{\chi_{i\alpha}}
+\newcommand{\chiul}{\underline{\chi}}
+\newcommand{\chiula}{\smash{\underline{\chi}}_{\alpha}}
+\newcommand{\chiull}{\underline{\underline{\chi}}}
+\newcommand{\ci}{c_{i}}
+\newcommand{\cI}{c_{I}}
+\newcommand{\cia}{c_{i\alpha}}
+\newcommand{\ciaO}{c_{i \alpha}^{\circ}}
+\newcommand{\cj}{c_{j}}
+\newcommand{\ck}{c_{k}}
+\newcommand{\cl}{c_{l}}
+\newcommand{\cm}{c_{m}}
+\newcommand{\Cnordi}{C_{i}^{\circ}}
+\newcommand{\cnordj}{c_{j}^{\circ}}
+\newcommand{\cnordO}{c_{0}^{\circ}}
+\newcommand{\ConstDelta}{\Const_{\sDelta}}
+\newcommand{\cO}{c_{0}}
+\newcommand{\cOO}{c_{0}^{\circ}}
+\newcommand{\ct}{c^{\rm t}}
+\newcommand{\Ct}{C^{\rm t}}
+\newcommand{\Cta}{C^{\rm t}_{\alpha}}
+\newcommand{\Ctul}{\Cul^\t}
+\newcommand{\ctot}{c_{\rm t}}
+\newcommand{\Ctot}{C^{\rm tot}}
+\newcommand{\cuu}{\underline{\underline{c}}}
+\newcommand{\cula}{\smash{\cul}_{\alpha}}
+\newcommand{\Cula}{\smash{\Cul}_{\alpha}}
+\newcommand{\culaO}{\smash{\underline{c}}_{\alpha}^{0}}
+\newcommand{\culI}{\underline{c}_1}
+\newcommand{\Cull}{\underline{\underline{C}}}
+\newcommand{\culn}{\smash{\underline{c}}_{\n}}
+\newcommand{\Culn}{\smash{\underline{C}}_{\n}}
+\newcommand{\culna}{{\culn}_{\alpha}}
+\newcommand{\culO}{\underline{c}_0}
+
+\newcommand{\Da}{D_{\alpha}}
+\newcommand{\Dai}{D_{\alpha i}}
+\newcommand{\Dab}{D_{\alpha\beta}}
+\newcommand{\DDa}{\DD_{\alpha}}
+\newcommand{\DDc}{\DD_{\c}}
+\newcommand{\deltaab}{\delta_{\alpha\beta}}
+\newcommand{\DeltafGO}{\Delta_f G^0}
+\newcommand{\DeltafHO}{\Delta_f H^0}
+\newcommand{\DiffMS}{{\text{\it\DH}}}
+\newcommand{\Dij}{D_{ij}}
+\newcommand{\Dijinv}{(D^{-1})_{ij}}
+\newcommand{\Diss}{\mathcal{D}}
+\newcommand{\Dula}{\smash{\Dul}_{\alpha}}
+\newcommand{\Duul}{\underline{\underline{D}}}
+\newcommand{\Duulinv}{\underline{\underline{D}}^{-1}}
+
+\newcommand{\Fa}{F_{\alpha}}
+\newcommand{\Fatilde}{\tilde F_{\alpha}}
+\newcommand{\Fb}{F_{\beta}}
+\newcommand{\Fbtilde}{\tilde F_{\beta}}
+\newcommand{\FFa}{\FF_{\alpha}}
+\newcommand{\FO}{F_0}
+\newcommand{\FOtilde}{\tilde F_0}
+
+% \renewcommand{\em}{{\rm e^{-}}}
+\newcommand{\etaa}{\eta_{\alpha}}
+\newcommand{\etaab}{\eta_{\alpha\beta}}
+\newcommand{\etaabtilde}{\tilde\eta_{\alpha\beta}}
+
+\newcommand{\FFc}{\FF^{\c}}
+\newcommand{\FFca}{\FF^{\c}_{\alpha}}
+\newcommand{\FFea}{\FF^{\e}_{\alpha}}
+\newcommand{\FFeaT}{\FF^{\e\top}_{\alpha}}
+%\newcommand{\FFm}{\FF^{\m}}
+%\newcommand{\FFma}{\FF^{\m}_{\alpha}}
+%\newcommand{\FFmaT}{\FF^{\m\top}_{\alpha}}
+%\newcommand{\FFmT}{\FF^{\m\top}}
+
+
+\newcommand{\gammai}{\gamma_{i}}
+\newcommand{\gammaj}{\gamma_{j}}
+\newcommand{\gammaO}{\gamma_{0}}
+\newcommand{\GGa}{\GG_{\alpha}}
+\newcommand{\GGb}{\GG_{\beta}}
+\newcommand{\GGc}{\GG_{\gamma}}
+
+
+\newcommand{\Hp}{{\rm H^{\p}}}
+\newcommand{\Hchi}{H^{\chi}}
+
+\newcommand{\Jc}{J^\c}
+\newcommand{\Jca}{J^{\c}_{\alpha}}
+\newcommand{\Jcul}{\Jul^c}
+\newcommand{\JDelta}{\XDelta{J}}
+\newcommand{\JDeltai}{{J_{\sDelta i}}}
+\newcommand{\JeDelta}{J^\e_\sDelta}
+\newcommand{\Ji}{J_{i}}
+\newcommand{\JJa}{\JJ_{\alpha}}
+\newcommand{\JJDelta}{\XDelta{\JJ}}
+\newcommand{\JJDeltaa}{{\JJDelta}_{\alpha}}
+\newcommand{\JJDeltab}{{\JJDelta}_{\beta}}
+\newcommand{\JJDeltai}{\XDeltai{\JJ}}
+\newcommand{\JJDeltaia}{\XDeltaia{\JJ}}
+\newcommand{\JJDeltaj}{\JJ_{\sDelta j}}
+\newcommand{\JJDeltak}{\JJ_{\sDelta k}}
+\newcommand{\JJDeltal}{\JJ_{\sDelta l}}
+\newcommand{\JJDeltaO}{\XDeltaO{\JJ}}
+\newcommand{\JJDeltaT}{\JJ_{\sDelta}^{\top}}
+\newcommand{\jje}{\jj^\e}
+\newcommand{\JJe}{\JJ^\e}
+\newcommand{\JJea}{\JJ^\e_{\alpha}}
+\newcommand{\JJeDelta}{\JJ^\e_\sDelta}
+\newcommand{\JJeDeltaa}{{\JJeDelta}_{\alpha}}
+\newcommand{\JJeul}{\underline{\JJ}^{\e}}
+\newcommand{\JJm}{\JJ^{\m}}
+\newcommand{\JJula}{\JJul_{\alpha}}
+\newcommand{\JJulDelta}{\XDelta{\JJul}}
+\newcommand{\JJull}{\underline{\underline{\JJ}}}
+\newcommand{\JJuuDelta}{\smash{\underline{\underline{\JJ}}}_{\sDelta}}
+\newcommand{\JJulDeltaa}{\smash{\JJulDelta}_{\alpha}}
+\newcommand{\JJulDeltai}{{\JJulDelta}_{i}}
+\newcommand{\JJulDeltaj}{{\JJulDelta}_{j}}
+\newcommand{\JJulDeltaT}{\mathrlap{\trans{\phantom{\JJul}}}\JJulDelta}
+\newcommand{\JJV}{\JJ^{\v}}
+\newcommand{\JO}{J_{0}}
+\newcommand{\JulDelta}{\underline{J}_{\sDelta}}
+\newcommand{\JulDeltaa}{{\JuDelta}_\alpha}
+\newcommand{\Julxia}{\Jul^{\xi}_{\alpha}}
+
+\newcommand{\Ka}{K_{\alpha}}
+\newcommand{\Kab}{K_{\alpha\beta}}
+\newcommand{\Kabtilde}{\tilde K_{\alpha\beta}}
+\newcommand{\kappaJ}{\kappa_\J}
+\newcommand{\kappau}{\kappa_\u}
+\newcommand{\kappaxi}{\kappa_\xi}
+\newcommand{\kr}{k_r}
+\newcommand{\Kuu}{\underline{\underline{K}}}
+
+\newcommand{\lambdaa}{\lambda_{\alpha}}
+
+\newcommand{\Mg}{{\rm Mg}}
+\newcommand{\Mgpp}{{\rm Mg^{2+}}}
+\newcommand{\mi}{m_i}
+\newcommand{\Mi}{M_i}
+\newcommand{\Mia}{M_{i\alpha}}
+\newcommand{\mma}{\mm_{\alpha}}
+\newcommand{\mmb}{\mm_{\beta}}
+\newcommand{\mmi}{\mm_i}
+\newcommand{\mmj}{\mm_j}
+\newcommand{\mmule}{\mmul^\e}
+\newcommand{\mui}{\mu_i}
+\newcommand{\mule}{\mul^\e}
+\newcommand{\mulebar}{\smash{\bar{\mul}}^\e}
+\newcommand{\Mula}{\smash{\Mul}_{\alpha}}
+\newcommand{\Multilde}{\tilde\Mul}
+\newcommand{\munord}{\mu^{\circ}}
+\newcommand{\munordi}{\mu_{i}^{\circ}}
+\newcommand{\munordia}{\mu_{i\alpha}^{\circ}}
+\newcommand{\munordO}{\mu_{0}^{\circ}}
+\newcommand{\mut}{\underset{\sim}{\mu}}
+\newcommand{\muula}{\muul_{\alpha}}
+\newcommand{\muule}{\muul^\e}
+\newcommand{\muulebar}{\smash{\bar\muul}^\e}
+\newcommand{\muuletilde}{\tilde\muul^\e}
+\newcommand{\muulhat}{\hat{\muul}}
+\newcommand{\muulnord}{\underline{\mu}^{\circ}}
+\newcommand{\muulnorda}{\smash{\underline{\mu}}_{\alpha}^{\circ}}
+\newcommand{\muultilde}{\tilde\muul}
+
+\newcommand{\Nchi}{N_{\chi}}
+\newcommand{\Np}{N_{\p}}
+\newcommand{\Nphs}{N_{\rm phs}}
+\newcommand{\Ns}{N_{\s}}
+\newcommand{\nuir}{\nu_{ir}}
+\newcommand{\nuull}{\underline{\nuul}}
+\newcommand{\Nxi}{N_{\xi}}
+
+\newcommand{\OH}{{\rm OH}}
+\newcommand{\OHm}{{\rm OH^{-}}}
+
+\newcommand{\phicDelta}{\XDelta{\phi}^{\c}}
+\newcommand{\phicJJDelta}{\XDelta{\phi}^{\c\JJ}}
+\newcommand{\phicRDelta}{\XDelta{\phi}^{\c R}}
+\newcommand{\phixi}{\phi^{\xi}}
+\newcommand{\phixiDelta}{\XDelta{\phi}^{\xi}}
+\newcommand{\psic}{\psi^{\c}}
+\newcommand{\psica}{{\psi}^{\c}_{\alpha}}
+\newcommand{\psichia}{\psi^{\chi}_{\alpha}}
+\newcommand{\psiea}{\psi^{\e}_{\alpha}}
+\newcommand{\psieas}{{\psi^{\e}_{\alpha}}^{*}}
+\newcommand{\psiEE}{\psi^{\EE}}
+\newcommand{\psies}{\psi^{\e*}}
+\newcommand{\psim}{\psi^{\m}}
+\newcommand{\psima}{\psi^{\m}_{\alpha}}
+\newcommand{\psip}{\psi^{\p}}
+\newcommand{\psixi}{\psi^{\xi}}
+
+\newcommand{\sigmae}{\sigma^\e}
+
+\newcommand{\zultilde}{\tilde\zul}
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  \newcommand{\pia}{\pi_{\alpha}}
+  \newcommand{\Pia}{\Pi_{\alpha}}
+  \newcommand{\Phia}{\Phi_{\alpha}}
+  \newcommand{\PhiDelta}{\Phi_{\sDelta}}
+  \newcommand{\PhiDeltaa}{{\PhiDelta}_{\alpha}}
+  \newcommand{\PhiJDelta}{{\Phi^{\J}_{\sDelta}}}
+  \newcommand{\PhiJDeltai}{{\Phi^{\J}_{\sDelta i}}}
+  \newcommand{\PhiJDeltatilde}{{\tilde\Phi^{\J}_{\sDelta}}}
+  \newcommand{\PhiJDeltatildei}{{\tilde\Phi^{\J}_{\sDelta i}}}
+  \newcommand{\PhiJDeltaa}{{\PhiJDelta}_{\alpha}}
+  \newcommand{\PhiJJDelta}{{\Phi^{\JJ}_{\sDelta}}}
+  \newcommand{\PhiJJDeltaa}{{\PhiJJDelta}_{\alpha}}
+  \newcommand{\PhiJJDeltai}{{\PhiJJDelta}_{i}}
+  \newcommand{\PhiJJDeltatilde}{{\tilde\Phi^{\JJ}_{\sDelta}}}
+  \newcommand{\PhiJJDeltatildei}{{\tilde\Phi^{\JJ}_{\sDelta i}}}
+  \newcommand{\PhiJDeltastar}{{\PhiJDelta}^{\ast}}
+  \newcommand{\PhiJDeltastara}{{\PhiJDelta}_{\alpha}^{\ast}}
+  \newcommand{\PhiJDeltastarI}{{\PhiJDelta}_{1}^{\ast}}
+  \newcommand{\PhiJDeltastarO}{{\PhiJDelta}_{0}^{\ast}}
+  \newcommand{\PhiJJDeltastar}{{\PhiJJDelta}^{\ast}}
+  \newcommand{\PhiJJDeltastara}{{\PhiJJDelta}_{\alpha}^{\ast}}
+  \newcommand{\PhiJJDeltastari}{{\PhiJJDelta}_{i}^{\ast}}
+  \newcommand{\PhiJJDeltastarI}{{\PhiJJDelta}_{1}^{\ast}}
+  \newcommand{\PhiJJDeltastarO}{{\PhiJJDelta}_{0}^{\ast}}
+  \newcommand{\PhipDelta}{\Phi^{\p}_{\sDelta}}
+  \newcommand{\PhixiDelta}{\Phi^{\xi}_{\sDelta}}
+  \newcommand{\PhixiDeltaa}{\Phi^{\xi}_{\sDelta\alpha}}
+
+  \newcommand{\psicastar}{{\psi^c_{\mathrlap{\alpha}}}^{\ast}}
+  \newcommand{\psicO}{\psi^{\c}_{0}}
+  \newcommand{\psici}{\psi^{c}_{i}}
+  \newcommand{\psicI}{\psi^{c}_{1}}
+  \newcommand{\psicia}{\psi^{\c}_{i\alpha}}
+  \newcommand{\psicIstar}{{\psi^{c}_{\mathrlap{1}}}^{\ast}}
+  \newcommand{\psicj}{\psi^{c}_{j}}
+  \newcommand{\psicOstar}{{\psi^{c}_{\mathrlap{0}}}^{\ast}}
+  \newcommand{\psicstar}{{\psic}^{*}}
+  \newcommand{\psictildei}{{\tilde\psi^c_i}}
+
+  \newcommand{\psistar}{\psi^{*}}
+
+  \newcommand{\phie}{\phi^{\e}}
+  \newcommand{\phiea}{\phi^{\e}_{\alpha}}
+  \newcommand{\phieDelta}{\XDelta{\phi}^{\e}}
+  \newcommand{\phieDeltaa}{{\XDelta{\phi}^{\e}}_{\alpha}}
+  \newcommand{\phieDeltaas}{{\XDelta{\phi}^{\e}}_{\alpha}^{*}}
+  \newcommand{\phieDeltas}{\XDelta{\phi}^{\e*}}
+  \newcommand{\phies}{\phi^{\e*}}
+  \newcommand{\phiJJ}{\phi^{\JJ}}
+  \newcommand{\phiJJa}{\phi^{\JJ}_{\alpha}}
+  \newcommand{\phiJJDelta}{\XDelta{\phi}^{\JJ}}
+  \newcommand{\phiJJDeltaa}{{\XDelta{\phi}^{\JJ}}_{\alpha}}
+  \newcommand{\phiJJDeltaas}{{\XDelta{\phi}^{\JJ}}_{\alpha}^{*}}
+  \newcommand{\phiJJDeltas}{{\XDelta{\phi}^{\JJ*}}}
+  \newcommand{\phiJJs}{\phi^{\JJ*}}
+  \newcommand{\phimmDelta}{\XDelta{\phi}^{\mm}}
+  \newcommand{\phimmDeltaa}{{\phimmDelta}_{\alpha}}
+  \newcommand{\phiR}{\phi^{\R}}
+  \newcommand{\phiRa}{\phi^{\R}_{\alpha}}
+  \newcommand{\phiRDelta}{\XDelta{\phi}^{\R}}
+  \newcommand{\phiRDeltaa}{{\XDelta{\phi}^{\R}}_{\alpha}}
+  \newcommand{\phiRDeltaas}{{\XDelta{\phi}^{\R}}_{\alpha}^{*}}
+  \newcommand{\phiRs}{\phi^{\R*}}
+  \newcommand{\phiRDeltas}{\XDelta{\phi}^{\R*}}
+  \newcommand{\phiRRDelta}{\XDelta{\phi}^{\RR}}
+  \newcommand{\phiRRDeltaa}{{\XDelta{\phi}^{\RR}}_{\alpha}}
+  \newcommand{\phixiDeltaa}{\phi^{\xi}_{\sDelta\alpha}}
+
+  \newcommand{\piDelta}{\XDelta{\pi}}
+  \newcommand{\PiDeltaa}{\XDeltaa{\Pi}}
+  \newcommand{\piDeltas}{\XDeltas{\pi}}
+  \newcommand{\piDeltaa}{\XDeltaa{\pi}}
+  \newcommand{\piDeltaas}{\XDeltaas{\pi}}
+  \newcommand{\PiDelta}{\XDelta{\Pi}}
+  \newcommand{\PiDeltas}{\XDeltas{\Pi}}
+  \newcommand{\piDeltaO}{\XDelta{\pi}^0}
+  \newcommand{\PiDeltaO}{\XDelta{\Pi}^0}
+  \newcommand{\piDeltaOa}{{\XDelta{\pi}^0}_{\alpha}}
+  \newcommand{\PiDeltaOa}{{\XDelta{\Pi}^0}_{\alpha}}
+  \newcommand{\PiDeltaxi}{\XDelta{\Pi}^{\xi}}
+  \newcommand{\picDelta}{\XDelta{\pi}^{\c}}
+  \newcommand{\picDeltaa}{{\XDelta{\pi}^{\c}}_{\alpha}}
+  \newcommand{\pieDelta}{\XDelta{\pi}^{\e}}
+  \newcommand{\pieDeltas}{\XDelta{\pi}^{\e*}}
+  \newcommand{\pieDeltaa}{{\XDelta{\pi}^{\e}}_{\alpha}}
+  \newcommand{\pimDelta}{\XDelta{\pi}^{\m}}
+  \newcommand{\pimDeltaa}{{\XDelta{\pi}^{\m}}_{\alpha}}
+  \newcommand{\pixiDelta}{\XDelta{\pi}^{\xi}}
+  \newcommand{\pimuDelta}{\XDelta{\pi}^{\mu}}
+  \newcommand{\pimuDeltaa}{{\pimuDelta}_{\alpha}}
+
+  \newcommand{\Powext}{\Pow^{\rm ext}}
+  \newcommand{\PowextDelta}{\Pow^{\rm ext}_{\sDelta}}
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\rc}{r^c}
+\newcommand{\rca}{r^c_\alpha}
+\newcommand{\RDeltai}{\XDeltai{R}}
+\newcommand{\RDeltar}{R_{\sDelta r}}
+\newcommand{\ReDelta}{R^\e_\sDelta}
+\newcommand{\rhoe}{\rho^\e}
+\newcommand{\rhoeO}{\rho^\e_\circ}
+\newcommand{\rhoeOn}{\rho^\e_{\circ \n}}
+\newcommand{\rhomO}{\rho^\m_\circ}
+\newcommand{\rhot}{\rho^{\rm tot}}
+\newcommand{\RT}{\bar{R}T}
+\newcommand{\RRa}{\RR_\alpha}
+\newcommand{\RRDelta}{\XDelta{\RR}}
+\newcommand{\RRDeltai}{\XDeltai{\RR}}
+\newcommand{\RRDeltaia}{\XDeltaia{\RR}}
+\newcommand{\RRulDelta}{\smash{\XDelta{\RRul}}}
+\newcommand{\RRulDeltaa}{\smash{\RRulDelta}_{\alpha}}
+\newcommand{\Rula}{\Rul_{\alpha}}
+\newcommand{\RulDelta}{\XDelta{\Rul}}
+\newcommand{\RulDeltaa}{\XDeltaa{\Rul}}
+\newcommand{\Rull}{\underline{\underline{R}}}
+\newcommand{\rxi}{r^{\xi}}
+
+\newcommand{\Omeganord}{\Omega^{\circ}}
+\newcommand{\Omeganordi}{\Omega^{\circ}_i}
+\newcommand{\Omeganordula}{\smash{\underline{\Omega}}^{\circ}_{\alpha}}
+
+
+\newcommand{\xiab}{\tilde\xi_{\alpha\beta}}
+\newcommand{\xiadot}{\dot{\xi}_{\alpha}}
+\newcommand{\Xibu}{\underline{\bar{\Xi}}}
+\newcommand{\xichi}{{\xi^{\chi}}}
+\newcommand{\xichia}{\xi^{\chi}_{\alpha}}
+\newcommand{\xichiatilde}{\smash{\tilde\xi}^{\chi}_{\alpha}}
+\newcommand{\xichib}{\xi^{\chi}_{\beta}}
+\newcommand{\xichiO}{{\xi^{\chi}_{0}}}
+\newcommand{\xichiul}{\underline{\xi}^{\chi}}
+\newcommand{\xin}{\xi_{\n}}
+\newcommand{\xina}{{\xin}_{\alpha}}
+\newcommand{\xiO}{\xi_0}
+
+%% DERIVATIVES, INTEGRALS, SUMS
+\newcommand{\dc}{\partial_{c}}
+\newcommand{\dca}{\partial_{\ca}}
+\newcommand{\dCa}{\partial_{\Ca}}
+\newcommand{\dCC}{\partial_{\CC}}
+\newcommand{\dCCma}{\partial_{\CCma}}
+\newcommand{\dCi}{\partial_{C_i}}
+\newcommand{\dCul}{\partial_{\Cul}}
+\newcommand{\dCula}{\partial_{\Cula}}
+\newcommand{\dci}{\partial_{\ci}}
+\newcommand{\dcj}{\partial_{\cj}}
+\newcommand{\dck}{\partial_{\ck}}
+\newcommand{\dcl}{\partial_{\cl}}
+\newcommand{\dchiul}{\partial_{\chiul}}
+\newcommand{\dchiula}{\partial_{\chiula}}
+\newcommand{\dcia}{\partial_{\cia}}
+\newcommand{\dCt}{\partial_{\Ct}}
+\newcommand{\dCta}{\partial_{\Cta}}
+\newcommand{\dcul}{\partial_{\cul}}
+\newcommand{\dcula}{\partial_{\cula}}
+\newcommand{\dEE}{\partial_{\EE}}
+\newcommand{\dGG}{\partial_{\GG}}
+\newcommand{\dGGul}{\partial_{\GGul}}
+\newcommand{\dJc}{\partial_{\Jc}}
+\newcommand{\dJJ}{\partial_{\JJulDelta}}
+\newcommand{\dJJul}{\partial_{\JJulDelta}}
+\newcommand{\dJJi}{\partial_{\JJDeltai}}
+\newcommand{\dm}{\partial_m}
+\newcommand{\dmm}{\partial_{\mm}}
+\newcommand{\dmmul}{\partial_{\mmul}}
+\newcommand{\dmmule}{\partial_{\mmule}}
+\newcommand{\dmu}{\partial_{\mu}}
+\newcommand{\dmuul}{\partial_{\muul}}
+\newcommand{\dRul}{\partial_{\Rul}}
+\newcommand{\dRulDelta}{\partial_{\RulDelta}}
+\newcommand{\dRr}{\partial_{R_r}}
+\newcommand{\Dull}{\underline{\Dul}}
+\newcommand{\duu}{\partial_{\uu}}
+\newcommand{\dxi}{\partial_{\xi}}
+\newcommand{\dxichi}{\partial_{\xichi}}
+\newcommand{\dxichiul}{\partial_{\xichiul}}
+\newcommand{\dxia}{\partial_{\xia}}
+
+\newcommand{\ddmmiJJk}{\partial_{\mmi\JJDeltak}}
+\newcommand{\ddJJkJJl}{\partial_{\JJDeltak\JJDeltal}}
+\newcommand{\ddJJlmmj}{\partial_{\JJDeltal\mmj}}
+
+\newcommand{\ddCaiCai}{\partial_{\Cai\Cai}}
+\newcommand{\ddcc}{\partial_{cc}}
+\newcommand{\ddCCmaCCma}{\partial_{\CCma\CCma}}
+\newcommand{\ddcici}{\partial_{\ci\ci}}
+\newcommand{\ddcicj}{\partial_{\ci\cj}}
+\newcommand{\ddciJJj}{\partial_{\ci\JJDeltaj}}
+\newcommand{\ddciacia}{\partial_{\cia\cia}}
+\newcommand{\ddcIcI}{\partial_{\cI\cI}}
+\newcommand{\ddckcl}{\partial_{\ck\cl}}
+\newcommand{\ddcOcO}{\partial_{\cO\cO}}
+\newcommand{\ddCtchiul}{\partial_{\Ct\chiul}}
+\newcommand{\ddCulaCula}{\partial_{\Cula\Cula}}
+\newcommand{\ddculcul}{\partial_{\cul\cul}}
+\newcommand{\ddculJJul}{\partial_{\cul\JJulDelta}}
+\newcommand{\ddculmu}{\partial_{\cul\mu}}
+\newcommand{\ddculmuul}{\partial_{\cul\muul}}
+\newcommand{\dDD}{\partial_{\DD}}
+\newcommand{\ddGGGG}{\partial_{\GG\GG}}
+\newcommand{\dJJe}{\partial_{\JJeDelta}}
+\newcommand{\ddJJiJJj}{\partial_{\JJDeltai\JJDeltaj}}
+\newcommand{\ddJJulci}{\partial_{\JJulDelta\ci}}
+\newcommand{\ddJJulcul}{\partial_{\JJulDelta\cul}}
+\newcommand{\ddJJulJJul}{\partial_{\JJulDelta\JJulDelta}}
+\newcommand{\ddJJulmmul}{\partial_{\JJulDelta\mmul}}
+\newcommand{\ddmmmm}{\partial_{\mm\mm}}
+\newcommand{\ddmmulmmul}{\partial_{\mmul\mmul}}
+\newcommand{\ddmmimmj}{\partial_{\mmi\mmj}}
+\newcommand{\ddmmulJJul}{\partial_{\mmul\JJulDelta}}
+\newcommand{\ddmmxi}{\partial_{\mm\xi}}
+\newcommand{\ddmucul}{\partial_{\mu\cul}}
+\newcommand{\ddmuulcul}{\partial_{\muul\cul}}
+\newcommand{\ddmuulmuul}{\partial_{\muul\muul}}
+\newcommand{\ddmuxi}{\partial_{\mu\xi}}
+\newcommand{\ddxichixi}{\partial_{\xichi\xi}}
+\newcommand{\ddxichixichi}{\partial_{\xichi\xichi}}
+\newcommand{\ddximm}{\partial_{\xi\mm}}
+\newcommand{\ddximu}{\partial_{\xi\mu}}
+\newcommand{\ddxixi}{\partial_{\xi\xi}}
+\newcommand{\ddxixichi}{\partial_{\xi\xichi}}
+
+\newcommand{\Gradxichia}{\Gradd\big(\xichia\big)}
+\newcommand{\Gradxichib}{\Gradd\big(\xichib\big)}
+\newcommand{\Gradxichiu}{\Gradd\big(\xichiu)}
+
+\newcommand{\infc}{\inf_{\cul}}
+\newcommand{\infca}{\inf_{\ca}}
+\newcommand{\infcula}{\inf_{\cula}}
+\newcommand{\infJ}{\inf_{\Jul}}
+\newcommand{\infJJ}{\inf_{\JJul}}
+\newcommand{\infJJa}{\inf_{\JJa}}
+\newcommand{\infu}{\inf_{\uu\in\kappau}}
+\newcommand{\infxi}{\inf_{\xi}}
+\newcommand{\infxichi}{\inf_{\xichi}}
+\newcommand{\infxic}{\inf_{\substack{c \\ \xi\in[0,1]}}}
+\newcommand{\supJ}{\sup_{\JJDelta\in\kappaJ}}
+\newcommand{\supmu}{\sup_{\muul}}
+
+\newcommand{\intVO}{\intclap{V_0}}
+\newcommand{\intdVO}{\intclap{\partial V_0}}
+\newcommand{\intdVOe}{\intclap{\partial V_{0\e}}}
+\newcommand{\intdVOJ}{\intclap{\partial V_{0J}}}
+\newcommand{\intdVOt}{\intclap{\partial V_{0\t}}}
+\newcommand{\intdVOXi}{\intclap{\partial V_{0\Xi}}}
+\newcommand{\intdVOx}[1]{\intclap{\partial V_{0 \rm #1}}}
+
+\newcommand{\sumabO}{\sum_{\alpha,\beta=0}^{N}}
+\newcommand{\sumabI}{\sum_{\alpha,\beta=1}^{N}}
+\newcommand{\sumaO}{\sumalphaOto{N}}
+\newcommand{\sumba}{\sum_{\beta=\alpha+1}^{N}}
+\newcommand{\sumcI}{\sumgammato{N}}
+\newcommand{\sumiI}{\sum_{i=1}^{\Ns}}
+\newcommand{\sumiO}{\sum_{i=0}^{\Ns}}
+\newcommand{\sumjI}{\sum_{j=1}^{\Ns}}

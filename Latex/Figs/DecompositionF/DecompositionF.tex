@@ -12,7 +12,7 @@
 \begin{document}
   \begin{tikzpicture}[>=Latex]
 
-  \begin{scope}[scale=0.4] 
+  \begin{scope}[scale=0.4,shift={(20,0)}] 
     \draw[rounded corners=15pt,gray2,thick] (-2.2,6.2) coordinate(a) rectangle (17.2,-7.8);
 
     \draw[thick,->] plot[smooth,tension=0.9,shift={(1.5,-1)}] coordinates {(0,0)(0.5,-1.5)(1.5,-3)};
@@ -64,12 +64,12 @@
       \node at (l3){\large Intermediate config.};
       \node at (fe){\Large $\FF^\e$};
       \node at (fp){\Large $\FF^\p$};
-      \node[above right] at (a){\large {\bf (a)} Crystal plasticity};
+      \node[above right] at (a){\large {\bf (b)} Crystal plasticity};
       \node[above] at (ff){\Large $\FF$};
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-    \begin{scope}[scale=0.4,shift={(20,0)}]
+    \begin{scope}[scale=0.4,shift={(0,0)}]
 
       \coordinate (l1) at (2.3,5.3); 
       \coordinate (l2) at (13.2,5.3); 
@@ -94,7 +94,7 @@
     \node at (fe){\Large $\FF^\e$};
     \node at (fp){\Large $\FF^\c$};
     \node[above] at (ff){\Large$\FF$};
-    \node[above right] at (a){\large {\bf (b)} Isotropic chemical swelling};
+    \node[above right] at (a){\large {\bf (a)} Isotropic chemical swelling};
 
   \end{tikzpicture}
 \end{document} 
