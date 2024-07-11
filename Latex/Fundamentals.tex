@@ -65,7 +65,7 @@ The shear deformation rates $\nuab$ and $\nub$ depend on the stress and are mate
 To be consistent with fundamental principles from physics and thermodynamics, balance laws are used, which have always a similar structure. This is examplary shown for an arbitrary quantity $Z$. The rate of change of $Z$ depends on the external supply and internal sources. The corresponding balance equation can be given in integral form or equivalently in the local form as:
 \begin{align}
   \dot Z  \ = \ \underbrace{ \intVO \dot z \dV}_{\mathclap{\text{Rate of change}}} \ = \ \underbrace{\intdVO -\JJ^{\z} \cdot \NN\dA}_{\text{External supply}} + \underbrace{\intVO \omega^{\z} \dV}_{\mathclap{\text{Internal sources}}} 
-  \qquad \Leftrightarrow \qquad \dot z = \Div(\JJ^{\z}) + \omega^{\z}
+  \qquad \Leftrightarrow \qquad \dot z = -\Div(\JJ^{\z}) + \omega^{\z}
   \label{eq:balanceZ}
 \end{align} 
 where, $z$ is the volume density, $\JJ^\z$ is the current density and $\omega^\z$ is the internal source density of $Z$ and $\NN$ is the surface normal of the surface increment $\d A$. Here and in the following, the Lagrangian formulation is used, corresponding to a description in the reference configuration, which means densities are given per unit reference volume or reference area. The transformation from the integral form to the local form uses the divergence theorem and the argument that the balance must hold for an arbitrary volume. A graphical interpretation of \cref{eq:balanceZ} is given in \cref{fig:Balance}.
@@ -186,6 +186,13 @@ where, $R$ is the gas constant and $\chi$ is the molar fraction we obtain
 which is always true since $R$, $T$, $D$ and $c$ are always positive.
 
 \subsubsection{Crystal plasticity including twinning}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics*[]{Figs/MgPlas/MgPlas.pdf}
+  \caption{}
+  \label{fig:MgPlas}
+\end{figure}
 
 \begin{align}
   \SS = \CCCC:\EEe
