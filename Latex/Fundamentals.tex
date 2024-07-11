@@ -28,6 +28,7 @@ Since deformation can have different origins and mechanisms, it often makes sens
 Here, $\II$ is the identity tensor and $J^\c(C)=\det{\FF^\c}$ is the concentration dependent determinant of the chemical deformation. In crystal plasticity on the other hand, the deformation is usually decomposed into an elastic part and an irreversible plastic part, where the plastic part is assumed to be a volume conserving shear deformation:
 \begin{align}
   \FF = \FF^\e\FF^\p \qquad \text{with}\qquad \det\FFp = 1
+  \label{eq:FFeFFp}
 \end{align}
 This opens the possibility to define an intermediate configuration which can be interpreted as the configuration of a virtual elastic unloading i.e. the deformation that would be obtained if the stress was elastically released to get a stress free state. A graphical interpretation for the two decompositions and the intermediate configuration can be found in Figure~\ref{fig:DecompositionF}. 
 \begin{figure}[h!]
@@ -37,29 +38,11 @@ This opens the possibility to define an intermediate configuration which can be 
   \label{fig:DecompositionF}
 \end{figure}
 
- For rate dependent crystal plasticity, we then obtain the decomposition of the deformation rate given by the velocity gradient as follows:
+ For rate dependent material behavior, the decomposition of the velocity gradient follows from the decomposition of the deformation gradient and in case of \cref{eq:FFeFFp} this leads to:
 \begin{align}
   \ll = \FFedot\FFeinv + \FFe \FFpdot \FFpinv \FFeinv = \lle + \FFe\LLp\FFeinv.
 \end{align}
-The plastic deformation can now be described in the intermediate configuration. The advantage is that elastic distortions and rotations do not have to be considered in this configuration and therefore the lattice has a well defined orientation. The plastic deformation mechanisms slip and twinning can both be described by a direction $\dd$ and a plane with normal $\nn$ leading to a volume conserving shear deformation (see \cref{fig:CrystalPlasticity} a). This means, that although the mechanisms are profoundly different they can be treated mathematically similar. The velocity gradient in the intermediate configuration for a slip system or for a twinning systems is given by:
-\begin{align}
-  \LLp = \dot\gamma \, \dd\otimes\nn = \dot\gamma\,\MM
-\end{align}
-where $\MM=\dd\otimes\nn$ is the slip/twinning system and $\dot\gamma$ is the shear deformation rate. Although both deformation mechanisms are treated similarly, one key difference is that slip preserves the lattice orientation but can lead to arbitrary deformation angles and twinning leads to a rotation of the lattice but by a well defined angle. This means that a twinned region has its slip and twinning systems rotated by a defined angle (see \cref{fig:CrystalPlasticity} b). \\ 
-\begin{figure}[h!]
-  \centering
-  \includegraphics[width=0.75\textwidth]{Figs/CrystalPlasticity/CrystalPlasticity.pdf}
-  \caption{(a) Slip and twinning can be treated mathematically similar and (b) twinning leads to rotation of the lattice which gives rotated slip and twinning systems.}
-  \label{fig:CrystalPlasticity}
-\end{figure}
-
-In some metals such as Magnesium, twinning is a pronounced deformation mechanism, which means the reorientation of the lattice and slip deformation in newly formed twins can not be neglected. To accurately model the rotation of the lattice it is possible to assign volume fractions to assign volume fractions. Starting 
-\begin{equation}
-  \LLp = \underbrace{\sumbO \cb \sumaI \nuab \MMab}_{\text{slip}} + \underbrace{\sumbI \nub \MMb}_{\text{twinning}}.
-  \label{eq:LLp}
-\end{equation}
-The shear deformation rates $\nuab$ and $\nub$ depend on the stress and are material dependent.
-
+This enables to describe the plastic deformation in the intermediate configuration, which has the advantage that elastic distortions and rotations do not have to be considered and the crystal lattice therefore has a well defined orientation.
 
 \subsection{Balances and Thermodynamic Consistency}
 To be consistent with fundamental principles from physics and thermodynamics, balance laws are used, which have always a similar structure. This is examplary shown for an arbitrary quantity $Z$. The rate of change of $Z$ depends on the external supply and internal sources. The corresponding balance equation can be given in integral form or equivalently in the local form as:
@@ -154,24 +137,29 @@ Using the definition for free energy densitiy $\psi=\rho_0(e-sT)$, for chemical 
 
 At this point it is necessary to define functions for the expressions given in the dissipation equation. These functions will define the material behavior and are therefore called material laws. 
 
-\subsection{Material laws}
-The three models in this thesis 
+\subsection{Materials}
+In this section the material laws used in the presented articles are explained further and related 
 
 \subsubsection{Diffusion Controlled Drug Delivery System}
+The choice of the material law for the drug delivery system is based on a few assumptions which are shortly explained here. The drug delivery system investigated in this thesis is schematically depicted in \cref{fig:DDS}
+\begin{figure}[h!]
+  \caption{}
+  \label{fig:DDS}
+\end{figure}
 
-As the material law we assume Fick's first law for one dimension:
+The systems has a drug loaded reservoir which is connected to the outside by a microchannel interpenetrated membrane. It is assumed that the channels can be approximated by a network of tubes, where each tube has a constant cross sectional area. With these assumptions it is possible to describe the microchannels as a three dimensional network of one dimensional interconnections. Further it is assumed that diffusion is the only release mechanism and that the diffusion can be describes by Fick's law, which is given for one dimension by: 
 \begin{align}
-  j = -D \ \frac{\partial c}{\partial x} 
+  j = -D \ \frac{\partial c}{\partial x},
 \end{align}
-where $c$ is the concentration, $j$ is the current density and $x$ is the position. Since deformations are not considered in this case the current configuration is equivalent to the reference configuration. The balance equation for the diffusing species (compare \cref{eq:balanceC}) in one dimension is given by:
+where $c$ is the concentration, $j$ is the current density, $x$ is the position and $D$ is the material dependent diffusion coefficient. Since deformations are not considered in this case, the current configuration is equivalent to the reference configuration. Inserting the material law into the balance equation for the diffusing species (compare \cref{eq:balanceC})
 \begin{align}
   \dot c = - \frac{\partial j}{\partial x}
 \end{align}
-where $D$ is the Diffusion coefficient which is assumed constant. Inserting the material law into the balance equation gives Fick's second law and the partial differential equation to be solved: 
+Fick's second law is obtained: 
 \begin{align}
   \dot c = D \frac{\partial^2 c}{\partial x^2}.
 \end{align}
-Since it is not discussed in the article, it should be said here that of course Fickean diffusion also satisfies the dissipation equation (compare \cref{eq:dissipation}) which reads for one dimension considering only diffusion of one species.
+The solution of this partial differential equation is obtained by the finite element method (FEM) and given in detail in the article in \hl{Section 3}. Since it is not discussed in the article, it should be said here that of course Fickean diffusion also satisfies the dissipation equation (compare \cref{eq:dissipation}) which reads for one dimension considering only diffusion of one species.
 \begin{align}
   \mathcal{D} = \mu \dot c - \frac{\partial \mu}{\partial x} \, j - \dot \psi \geq 0
 \end{align} 
@@ -186,44 +174,81 @@ where, $R$ is the gas constant and $\chi$ is the molar fraction we obtain
 which is always true since $R$, $T$, $D$ and $c$ are always positive.
 
 \subsubsection{Crystal plasticity including twinning}
-
+The aim of the crystal plasticity model is to predict the deformation and stress of a metallic material under mechanical load correctly. A possible schematic stress-strain diagram for such a material exhibiting easily activated twinning modes and an anisotropic grain orientation is depicted in \cref{fig:MgPlas}.
 \begin{figure}[h!]
   \centering
-  \includegraphics*[]{Figs/MgPlas/MgPlas.pdf}
+  \includegraphics*[width=0.95\textwidth]{Figs/MgPlas/MgPlas.pdf}
   \caption{}
   \label{fig:MgPlas}
 \end{figure}
 
+Initially, in the reversible elastic regime, a linear relation between stress and strain is observed. Upon reaching a certain threshold, irreversible plastic deformation starts. In case of twinning as the deformation mechanism, this plastic deformation can only continue until 100 \% of the material has twinned. At this point, again a reversible elastic regime is observed. Finally, upon reaching the threshold for slip deformation, again plastic flow occurs. Since twinning may significantly contribute to the deformation especially in hexagonal metals such as Magnesium, the model in this thesis considers both slip and twinning. Although the two mechanisms are profoundly different, mathematically they can be treated similar. Both can be described by a deformation direction $\dd$ and a plane with normal $\nn$ leading to a volume conserving shear deformation (see \cref{fig:CrystalPlasticity} a). 
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{Figs/CrystalPlasticity/CrystalPlasticity.pdf}
+  \caption{(a) Slip and twinning can be treated mathematically similar and (b) twinning leads to rotation of the lattice which gives rotated slip and twinning systems.}
+  \label{fig:CrystalPlasticity}
+\end{figure}
+
+Thus the plastic deformation rate, given by the velocity gradient in the intermediate configuration, is given for both mechanisms by:
 \begin{align}
-  \SS = \CCCC:\EEe
+  \LLp = \nu \, \dd\otimes\nn = \nu\MM
 \end{align}
+where $\MM=\dd\otimes\nn$ is the slip/twinning system and $\nu$ is the shear deformation rate. However, one key difference is that slip preserves the lattice orientation and can lead to arbitrary deformation angles while twinning results in a rotation of the lattice by a well defined angle. This means that inside a twinned region, the slip and twinning systems are also rotated by this angle (see \cref{fig:CrystalPlasticity} b). The overall deformation rate is obtained by a summation over all deformation velocity on all existing slip and twinning systems, where also slip in twins is accounted for by a volume fraction transfer scheme.  
+\begin{equation}
+  \LLp = \underbrace{\sumbO \cb \sumaI \nuab \MMab}_{\text{slip}} + \underbrace{\sumbI \nub \MMb}_{\text{twinning}}.
+\end{equation}
+Here $\cb$ are the volume fraction for the twinning mode and $\beta=0$ denotes the initial parent phase. The shear deformation rates $\nuab$ and $\nub$ depend on the stress state and are of course also material dependent. The stress is assumed to be given by the three dimensional Hooke's law
+\begin{align}
+  \SSe = \CCCC:\EEe
+\end{align}
+where $\SSe$ is the second Piola-Kirchhoff stress tensor in the intermediate configuration, \mbox{$\EEe=\half(\FFeT\FFe-\II)$} is the Green-Lagrange strain tensor of the intermediate configuration and $\CCCC$ is the material dependent fourth order stiffness tensor. For the shear rates a power law of the following form is assumed:
+\begin{align}
+    \nu = \sign{\tau} \nu_0 \left( \frac{\abs{\tau}}{\tau^\c} \right)^{p}
+    \label{eq:powerlaw}
+\end{align}
+The dissipation equation for the purely mechanical case reads:
+\begin{align} 
+  \mathcal{D} = \PP:\dot\FF - \dot\psi \geq 0
+\end{align}
+and is in detail discussed in the article in Section \hl{4}. 
+
 
 \subsubsection{Electro-Chemo-Mechanical Degradation}
+The processes considered for the degradation of a metallic material in a corrosive medium are schematically depicted in \cref{fig:Corrosion}.
+\begin{figure}[h!]
+  \centering
+  \includegraphics*[width=0.95\textwidth]{Figs/Corrosion/Corrosion.pdf}
+  \caption{}
+  \label{fig:Corrosion}
+\end{figure}
 
-
-
-
-In the multi-component case 
+In the beginning the metal and medium are in contact and chemical reactions can take place at the interface. A corrosion layer forms which separates the medium and metal from each other. This corrosion layer is assumed to be a new phase with different properties. In general it does not have the same volume which may lead to mechanical stresses. Further it is assumed to be permeable for ions but in general can be non-conducting for electrons, which means that diffusion of ions through the membrane may lead to electric fields forming across the interface. Finally, the degradation of the implant can take place by the corrosion layer growing into the metal while dissolving into the medium. The driving force for the multi-component diffusion are given by the gradient in electro-chemical potential:
 \begin{align}
   \jj_i = -\sum_j D_{ij} \, \grad{\mu_j^\e}
 \end{align}
-
-\begin{align}
-  \ssigma^\m = 
-\end{align}
-
-\begin{align}
-  p = -\third\trace\ssigma^\m
-\end{align}
-
+The chemical potential $\mu_i$ is assumed to be given by the law for an ideal mixture: 
 \begin{align}
   \mu_i = \munordi + RT \ln{\chi_i}
 \end{align}
+The material is assumed to be isotropic, thus the mechanical stress $\ssigma^\m$ is given by the isotropic Neo-Hookean model: 
+\begin{align}
+  \ssigma^\m = 
+\end{align}
+where
+The change of concentration leads to an isotropic mechanical swelling, influencing the pressure given by:  
+\begin{align}
+  p = -\third\trace\ssigma^\m
+\end{align}
+where 
+
 
 \begin{align}
-  \DD = -\epsilon \, \grad \varphi
+  \tilde\DD = -\epsilon \, \grad \varphi
 \end{align}
 
+Electric currents due to electrons are assumed to follow Ohm's law:
 \begin{align}
   \jj^\e = -\ssigma^\e \, \grad \varphi
 \end{align}
+The dissipation equation is ensured by using the potential based variational framework of generalized standard materials.  

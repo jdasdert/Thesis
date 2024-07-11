@@ -1,0 +1,80 @@
+\documentclass{standalone}
+
+\usepackage{tikz,tikz-3dplot,pgfplots,xcolor}
+\usetikzlibrary{arrows.meta,calc}
+\usetikzlibrary{decorations.markings}
+
+\input{../../Include/formula.tex}
+
+%\pgfplotsset{compat=1.18} 
+\definecolor{blue1}{rgb}{0.88,0.88,0.98}
+\definecolor{blue2}{rgb}{0.18,0.18,0.78}
+\definecolor{blue3}{rgb}{0.28,0.28,0.68}
+\definecolor{gray0}{rgb}{0.98,0.98,0.98}
+\definecolor{gray1}{rgb}{0.8,0.8,0.8}
+\definecolor{gray2}{rgb}{0.7,0.7,0.7}
+\definecolor{gray3}{rgb}{0.6,0.6,0.6}
+\definecolor{gray4}{rgb}{0.4,0.4,0.4}
+\definecolor{gray5}{rgb}{0.25,0.25,0.25}
+\definecolor{gray6}{rgb}{0.1,0.1,0.1}
+
+\begin{document}
+
+  \begin{tikzpicture}[>=Latex
+    ]
+    \path[fill=gray1] (0,0) rectangle ++(3,4);
+    \path[fill=blue1] (0,4) rectangle ++(3,2);
+    \path[fill=gray1] (3,0) rectangle ++(4.2,4);
+    \path[fill=blue1] (3,4) rectangle ++(4.2,2);
+    \path[fill=gray3] (3,2.5) rectangle ++(4.2,1.7);
+    \path[fill=gray1] (7.2,0) rectangle ++(3,1.8);
+    \path[fill=gray3] (7.2,1.8) rectangle ++(3,1.7);
+    \path[fill=blue1] (7.2,3.5) rectangle ++(3,2.5);
+    \draw[dashed](3,0)--++(0,6);
+    \draw[dashed](7.2,0)--++(0,6);
+    \draw[<-] (1.5,4) --++ (-0.3,-0.4) node[below,align=center]{Chemical\\Reactions};
+    \node[gray5] at (1.5,2){Metal};
+    \node[blue2] at (1.5,5){Medium};
+    \node[gray6,align=center] at (4,3.6){Corrosion\\layer};
+
+
+    \begin{scope}[shift={(5.8,3.75)}]
+      \path[fill,blue3] (0,0) circle (3pt) node[white,shift={(0.2pt,0.1pt)}]{\bf\footnotesize -};
+      \path[fill,gray1] (-0.5,-0.2) coordinate(co1) circle (3pt) node[black]{\bf \tiny +};
+      \path[fill,blue3] (-0.4,-0.7) coordinate(co2) circle (3pt) node[white,shift={(0.2pt,0.1pt)}]{\bf\footnotesize -};
+      \path[fill,gray1] (-0.05,-0.8) circle (3pt) node[black]{\bf \tiny +}; 
+      \draw[ultra thick,->,gray2] ($(co1)+(0,0.2)$)--++(0,1);
+      \draw[ultra thick,->,blue3] ($(co2)+(0,-0.2)$)--++(0,-1);
+    \end{scope} 
+
+    \begin{scope}[shift={(3.3,2)},scale=0.7]
+      \draw[white,thick] (0,0) --++ (1.5,0);
+      \draw[white,thick] (0,0.5) --++ (1.5,0);
+      \draw[white,thick] (-0.15,1.05) --++ (1.8,0);
+      \draw[white,thick] (-0.15,1.65) --++ (1.8,0);
+      \draw[white,thick] (0,0) -- (0,0.5) -- (-0.15,1.05)--(-0.15,1.65);
+      \draw[white,thick] (0.5,0) -- (0.5,0.5)--(0.45,1.05)--(0.45,1.65);
+      \draw[white,thick] (1,0) -- (1,0.5)--(1.05,1.05)--(1.05,1.65);
+      \draw[white,thick] (1.5,0) -- (1.5,0.5)--(1.65,1.05)--(1.65,1.65);
+    \end{scope}
+
+    \draw[<-] (3.8,2.5)--++(0.2,-0.8) node[align=center,below]{Mechanical\\stresses}; 
+    \draw[<-] (5.2,3.8)--++(-0.6,0.8) node[align=center,above]{Diffusion \\ of ions};
+    \draw[<-] (6.5,4.5)--++(-0.1,0.5) node[align=center,above]{Electric \\ fields};
+    \draw[->,red,ultra thick] (6.5,4.2) --++(0,-1.7) node[right,pos=0.5,black]{$\EE$}; 
+    \node at (6.5,4.35){\tiny \bf +\, + \,+};
+    \node at (6.5,2.35){\footnotesize \bf - \ - \ -};
+
+    \begin{scope}[shift={(8.6,4.5)}]
+      \path[fill,gray3] (0.8,-0.5) circle (3pt);
+      \path[fill,gray3] (-0.5,-0.2) coordinate(co1) circle (3pt);
+      \path[fill,gray3] (0.4,-0.4)  circle (3pt);
+      \path[fill,gray3] (-0.05,-0.8) circle (3pt); 
+      \path[fill,gray3] (-0.9,-0.5) circle (3pt); 
+      \draw[ultra thick,->,gray3] ($(co1)+(0,0.2)$)--++(0,1)node[right=0.15cm,black,align=center,pos=0.5]{Dissolution};
+      \draw[ultra thick,->,gray3] ($(co1)+(0,-2.6)$)--++(0,-1) node[right=0.15cm,black,align=center,pos=0.5]{Growth};
+    \end{scope} 
+   
+
+  \end{tikzpicture}
+\end{document} 
