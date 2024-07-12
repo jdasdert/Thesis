@@ -11,7 +11,8 @@ volume fraction transfer scheme for single \\ crystal plasticity including twinn
 
 This Chapter presents a model for single crystal plasticity mechanical deformation including plasticity by slip and twinning and secondary plasticity i.e. slip in newly formed twins. The model makes use of the multiplicative decomposition of the deformation gradient, uses a rate dependent power law for the plastic deformation and a volume fraction transfer scheme for the formation of twins. For the numerical treatment of the large amount of unknowns in the volume fraction transfer scheme, an efficient algorithm is introduced. The advantage of this approach is that twins don't need to be explicitly resolved which allows modelling on larger scales, which is important for investigating the structural behavior of medical implants. The result of the model is a highly anisotropic stress strain behavior, which is observable im metallic implant materials such as magnesium due to the hexagonal structure and the easily activated twinning modes. The model is tested in single crystal and polycrystal tension and compression simulations and compared to experimental results for magnesium and shows excellent agreement. \\
 
-The results have been published in the journal \textit{Numerical Methods in Engineering}. \\
+This article has been published in the \textit{International Journal of Numerical Methods in Engineering} as: \vspace{0.3cm}\\
+{\small\textbf{Jan Dittmann}, Stephan Wulfinghoff, "Efficient numerical strategies for an implicit volume fraction transfer scheme for single crystal plasticity including twinning and secondary plasticity on the example of magnesium". \textit{Int J Numer Methods Eng.}, (2023) 124(21):4718-4739.} \\
 
 \textbf{Own contribution to the presented article:}
 \begin{itemize}
@@ -160,7 +161,7 @@ In this work we present the algorithm for a fully implicit crystal plasticity fi
   \begin{minipage}{0.28\textwidth} 
       \captionsetup{width=\textwidth}   
        \caption{Elastic constants Mg \supercite{slutsky1957elastic}}
-       \begin{tabularx}{\textwidth}{ | l  Y | }
+       \begin{tabularx}{\textwidth}{  l  Y  }
            \hline
            \rowcolor{gray1}
            \ $C_{11}$ \ & 59.40 GPa \\
@@ -216,7 +217,7 @@ In this work we present the algorithm for a fully implicit crystal plasticity fi
     \caption{Slip/twinning systems, lattice parameters and twinning shear of magnesium}
     \begin{tabularx}{\textwidth}{c c}
       \hline
-      {\begin{tabular}[t]{| l Y Y Y |}
+      {\begin{tabular}[t]{ l Y Y Y | }
         \rowcolor{gray2}
         \textbf{Type} & \textbf{Plane} & \textbf{Direction} & \textbf{Systems} \\
         \hline
@@ -234,8 +235,8 @@ In this work we present the algorithm for a fully implicit crystal plasticity fi
         Compression twin & \plane{\ol{1}101} & \direction{1\ol{1}02} & 6 \\
       \end{tabular}}
       \setlength\tabcolsep{10pt}
-      {\begin{tabular}[t]{| c c |}
-        \rowcolor{gray2} \multicolumn{2}{|c|}{\textbf{Parameters}} \\\hline
+      {\begin{tabular}[t]{ | c c }
+        \rowcolor{gray2} \multicolumn{2}{|c}{\textbf{Parameters}} \\\hline
         \rowcolor{gray1}
         &\\
         \rowcolor{white}
@@ -290,7 +291,7 @@ In this work we present the algorithm for a fully implicit crystal plasticity fi
   \caption{Fitted model parameters}
   \begin{tabularx}{\textwidth}{c c}    
     \hline 
-    {\begin{tabular}[t]{| l Y Y Y Y |}
+    {\begin{tabular}[t]{ l Y Y Y Y | }
         \rowcolor{gray2}
         \textbf{Type} & \textbf{Index} & $h_0$ [MPa] & $\tauO$ [MPa] & $\taus$ [MPa] \\
         \hline
@@ -312,8 +313,8 @@ In this work we present the algorithm for a fully implicit crystal plasticity fi
         CT & CT & 5000 & 55 & - \\
     \end{tabular}} &
     \setlength\tabcolsep{15pt} 
-    {\begin{tabular}[t]{ | c  c |}
-        \rowcolor{gray2}\multicolumn{2}{|c|}{\textbf{Parameters}} \\
+    {\begin{tabular}[t]{ | c  c }
+        \rowcolor{gray2}\multicolumn{2}{|c}{\textbf{Parameters}} \\
         \hline
         \rowcolor{gray1}
         &\\
@@ -419,7 +420,7 @@ In this work we present the algorithm for a fully implicit crystal plasticity fi
   \begin{table}[h!]
     \centering
     \caption{Loading directions and constraints for single crystal compression cases A-G}
-    \begin{tabularx}{\textwidth}{|l Y Y Y Y Y Y c|}
+    \begin{tabularx}{\textwidth}{l Y Y Y Y Y Y c}
       \hline 
       \rowcolor{gray2}& \textbf{A} & \textbf{B} & \textbf{C} & \textbf{D} & \textbf{E} & \textbf{F} & \textbf{G}\\
       \hline
@@ -535,12 +536,12 @@ In this work we present the algorithm for a fully implicit crystal plasticity fi
     E(\nn) = \inv{\big((\nn \otimes \nn) : \SSSS : (\nn \otimes \nn)\big)}.
   \end{align}
   
-  The resulting 3D YMS-plot and the 2D projection onto the xz-plane, displayed in \cref{fig:YMS}(a) and (b), shows for Magnesium an almost spherical shape, indicating close to isotropic elastic behavior. Thus, it is not surprising, that the influence of the elastic energy change is negligibly small. The proportion of the elastic energy change in the total driving force for the single crystal simulations, depicted in \cref{fig:YMS}(c), is less than 2\% for all loading cases and therefore does not contribute significantly to the observed stress-strain behavior. However, for other materials, for example zinc, exhibiting a much higher elastic anisotropy (compare \authorcite{ledbetterElasticPropertiesZinc1977}), we expect the term to be relevant . 
+  The resulting 3D YMS-plot and the 2D projection onto the xz-plane, displayed in \cref{fig:YMS}a,b, shows for Magnesium an almost spherical shape, indicating close to isotropic elastic behavior. Thus, it is not surprising, that the influence of the elastic energy change is negligibly small. The proportion of the elastic energy change in the total driving force for the single crystal simulations, depicted in \cref{fig:YMS}c, is less than 2~\% for all loading cases and therefore does not contribute significantly to the observed stress-strain behavior. However, for other materials, for example zinc, exhibiting a much higher elastic anisotropy (compare \authorcite{ledbetterElasticPropertiesZinc1977}), we expect the term to be relevant . 
   
   
   \subsubsection{Evaluation of plastic incompressibility using midpoint rule}\label{sec:EvalIsoPlas} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   
-  To be consistent with the experimentally observed plastic incompressibility, appropriate time integration methods have been discussed by many authors\supercite{dafaliasPlasticSpinNecessity1998,ortizVariationalFormulationViscoplastic1999,motaLiegroupInterpolationVariational2013}. The midpoint rule from \authorcite{steimann1996numerical} used in this work (see \cref{sec:discMidPt}) in general does not exactly fulfill the plastic incompressibility condition $\det{\FFp}=1$. The development of $\det{\FFp}$ is shown in \cref{fig:detFFp}(a) for the single crystal compression simulations in \cref{sec:SCcompression} and in (b) for the maximum and minimum values of $\det{\FFp}$ for the polycrystal compression simulations in \cref{sec:PCcompression}. The deviations from 1 are for all cases in the order of $10^{-8}$ which we consider sufficiently close to the isochoric case. 
+  To be consistent with the experimentally observed plastic incompressibility, appropriate time integration methods have been discussed by many authors\supercite{dafaliasPlasticSpinNecessity1998,ortizVariationalFormulationViscoplastic1999,motaLiegroupInterpolationVariational2013}. The midpoint rule from \authorcite{steimann1996numerical} used in this work (see \cref{sec:discMidPt}) in general does not exactly fulfill the plastic incompressibility condition \mbox{$\det{\FFp}=1$}. The development of $\det{\FFp}$ is shown in \cref{fig:detFFp}a for the single crystal compression simulations in \cref{sec:SCcompression} and in \cref{fig:detFFp}b for the maximum and minimum values of $\det{\FFp}$ for the polycrystal compression simulations in \cref{sec:PCcompression}. The deviations from 1 are for all cases in the order of $10^{-8}$ which we consider sufficiently close to the isochoric case. 
   
   \begin{figure}[!ht]
     \centering
