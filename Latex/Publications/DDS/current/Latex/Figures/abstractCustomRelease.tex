@@ -1,0 +1,30 @@
+\documentclass{standalone}
+
+\usepackage{tikz,pgfplots,textcomp}
+\usetikzlibrary{calc,arrows.meta}
+
+\begin{document}
+  \begin{tikzpicture}[>=Latex]
+
+    \input{sub/stdSettings.tex}
+
+    \coordinate (c) at (0,0);
+    \begin{axis} 
+      [
+        at={(c)},
+        width=\plotwidth, height=\plotheight,
+        xmin=0, xmax=800, ymin=0, ymax=7, 
+        xlabel={Time [h]}, 
+        ylabel={Concentration [\textmu M]}
+      ]
+      \input{sub/flowRelease_plot.tex}
+
+      \node[color=clr1,circle,draw, inner sep=1pt,line width=1] at ($(p1)+(0.08\plotwidth,0.55\plotheight)$){\bf\large 1};
+      \node[color=clr2,circle,draw, inner sep=1pt,line width=1] at ($(p1)+(0.08\plotwidth,0.37\plotheight)$){\bf\large 2};
+      \node[color=clr3,circle,draw, inner sep=1pt,line width=1] at ($(p1)+(0.08\plotwidth,0.18\plotheight)$){\bf\large 3};
+      \node[color=clr4,circle,draw, inner sep=1pt,line width=1] at ($(p1)+(0.5\plotwidth,0.55\plotheight)$){\bf\large 4};
+      \node[color=clr5,circle,draw, inner sep=1pt,line width=1] at ($(p1)+(0.6\plotwidth,0.85\plotheight)$){\bf\large 5};
+    \end{axis}
+
+  \end{tikzpicture}
+\end{document}

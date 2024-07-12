@@ -1,0 +1,52 @@
+\documentclass{standalone}
+
+\usepackage{tikz,pgfplots,textcomp}
+\usetikzlibrary{calc,shapes.arrows,arrows.meta,decorations.pathreplacing}
+
+\begin{document}
+  \begin{tikzpicture}[>=Latex]
+
+    \input{sub/stdSettings.tex}
+
+    \definecolor{lblue2}{rgb}{0.2,0.2,0.9}
+    \definecolor{dgreen}{rgb}{0,0.7,0}
+
+    \setlength\wdth{5.5cm}
+    \coordinate (c1) at (1\wdth,1.25\wdth);
+    \coordinate (c2) at ($(c1)+(0.8\wdth,0.25\wdth)$);
+    \coordinate (c3) at ($(c1)+(0.8\wdth,-0.25\wdth)$);
+
+    \coordinate (c4) at (0.2\wdth,-0.1\wdth);
+    \coordinate (c5) at ($(c4)+(0,-0.7\wdth)$);
+    \coordinate (c6) at ($(c4)+(0.55\wdth,0)$);
+    \coordinate (c7) at ($(c6)+(0,-0.7\wdth)$);
+    \coordinate (c8) at ($(c6)+(0.55\wdth,0)$);
+    \coordinate (c9) at ($(c8)+(0,-0.7\wdth)$);
+    \coordinate (c10) at ($(c8)+(0.35\wdth,0)$);
+    \coordinate (c11) at ($(c10)+(0,-0.45\wdth)$);
+    \coordinate (c12) at ($(c10)+(0.42\wdth,0)$);
+    \coordinate (c13) at ($(c12)+(0,-0.45\wdth)$);
+    \coordinate (c14) at ($(c12)+(0.42\wdth,0)$);
+    \coordinate (c15) at ($(c14)+(0,-0.45\wdth)$);
+
+
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+    \node[align=center,above] at ($(c4)+(0,-0.52\wdth)$){Membrane \\ porosity};
+    \node at ($(c4)+(0\wdth,0)$) {\includegraphics[height=0.45\wdth]{sub/porosity1.pdf}};
+
+    \node[align=center, above] at ($(c6)+(0,-0.52\wdth)$){Drug \\ concentration};
+    \node at (c6) {\includegraphics[height=0.45\wdth]{sub/DDS_highC.pdf}};
+    \node[fill=lblue,inner sep=2pt] at (c6) {$c$};
+
+    \node[align=center, above] at ($(c8)+(0,-0.52\wdth)$){rDDS \\ geometry};
+    \node at (c8) {\includegraphics[height=0.45\wdth]{sub/DDS_geometry_high.pdf}};
+    \node[] at (c8) {$V$};
+    \draw[|-|,line width=1] ($(c8)+(0.28\wdth,-0.08\wdth)$) --++(0,0.25\wdth) node[right,pos=0.5]{$h$};
+    \draw[|-|,line width=1] ($(c8)+(-0.24\wdth,-0.26\wdth)$) --++(0.48\wdth,0)node[below,pos=0.5]{$d$};
+    \draw[|-|,line width=1] ($(c8)+(-0.24\wdth,0)$) --++(0.05\wdth,0)node[left,pos=0]{$w$};
+
+
+
+  \end{tikzpicture}
+\end{document}

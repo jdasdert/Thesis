@@ -157,14 +157,18 @@ In this work we present the algorithm for a fully implicit crystal plasticity fi
   \subsubsection{Deformation mechanisms and hardening in hcp magnesium} \label{sec:hardening}
   Magnesium has a hexagonal close-packed structure with a transverse isotropic elastic behaviour. The elastic properties can be characterized by the five elastic constants $C_{11}$, $C_{12}$, $C_{13}$, $C_{33}$ and $C_{44}$ which were taken from \authorcite{slutsky1957elastic} and are given in \cref{tab:elasticConstantsMg}. The fourth order stiffness tensor in Mandel notation $\Cu$ is given by \cref{eq:Cu}.
   \begin{table}[h!]
-  \begin{minipage}{0.28\textwidth}      
+  \begin{minipage}{0.28\textwidth} 
+      \captionsetup{width=\textwidth}   
        \caption{Elastic constants Mg \supercite{slutsky1957elastic}}
-       \begin{tabularx}{\textwidth}{| l | Y |}
-           \hline \hline
+       \begin{tabularx}{\textwidth}{ | l  Y | }
+           \hline
+           \rowcolor{gray1}
            \ $C_{11}$ \ & 59.40 GPa \\
            \ $C_{12}$ \ & 25.61 GPa \\
+           \rowcolor{gray1}
            \ $C_{13}$ \ & 21.44 GPa\\
            \ $C_{33}$ \ & 61.60 GPa\\
+           \rowcolor{gray1}
            \ $C_{44}$ \ & 16.40 GPa\\
            \hline
        \end{tabularx}
@@ -211,28 +215,38 @@ In this work we present the algorithm for a fully implicit crystal plasticity fi
     \setlength\tabcolsep{0.5pt}
     \caption{Slip/twinning systems, lattice parameters and twinning shear of magnesium}
     \begin{tabularx}{\textwidth}{c c}
-      \hline \hline
+      \hline
       {\begin{tabular}[t]{| l Y Y Y |}
-        Type & Plane & Direction & Systems \\
+        \rowcolor{gray2}
+        \textbf{Type} & \textbf{Plane} & \textbf{Direction} & \textbf{Systems} \\
         \hline
+        \rowcolor{gray1}
         Basal & \plane{0001} & \direction{11\ol{2}0} & 3 \\
+        \rowcolor{white}
         Prismatic & \plane{\ol{1}100} & \direction{11\ol{2}0} & 3 \\
+        \rowcolor{gray1}
         Pyramidal \pyra & \plane{\ol{1}101} & \direction{11\ol{2}0} & 6 \\
+        \rowcolor{white}
         Pyramidal \pyrac & \plane{\ol{1}\ol{1}22} & \direction{11\ol{2}3} & 6 \\
+        \rowcolor{gray1}
         Tension twin & \plane{\ol{1}102} & \direction{1\ol{1}01} & 6\\
+        \rowcolor{white}
         Compression twin & \plane{\ol{1}101} & \direction{1\ol{1}02} & 6 \\
       \end{tabular}}
       \setlength\tabcolsep{10pt}
       {\begin{tabular}[t]{| c c |}
-
+        \rowcolor{gray2} \multicolumn{2}{|c|}{\textbf{Parameters}} \\\hline
+        \rowcolor{gray1}
         &\\
-        \hline
-        &\\
+        \rowcolor{white}
         $a$ & 0.321nm \\
+        \rowcolor{gray1}
         $\chi$ & 1.624 \\
+        \rowcolor{white}
         $\gammatt$ & 0.129 \\
+        \rowcolor{gray1}
         $\gammact$ & 0.137 \\
-        & \\
+        \rowcolor{white} & \\
       \end{tabular}} \\
       \hline
     \end{tabularx}
@@ -275,39 +289,51 @@ In this work we present the algorithm for a fully implicit crystal plasticity fi
   \setlength\tabcolsep{0.5pt}
   \caption{Fitted model parameters}
   \begin{tabularx}{\textwidth}{c c}    
-    \hline \hline
+    \hline 
     {\begin{tabular}[t]{| l Y Y Y Y |}
-        % \hline \hline
-        Type & Index & $h_0$ [MPa]& $\tauO$ [MPa]& $\taus$ [MPa]\\
+        \rowcolor{gray2}
+        \textbf{Type} & \textbf{Index} & $h_0$ [MPa] & $\tauO$ [MPa] & $\taus$ [MPa] \\
         \hline
+        \rowcolor{gray1}
         Basal& $\rm B$ & 15 & 1.0 & - \\
+        \rowcolor{white}
         Prismatic & $\rm P$  & 5000 & 10 & 80 \\
+        \rowcolor{gray1}
         Pyram. \pyra & \pyra & 5000 & 10 & 80 \\
+        \rowcolor{white}
         Pyram. \pyrac & \pyrac& 4000 & 20 & 150 \\
+        \rowcolor{gray1}
         TT on slip & $\rm tt\rightarrow sl$ & 2000 & - & 11 \\
+        \rowcolor{white}
         CT on slip & $\rm ct\rightarrow sl$ & 10 & - & - \\
+        \rowcolor{gray1}
         TT & TT & 100 & 2.0 & 20 \\
+        \rowcolor{white}
         CT & CT & 5000 & 55 & - \\
-        \hline
     \end{tabular}} &
     \setlength\tabcolsep{15pt} 
     {\begin{tabular}[t]{ | c  c |}
-        % \hline \hline
-        & \\
-        % \rule{0pt}{2.625ex}
+        \rowcolor{gray2}\multicolumn{2}{|c|}{\textbf{Parameters}} \\
         \hline
+        \rowcolor{gray1}
         &\\
+        \rowcolor{white}
         \ $\nuOa$ &  $10^{-3}\persecond$ \\
+        \rowcolor{gray1}
         \ $\cbOdot$ &  $10^{-4}\persecond$\\
+        \rowcolor{white}
         $\psl$ & 20 \\
+        \rowcolor{gray1}
         $\ptw$ & 20 \\
+        \rowcolor{white}
         $a$ & 0.9 \\
+        \rowcolor{gray1}
         $b$ & 0.05 \\
+        \rowcolor{white}
         &\\
-
-        \hline
-    \end{tabular}}
-    \label{tab:modelParams}
+    \end{tabular}} \\
+    \hline
+    \label{tab:modelParams} 
   \end{tabularx}
 \end{table}
 
@@ -393,12 +419,12 @@ In this work we present the algorithm for a fully implicit crystal plasticity fi
   \begin{table}[h!]
     \centering
     \caption{Loading directions and constraints for single crystal compression cases A-G}
-    \begin{tabularx}{\textwidth}{|l | Y Y Y Y Y Y c|}
-      \hline \hline
-      & A & B & C & D & E & F & G\\
+    \begin{tabularx}{\textwidth}{|l Y Y Y Y Y Y c|}
+      \hline 
+      \rowcolor{gray2}& \textbf{A} & \textbf{B} & \textbf{C} & \textbf{D} & \textbf{E} & \textbf{F} & \textbf{G}\\
       \hline
-      Loading direction & \direction{0001} & \direction{0001} &  \direction{10\ol{1}0} & \direction{1\ol{2}10} & \direction{10\ol{1}0} & \direction{1\ol{2}10} & \direction{0001}@$45^\circ$\\
-      Constraint & \direction{10\ol{1}0} & \direction{1\ol{2}10} & \direction{0001} & \direction{0001} & \direction{1\ol{2}10} & \direction{10\ol{1}0} & \direction{10\ol{1}0}\\
+      \rowcolor{gray1} Loading direction & \direction{0001} & \direction{0001} &  \direction{10\ol{1}0} & \direction{1\ol{2}10} & \direction{10\ol{1}0} & \direction{1\ol{2}10} & \direction{0001}@$45^\circ$\\
+      \rowcolor{white}Constraint & \direction{10\ol{1}0} & \direction{1\ol{2}10} & \direction{0001} & \direction{0001} & \direction{1\ol{2}10} & \direction{10\ol{1}0} & \direction{10\ol{1}0}\\
       \hline 
     \end{tabularx}
     \label{tab:loadCases}

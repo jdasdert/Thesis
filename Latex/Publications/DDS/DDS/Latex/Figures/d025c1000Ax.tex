@@ -1,0 +1,34 @@
+\documentclass{standalone}
+
+\usepackage{tikz,pgfplots}
+\usepackage{textcomp}
+
+\begin{document}
+  \begin{tikzpicture}
+    \newlength{\plotwidth}\setlength{\plotwidth}{10cm}
+    \newlength{\plotheight}\setlength{\plotheight}{7cm}
+    \coordinate (plotpos1) at (0,0);
+
+    \definecolor{clrA}{rgb}{0,0,0}
+    \definecolor{clrB}{rgb}{0.2,0.2,0.8}
+    \definecolor{clrC}{rgb}{1,0,0}
+
+    \begin{axis} 
+    [
+    at={(plotpos1)}, width=\plotwidth, height=\plotheight, scale only axis, 
+    xmin=0, xmax=1000, ymin=0, ymax=120, 
+    xlabel={Time [h]}, 
+    ylabel={Concentration [mM]},
+    y label style={at={(axis description cs:0,0.5)},anchor=north},
+    legend pos=south east
+    ] 
+      \addplot[forget plot]graphics[xmin=0, xmax=1000, ymin=0, ymax=120]{d025c1000.pdf};
+      \addlegendimage{no markers,color=clrA,line width=1,opacity=0.2} \addlegendentry{data}
+      \addlegendimage{no markers,color=clrB,line width=1} \addlegendentry{average}
+      \addlegendimage{no markers,color=clrC,line width=1} \addlegendentry{simulation}
+    \end{axis}
+
+    \coordinate (leg) at (5,1);
+
+  \end{tikzpicture}
+\end{document}

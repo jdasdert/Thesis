@@ -1,0 +1,31 @@
+\documentclass{standalone}
+
+\usepackage{tikz,pgfplots,textcomp}
+\usetikzlibrary{calc,arrows.meta}
+
+\begin{document}
+  \begin{tikzpicture}[>=Latex]
+
+    \input{sub/stdSettings.tex}
+
+    \coordinate(c) at (0,0);
+    \begin{axis}[
+      at={(c)},  
+      xmin=0, xmax=75, ymin=0, ymax=20, 
+      xlabel={Time [h]}, 
+      ylabel={Concentration [\textmu M]}
+    ]
+      \input{sub/comparisonConcentration_plot.tex}
+      \addlegendimage{no markers, color=black, line width=0.5, dashed}\addlegendentry{Exp.}
+      \addlegendimage{no markers, color=black, line width=0.5}\addlegendentry{Sim.}
+      \addlegendimage{empty legend}\addlegendentry{}
+      \addlegendimage{empty legend}\addlegendentry{\hspace{-0.6cm} \textbf{Initial conc.}}
+      \addlegendimage{no markers,color=clr2,line width=\lwidth} \addlegendentry{20.0 mM}
+      \addlegendimage{no markers,color=clr4,line width=\lwidth} \addlegendentry{10.0 mM}
+      \addlegendimage{no markers,color=clr6,line width=\lwidth} \addlegendentry{\phantom{1}5.0 mM}
+      \addlegendimage{no markers,color=clr8,line width=\lwidth} \addlegendentry{\phantom{1}2.5 mM}
+    \end{axis}
+    \node[right] at ($(c)+(0.05\plotwidth,\plotheight-0.4cm)$){\legfont Porosity. = 8.0 \%};
+
+  \end{tikzpicture}
+\end{document}

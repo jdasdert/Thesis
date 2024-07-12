@@ -1,0 +1,78 @@
+\documentclass{standalone}
+
+\usepackage{tikz,pgfplots,textcomp}
+\usetikzlibrary{calc,shapes.arrows,arrows.meta}
+
+\begin{document}
+  \begin{tikzpicture}[>=Latex]
+
+    \input{sub/stdSettings.tex}
+    
+    \def\sfont{\fontsize{10}{10}\selectfont}
+
+    \setlength{\wdth}{3cm}
+    \coordinate (c1) at (0,0);
+    \coordinate (c2) at ($(c1)+(1.1\wdth,-0.2\wdth)$);
+    \coordinate (c3) at ($(c2)+(2.2\wdth,0)$);
+    \coordinate (c4) at ($(c2)+(0.5\wdth,-\wdth)$);
+    \coordinate (c5) at ($(c3)+(0.5\wdth,-\wdth)$);
+    \coordinate (c6) at ($(c3)+(2\wdth,-0.45\wdth)$);
+    \coordinate (c7) at ($(c2)+(1.05\wdth,-0.2\wdth)$);
+    \coordinate (c8) at ($(c2)+(0,0.9\wdth)$);
+    \coordinate (c9) at ($(c8)+(2.2\wdth,0)$);
+    \coordinate (c10) at ($(c9)+(2\wdth,0)$);
+
+    \draw[color=lgray] ($(c2)!0.55!(c3)$) --++ (0,0.9\wdth) --++(0,-2.2\wdth); 
+    \draw[color=lgray] ($(c3)+(1.2\wdth,0)$) --++ (0,0.9\wdth) --++(0,-2.2\wdth); 
+
+   
+    % microchannel network
+    \node at (c1){\includegraphics[width=\wdth,height=\wdth]{sub/sample_top.pdf}};
+    \node at (c1){\textbf{Reservoir}};
+    \draw[dotted, line width=1.5] ($(c1)+(0,0.52\wdth)$) arc (90:180:0.52\wdth) coordinate (t1) --++ (0.15\wdth,0) arc (180:90:0.37\wdth)  --++ (0,0.15\wdth) coordinate(t2);
+    \node at (c2){\includegraphics[width=2\wdth,angle=44]{sub/mesh_tetrapods.png}};
+    \draw[dotted, line width=1] ($(c2)+(0.75\wdth,0.67\wdth)$) arc (90:180:1.45\wdth) coordinate (t3) --++ (0.55\wdth,0) arc (180:90:0.91\wdth) --++ (0,0.54\wdth) coordinate (t4);
+    \draw[dotted,line width=1] (t1) -- (t3);
+    \draw[dotted, line width=1] (t2) -- (t4);
+    \node at (c4) {\includegraphics[width=0.8\wdth]{sub/Cube4T_T_cropped.png}};
+    \draw[dotted, line width=1.5] ($(c3)+(-0.3\wdth,-0.6\wdth)$) coordinate (t1) circle (0.1\wdth);
+    \draw[dotted, line width=1] (c5) circle (0.57\wdth);
+    \draw[dotted, line width=1] ($(t1) + (90:0.1\wdth)$) -- ($(c5)+(120:0.57\wdth)$);
+    \draw[dotted, line width=1] ($(t1) + (255:0.1\wdth)$) -- ($(c5)+(215:0.57\wdth)$);
+
+    % 3D mesh
+    \node at (c3){\includegraphics[width=2\wdth,angle=47]{sub/mesh.png}};
+    \node at (c5) {\includegraphics[width=0.8\wdth]{sub/Cube4T_TM_cropped.png}};
+    \draw[dotted, line width=1.5] ($(c2)+(-0.3\wdth,-0.6\wdth)$) coordinate (t1) circle (0.1\wdth);
+    \draw[dotted, line width=1] (c4) circle (0.57\wdth);
+    \draw[dotted, line width=1] ($(t1) + (90:0.1\wdth)$) -- ($(c4)+(120:0.57\wdth)$);
+    \draw[dotted, line width=1] ($(t1) + (255:0.1\wdth)$) -- ($(c4)+(215:0.57\wdth)$);
+
+    % element
+    \node at (c6) {\includegraphics[width=\wdth]{sub/element.png}};
+    \node[fill=lblue,align=center,rounded corners=0.02\wdth] at ($(c6)+(0,0.7\wdth)$){\bf Solve 1D diffusion eq. \\[1.5ex] $\displaystyle
+    \frac{\partial c}{\partial t} = D\frac{\partial^2 c}{\partial x^2}$};
+    \draw[dotted,line width=1.5] ($(c5)+(-0.1\wdth,0.01\wdth)$) --++ (335:0.43\wdth) coordinate[pos=0.5] (t1)   --++(245:0.14\wdth) coordinate (t2) --++ (155:0.43\wdth) --++ (65:0.14\wdth);
+    \draw[dotted, line width=1] ($(c6)+(-0.53\wdth,0.1\wdth)$) --++ (1.06\wdth,0) --++(0,-0.2\wdth) coordinate(t4) --++ (-1.06\wdth,0) --++ (0,0.2\wdth) coordinate[pos=0.5] (t3);
+    \draw[->, dotted, line width=1] ($(t1)!0.05!(t3)$) -- ($(t1)!0.95!(t3)$);
+    \draw[line width=0.5, ->] ($(c6)+(-0.44\wdth,0.17\wdth)$) --++(0.3\wdth,0) node[right]{$x$};
+
+
+
+
+
+    % \draw[dotted, line width=1] (t2) -- (t4);
+
+    \node[single arrow,fill=lblue,
+    minimum width = 0.57\wdth, single arrow head extend=0.03\wdth,
+    minimum height=0.9\wdth] at (c7) {};
+
+    \node at (c8) {\large \textbf{Microchannel network}};
+    \node at (c9) {\large \textbf{3D mesh}};
+    \node at (c10) {\large \textbf{1D finite element}};
+    \node[align=center] at ($(c7)+(0.02\wdth,0)$) { \bf connect \\ \bf intersections};
+    \node[align=center] (n1) at ($(c6)+(0,-0.5\wdth)$) {\bf concentration calculated \\ \bf at nodes};
+    \draw[->] (n1) --++ (-0.41\wdth,0.41\wdth);
+    \draw[->] (n1) --++ (0.41\wdth,0.41\wdth);
+  \end{tikzpicture}
+\end{document}

@@ -1,0 +1,52 @@
+\documentclass{standalone}
+
+\usepackage{tikz,pgfplots}
+\usepackage{textcomp}
+
+\begin{document}
+  \begin{tikzpicture}
+    \newlength{\plotwidth}\setlength{\plotwidth}{10cm}
+    \newlength{\plotheight}\setlength{\plotheight}{7cm}
+    \coordinate (plotpos1) at (0,0);
+
+    \def\fs{14}
+    \def\ttl{Longterm release}
+    \pgfplotsset{
+      legend image code/.code={
+      \draw[mark repeat=2,mark phase=2]
+      plot coordinates {
+      (0cm,0cm)
+      (0.15cm,0cm)        %% default is (0.3cm,0cm)
+      (0.45cm,0cm)         %% default is (0.6cm,0cm)
+      };%
+      }
+      }
+
+    \input{colors}
+
+    \begin{axis} 
+    [
+    /pgf/number format/.cd,
+    use comma,
+    1000 sep={},
+    at={(plotpos1)}, width=\plotwidth, height=\plotheight, scale only axis, 
+    xmin=0, xmax=2200, ymin=0, ymax=700, 
+    xlabel={Time [h]}, 
+    ylabel={Concentration [\textmu M]},
+    xtick={500,1000,1500,2000},
+    tick label style={font={\fontsize{\fs}{\fs}}},
+    label style={font={\fontsize{\fs}{\fs}\selectfont}},
+    legend pos=south east,
+    legend style={font={\fontsize{\fs}{\fs} \selectfont}},
+    legend cell align={left},
+    title={\fontsize{\fs}{\fs}\textbf{\ttl}}
+    ] 
+      \addplot[forget plot]graphics[xmin=0, xmax=2200, ymin=0, ymax=700]{longterm.pdf};
+      \addlegendimage{no markers,color=clrA,line width=1} \addlegendentry{large}
+      \addlegendimage{no markers,color=clrG,line width=1} \addlegendentry{standard}
+    \end{axis}
+
+    \coordinate (leg) at (5,1);
+
+  \end{tikzpicture}
+\end{document}

@@ -1,0 +1,144 @@
+\documentclass{article}
+
+\usepackage[left=3cm,right=3cm,top=1.5cm,bottom=2cm,includeheadfoot]{geometry}
+\usepackage{graphicx}
+
+% fonts etc
+\usepackage{textcomp}
+
+% tables and itemize
+\usepackage{tabularx, caption, multirow}
+\captionsetup[table]{position=above, skip=1pt, singlelinecheck=false}
+\newcolumntype{Y}{>{\centering\arraybackslash}X}
+\newcommand{\centered}[1]{\begin{tabular}{l} #1 \end{tabular}}
+\renewcommand{\arraystretch}{1.3}
+
+\input{formula.tex}
+\input{symbols.tex}
+\input{DDS_shortcuts.tex}
+
+\begin{document}
+
+  % \begin{figure}[h!]
+  %   \centering
+  %   \includegraphics[width=\textwidth]{Figures/rDDS_principle.png}
+  %   \caption[]{a) Reservoir based drug delivery system (rDDS)}
+  % \end{figure}
+
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  To better understand and predict the mechanisms and parameters that influence the release kinetics, a computational model of the rDDS was developed. In general, diffusion-controlled drug delivery has been modelled and discussed extensively. However, the here presented simulation facilitates the investigation of the rDDS with its specific parameters and enables to predict the impact of changes in the fabrication process on the release. The approach is schematically shown in figurex. The model is based on the observation that the membrane is inverse to the initial ZnO template structure, which consists of intersecting tetrapodal particles (compare fig.x). Thus, it is possible to obtain an artificial microchannel network by creating an artificial tetrapod network and determining the intersections and connections. By that, a 3-dimensional mesh consisting of 1-dimensional elements is obtained. The tetrapods positions and orientations are chosen as completely random. The mesh is used with the finite element method (FEM) to solve the 1-dimensional time dependent diffusion equation along the channels: 
+  \begin{equation}
+    \derivative{c}{t} = D \dderivative{c}{x},
+  \end{equation}
+  where $c$ denotes the concentration, $t$ the time, $D$ the diffusion coefficient and $x$ the position. The time discretized equation system to determine the unknown concentration $\cc$ at the nodes is given by
+  \begin{equation}
+    \left (\frac{\CC}{\Dt}+\KK \right) \cc = \FF+\frac{\CC}{\Dt}\ccn,
+  \end{equation}
+  where $\FF$ are the external loads (particle currents), $\KK$ is the global stiffness matrix, $\CC$ is the global damping matrix and $\ccn$ are the known concentrations from the previous time step. Additional information on the FEM model and a figure showing the reproducibility of the meshing algorithm is given in the SI. 
+
+  \begin{figure}[h!]
+    \centering
+    \includegraphics[width=\textwidth]{Figures/meshing.pdf}
+    \caption[]{a) Meshing }
+  \end{figure}
+
+  % \begin{figure}[h!]
+  %   \centering
+  %   \includegraphics[width=\textwidth]{Figures/expSim.pdf}
+  % \end{figure}
+
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  \subsection*{Influence of parameters on release}
+
+  The release kinetics can be customized by changing the membrane porosity, width and height, the sample diameter, the initial drug concentration and the reservoir volume. For the characterization a simulation setup summarized in Table x is chosen and the a deviation of these six adjustable sample parameters by $\pm$20\% is investigated. Note that only one parameter is changed at a time while all the others are kept constant. 
+  
+  \begin{table}[h!]
+    \caption{Simulation setup}
+    \begin{tabularx}{\textwidth}{| l c c | Y |}
+      \hline\hline
+      Parameter & Symbol & Quantity & Schematic\\
+      \hline
+      Membrane porosity & $P$ & 4.5\% & \multirow{7}{*}{\vspace{-0.2cm}\includegraphics[width=0.35\textwidth]{Figures/releaseSetup.pdf}}\\
+      Membrane width & $w$ & 375 \textmu m  &\\
+      Membrane height & $h$ & 400 \textmu m & \\
+      Sample diameter & $d$ & 3000 \textmu m &\\
+      Reservoir volume& $V_R$ & 3.5 \textmu l &\\
+      Initial concentration& $c$ & 100 mM & \\
+      % \hline
+      Cavity volume & $V_C$ & 3500 \textmu l &\\
+      \hline
+    \end{tabularx}
+  \end{table}
+  The influence on the concentration development in the cavity are depicted in Figure x a-f. Further the normalized release rate and the normalized total release time are given in Figure x g-h.    
+  A decrease in membrane width as well as an increase in membrane porosity, membrane height or the sample diameter lead to an increase in release rate and a decrease of total release time. While the geometric changes all show a similar effect the change of porosity has the largest impact. It is therefore rational to consider the porosity as the major parameter to set the magnitude of the release rate while the geometric changes can be used for tuning.
+  Especially interesting are the changes in concentration and reservoir volume as they only change either the release rate or the release time while keeping the other constant.
+  
+  \begin{table}[h!]
+    \begin{tabularx}{\textwidth}{ | X l | Y Y |}
+      \hline \hline
+      Parameter & Change & Change in release rate & Change in release time \\
+      \hline
+
+      \multirow{2}{*}{Porosity} 
+      & $+$20 \% & $+$65 \% & $-$43 \% \\      
+      & $-$20 \% & $-$57 \% & $+$143 \% \\ 
+      \hline
+
+      \multirow{2}{*}{Membrane width} 
+      & $+$20 \% & $-$15\%& $-$13 \%\\      
+      & $-$20 \% & $+$14\%& $+$19 \%\\
+      \hline
+
+      \multirow{2}{*}{Membrane height} 
+      & $+$20 \% & $+$16 \% & $-$15 \% \\      
+      & $-$20 \% & $-$17 \% & $+$23 \% \\ 
+      \hline
+
+      \multirow{2}{*}{Sample diameter} 
+      & $+$20 \% & $+$20 \% & $-$18 \% \\      
+      & $-$20 \% & $-$21 \% & $+$29 \% \\
+      \hline
+
+      \multirow{2}{*}{Concentration} 
+      & $+$20 \% & $+$20 \% & 0 \% \\      
+      & $-$20 \% & $-$20 \% & 0 \% \\
+      \hline
+
+      \multirow{2}{*}{Reservoir volume} 
+      & $+$20 \% & $+$3\% & $-$19 \%\\      
+      & $-$20 \% & $-$4\% & $+$18 \%\\
+      \hline
+
+    \end{tabularx}
+  \end{table}
+  
+  \begin{figure}[h!]
+    \centering
+    \includegraphics[width=\textwidth]{Figures/influence1.png}
+  \end{figure}
+
+  In addition to the parameters that can be customized there are a few influences from sources that are either not intended or not easy to control. Figure x shows the results of the investigation of these parameters. In the above simulations the reservoir is perfectly centered and has a cylindrical shape. SEM and \textmu CT images show that in reality the reservoir may be shifted off center and has often the shape of a truncated cone. In both cases the simulation predict even for large deviations (67\% of membrane width) only a small impact on the release behavior. Furthermore the properties of the microchannels are influenced by the shape of the ZnO tetrapods. For a constant porosity, a higher volume for the ZnO particles means a lower amount which influences the interconnectivity. Indeed, changing the ratio of tetrapod arm length and arm diameter drastically changes the amount of connections in the mesh and thus the release behavior. Keeping a constant ratio and changing the size of the particles however has only a small influence. The ratio of $l$ and $d$ is taken as a fitting parameter which is chosen as $l/d=12$ in all simulations. 
+
+  \begin{figure}[h!]
+    \centering
+    \includegraphics[width=\textwidth]{Figures/influence2.png}
+  \end{figure}
+
+  % \begin{figure}
+  %   \centering
+  %   \includegraphics[width=\textwidth]{Figures/longterm.png}
+  % \end{figure}
+
+  To simulate the resulting concentration profiles under exemplary in vivo conditions, the removal of the drug by e.g., exchange of the cerebrospinal fluid, was included in the computational modelling. The alteration of the setup from Table x is schematically shown in Figure 8a. The volume of the cavity is decreased to 60~\textmu l and an exchange of 15.8 \textmu l/h liquid in the cavity is assumed. Figure 8b depicts the simulated different concentration profiles for varying parameters while in Figure 8c the respective parameter changes are shown schematically. Starting from the standard rDDS (compare Table 1) with an initial concentration of 5mM, for the respective subsequent concentration profile a certain parameter was changed compared to the previous one to study the influence on the concentration profile. The numbering in Figures 8b,c indicates the order of parameter changes. The standard rDDS exhibits a strong increase of the concentration to 6 μM within the first few hours which rapidly decreases again. From number 1 (standard rDDS) to number 2 the membrane porosity was reduced from 4.5\% to 3.6\% resulting in a reduction of the maximum concentration to 2 μM and a slower decline. By reducing the membrane height from 400 μm to 300 μm and increasing the membrane width from 375 μm to 1000 μm (number 2 to number 3) it is possible to achieve an approximately constant concentration of ? for ? hours. To reach a higher maximum concentration again the initial concentration was increased from 5 mM to 35 mM (number 3 to number 4) and to obtain a more constant concentration level again the reservoir volume was tripled (number 4 to number 5). This investigation shows that by varying the different parameters it is possible to achieve specific concentration profiles. This helps to adapt the rDDS for customized release kinetics and to determine out the required parameters. 
+
+  \begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{Figures/flowRelease.png}
+  \end{figure}
+
+  % \begin{figure}
+  %   \centering
+  %   \includegraphics[width=\textwidth]{Figures/hydrogel.pdf}
+  % \end{figure}
+
+\end{document}

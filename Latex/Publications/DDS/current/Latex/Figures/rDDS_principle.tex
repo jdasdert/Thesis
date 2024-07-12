@@ -1,0 +1,110 @@
+\documentclass{standalone}
+
+\usepackage{tikz,pgfplots,textcomp}
+\usetikzlibrary{calc,shapes.arrows,arrows.meta,decorations.pathreplacing}
+
+\begin{document}
+  \begin{tikzpicture}[>=Latex]
+
+    \input{sub/stdSettings.tex}
+
+    \definecolor{lblue2}{rgb}{0.2,0.2,0.9}
+    \definecolor{dgreen}{rgb}{0,0.7,0}
+
+    \setlength\wdth{5.5cm}
+    \coordinate (c1) at (1\wdth,1.25\wdth);
+    \coordinate (c2) at ($(c1)+(0.8\wdth,0.25\wdth)$);
+    \coordinate (c3) at ($(c1)+(0.8\wdth,-0.25\wdth)$);
+
+    \coordinate (c4) at (0.2\wdth,-0.1\wdth);
+    \coordinate (c5) at ($(c4)+(0,-0.7\wdth)$);
+    \coordinate (c6) at ($(c4)+(0.8\wdth,0)$);
+    \coordinate (c7) at ($(c6)+(0,-0.7\wdth)$);
+    \coordinate (c8) at ($(c6)+(0.8\wdth,0)$);
+    \coordinate (c9) at ($(c8)+(0,-0.7\wdth)$);
+    \coordinate (c10) at ($(c8)+(0.42\wdth,0)$);
+    \coordinate (c11) at ($(c10)+(0,-0.45\wdth)$);
+    \coordinate (c12) at ($(c10)+(0.42\wdth,0)$);
+    \coordinate (c13) at ($(c12)+(0,-0.45\wdth)$);
+    \coordinate (c14) at ($(c12)+(0.42\wdth,0)$);
+    \coordinate (c15) at ($(c14)+(0,-0.45\wdth)$);
+
+    % boxes
+    \draw[color=lgray,rounded corners=0.1\wdth] (-0.3\wdth,2\wdth) coordinate(l1) rectangle ($(l1)+(3.1\wdth,-1.3\wdth)$);
+    \draw[color=lgray,rounded corners=0.1\wdth] (-0.3\wdth,0.65\wdth) coordinate(l2) rectangle ($(l2)+(3.1\wdth,-1.85\wdth)$);
+    \node[right] at ($(l1)+(0.1\wdth,-0.1\wdth)$){\bf \large a) Reservoir based drug delivery systems (rDDS)};
+    \node[right] at ($(l2)+(0.1\wdth,-0.1\wdth)$){\bf \large b) Customizable release kinetics};
+
+    % rDDS
+    \node at (c1) {\includegraphics[width=\wdth]{sub/cross_section_reservoir_2.png}};
+    \draw[<-,line width=2.5, align=center] ($(c1)+(-0.4\wdth,0.2\wdth)$) -- ($(c1)+(-0.6\wdth,0.2\wdth)$) node[left]{\bf Membrane \\ \bf with \\ \bf microchannels};
+    \draw[<-,line width=2.5, align=center] ($(c1)+(0\wdth,-0.3\wdth)$) -- ($(c1)+(-0.6\wdth,-0.3\wdth)$) node[left, outer sep=0.04\wdth]{\bf Drug loaded\\ \bf reservoir};
+    \draw[line width=1.5, align=center] ($(c2)+(0.3\wdth,0\wdth)$) node[right, outer sep=0.01\wdth]{\bf Microchannel\\ \bf network};
+    \draw[line width=1.5, align=center] ($(c3)+(0.3\wdth,0\wdth)$) node[right, outer sep=0.01\wdth]{\bf Microchannel\\ \bf cross section};
+
+    % channel network
+    \node at (c2) {\includegraphics[width=0.45\wdth]{sub/porosity1.pdf}};
+    \coordinate(shft) at ($(c1)+(0.35\wdth,0.2\wdth)$);
+    \draw[shift=(shft),dotted,line width=2] (0,0) rectangle (0.1\wdth,0.1\wdth);
+    \draw[shift=(c2),dotted,line width=1.5] (-0.225\wdth,-0.225\wdth) rectangle (0.225\wdth,0.225\wdth);
+    \draw[shift=(shft),dotted,line width=1.5] (0.1\wdth,0.1\wdth) -- ($(c2)+(-0.225\wdth,0.225\wdth)$);
+    \draw[shift=(shft),dotted,line width=1.5] (0.1\wdth,0\wdth) -- ($(c2)+(-0.225\wdth,-0.225\wdth)$);
+    
+    % channel
+    \draw[fill=dds,dotted,rounded corners=0.02\wdth,line width=1.5] ($(c3)+(-0.225\wdth,-0.225\wdth)$) rectangle ($(c3)+(0.225\wdth,0.225\wdth)$); 
+    \newdimen\R
+    \R = 0.15\wdth
+    \draw[shift=(c3),fill=white,line width=2] (0:\R) \foreach \x in {60,120,...,360}{--(\x:\R)}--cycle;
+    \draw[<->,shift=(c3)] ($(0:\R)!0.03!(180:\R)$) -- ($(0:\R)!0.97!(180:\R)$) node[pos=0.5,above]{\bf $\sim$2\textmu m}; 
+
+    \draw[dotted,rounded corners=0.01\wdth,line width=2] ($(c2)+(0.1\wdth,-0.19\wdth)$) rectangle ($(c2)+(0.17\wdth,-0.12\wdth)$); 
+    \draw[dotted, line width=1.5] ($(c2)+(0.1\wdth,-0.19\wdth)$) -- ($(c3)+(-0.225\wdth,0.225\wdth)$);
+    \draw[dotted, line width=1.5] ($(c2)+(0.17\wdth,-0.19\wdth)$) -- ($(c3)+(0.225\wdth,0.225\wdth)$);
+
+
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+    \coordinate (t1) at ($(c8)+(0.5\wdth,0)$);
+    \node[right,single arrow,fill=lblue,
+    minimum width = 0.45\wdth, single arrow head extend=0.01\wdth,
+    minimum height=0.45\wdth] at (t1) {} ;
+    \node[right,align=center] at ($(t1)+(0.01\wdth,0)$){\small High release};
+
+    \coordinate (t1) at ($(c9)+(0.5\wdth,0)$);
+    \node[right,single arrow,fill=lblue,
+    minimum width = 0.23\wdth, single arrow head extend=0.01\wdth,
+    minimum height=0.4\wdth] at (t1) {};
+    \node[right,align=center] at ($(t1)+(0.01\wdth,0)$){\small Low release};
+
+
+    \node[align=center,below] at ($(c4)+(0,0.5\wdth)$){\bf Membrane \\ \bf porosity};
+    \node at ($(c4)+(0\wdth,0)$) {\includegraphics[height=0.45\wdth]{sub/porosity1.pdf}};
+    \node at (c5) {\includegraphics[height=0.45\wdth]{sub/porosity2.pdf}};
+
+    \node[align=center, below] at ($(c6)+(0,0.5\wdth)$){\bf Drug \\ \bf concentration};
+    \node at (c6) {\includegraphics[height=0.45\wdth]{sub/DDS_highC.pdf}};
+    \node at (c7) {\includegraphics[height=0.45\wdth]{sub/DDS_lowC.pdf}};
+    \node[fill=lblue,inner sep=2pt] at (c6) {$c_1$};
+    \node[fill=lblue,inner sep=2pt] at (c7) {$c_2$};
+
+    \node[align=center, below] at ($(c8)+(0,0.5\wdth)$){\bf rDDS \\ \bf geometry};
+    \node at (c8) {\includegraphics[height=0.45\wdth]{sub/DDS_geometry_high.pdf}};
+    \node at (c9) {\includegraphics[height=0.45\wdth]{sub/DDS_geometry_low.pdf}};
+    \node[] at (c8) {$V_1$};
+    \node[] at (c9) {$V_2$};
+    \draw[|-|,line width=1] ($(c8)+(0.28\wdth,-0.08\wdth)$) --++(0,0.25\wdth) node[right,pos=0.5]{$h_1$};
+    \draw[|-|,line width=1] ($(c8)+(-0.24\wdth,-0.26\wdth)$) --++(0.48\wdth,0)node[below,pos=0.5]{$d_1$};
+    \draw[|-|,line width=1] ($(c8)+(-0.24\wdth,0)$) --++(0.05\wdth,0)node[left,pos=0]{$w_1$};
+    \draw[|-|,line width=1] ($(c9)+(0.2\wdth,0.1\wdth)$) --++(0,0.08\wdth) node[right,pos=0.5]{$h_2$};
+    \draw[|-|,line width=1] ($(c9)+(-0.17\wdth,-0.26\wdth)$) --++(0.34\wdth,0)node[below,pos=0.5]{$d_2$};
+    \draw[|-|,line width=1] ($(c9)+(-0.17\wdth,0)$) --++(0.1\wdth,0)node[left,pos=0]{$w_2$};
+
+
+    \draw[color=lgray] ($(c4)+(-0.35\wdth,0)$)--++(0,0.4\wdth)--++(0,-1.4\wdth);
+    \draw[color=lgray] ($(c4)!0.5!(c6)$)--++(0,0.4\wdth)--++(0,-1.4\wdth);
+    \draw[color=lgray] ($(c6)!0.5!(c8)$)--++(0,0.4\wdth)--++(0,-1.4\wdth);
+    \draw[color=lgray] ($(c8)+(0.4\wdth,0)$)--++(0,0.4\wdth)--++(0,-1.4\wdth);
+
+
+  \end{tikzpicture}
+\end{document}

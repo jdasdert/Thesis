@@ -1,0 +1,228 @@
+\documentclass{standalone}
+
+\usepackage{tikz,pgfplots,textcomp}
+\usetikzlibrary{calc}
+
+\begin{document}
+  \begin{tikzpicture}
+
+    \input{sub/stdSettings.tex}
+
+    \pgfplotsset{
+      xlabel={Time [h]},
+      ylabel={Concentration [\textmu M]},
+      ytick distance={20}
+    }
+
+    %% Porosity %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \coordinate (c) at (p1);
+    \node at ($(c)+(-1,\plotheight+0.3cm)$){\large\textbf{a)}};
+    \coordinate(c1) at ($(c)+(0.14\plotwidth,0.81\plotheight)$);
+    \coordinate(c2) at ($(c)+(0.6\plotwidth,0.18\plotheight)$);
+    \setlength\wdth{0.20\plotwidth}
+    \begin{axis} 
+      [
+        at={(c)},
+        xmin=0, xmax=800, ymin=0, ymax=140, 
+      ]
+      \input{sub/Porosity_plot.tex}
+      \addlegendimage{empty legend}\addlegendentry{\hspace{-0.6cm}\bf Porosity $P$}
+      \addlegendimage{no markers,color=clr1,line width=\lwidth} \addlegendentry{$\times$1.2}
+      \addlegendimage{no markers,color=clr2,line width=\lwidth} \addlegendentry{\phantom{$\times$}4.5\%}
+      \addlegendimage{no markers,color=clr3,line width=\lwidth} \addlegendentry{$\times$0.8}
+    \end{axis}
+
+    \node at (c1) {\includegraphics[width=\wdth]{sub/porosity1.pdf}};
+    \node at (c2) {\includegraphics[width=\wdth]{sub/porosity2.pdf}};
+
+    \draw[color=clr1,line width=2.5, thick] ($(c1)+(-0.5\wdth,-0.5\wdth)$) rectangle ($(c1)+(0.5\wdth,0.5\wdth)$);
+    \draw[color=clr3,line width=2.5, thick] ($(c2)+(-0.5\wdth,-0.5\wdth)$) rectangle ($(c2)+(0.5\wdth,0.5\wdth)$);
+    \node[color=clr1] at ($(c1)+(0.7\wdth,0)$) {$P_1$};
+    \node[color=clr3] at ($(c2)+(-0.7\wdth,0)$) {$P_2$};
+
+
+    %% Membrane thickness %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \coordinate (c) at (p2);
+    \node at ($(c)+(-1,\plotheight+0.3cm)$){\large\textbf{b)}};
+    \coordinate(c1) at ($(c)+(0.14\plotwidth,0.77\plotheight)$);
+    \coordinate(c2) at ($(c)+(0.45\plotwidth,0.30\plotheight)$);
+    \setlength\wdth{0.2\plotwidth}
+    \begin{axis} 
+      [
+        at={(c)},
+        xmin=0, xmax=800, ymin=0, ymax=140, 
+      ]
+      \input{sub/membraneThickness_plot.tex}
+      \addlegendimage{empty legend}\addlegendentry{\hspace{-0.6cm} \textbf{Membrane}}
+      \addlegendimage{empty legend}\addlegendentry{\hspace{-0.35cm} \textbf{width} $w$}
+      \addlegendimage{no markers,color=clr1,line width=\lwidth} \addlegendentry{$\times$1.2}
+      \addlegendimage{no markers,color=clr2,line width=\lwidth} \addlegendentry{\phantom{$\times$}375 \textmu m}
+      \addlegendimage{no markers,color=clr3,line width=\lwidth} \addlegendentry{$\times$0.8}
+    \end{axis}
+
+    \node at (c1) {\includegraphics[width=\wdth]{sub/DDS_thin.pdf}};
+    \node at (c2) {\includegraphics[width=\wdth]{sub/DDS_thick.pdf}};
+
+    \draw[color=clr3,thick,line width=1.5,|-|] ($(c1)+(0.37\wdth,0.2\wdth)$) coordinate(c3) --++ (0.15\wdth,0) coordinate (c4) node[pos=1,right]{$w_2$};
+    \draw[color=clr1,thick,line width=1.5,|-|] ($(c2)+(0.18\wdth,0.2\wdth)$) coordinate(c3) --++ (0.33\wdth,0) coordinate (c4) node[pos=1,right]{$w_1$};
+
+
+    %% Membrane height %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \coordinate (c) at (p3);
+    \node at ($(c)+(-1,\plotheight+0.3cm)$){\large\textbf{c)}};
+    \coordinate(c1) at ($(c)+(0.13\plotwidth,0.76\plotheight)$);
+    \coordinate(c2) at ($(c)+(0.45\plotwidth,0.3\plotheight)$);
+    \setlength\wdth{0.20\plotwidth}
+    \begin{axis} 
+      [
+        at={(c)},
+        xmin=0, xmax=800, ymin=0, ymax=140, 
+      ]
+      \input{sub/membraneHeight_plot.tex}
+      \addlegendimage{empty legend}\addlegendentry{\hspace{-0.6cm} \textbf{Membrane}}
+      \addlegendimage{empty legend}\addlegendentry{\hspace{-0.4cm} \textbf{height} $h$}
+      \addlegendimage{no markers,color=clr1,line width=\lwidth} \addlegendentry{$\times$1.2}
+      \addlegendimage{no markers,color=clr2,line width=\lwidth} \addlegendentry{\phantom{$\times$}400 \textmu m}
+      \addlegendimage{no markers,color=clr3,line width=\lwidth} \addlegendentry{$\times$0.8}
+
+    \end{axis}
+
+    \node at (c1) {\includegraphics[width=\wdth]{sub/DDS_highM.pdf}};
+    \node at (c2) {\includegraphics[width=\wdth]{sub/DDS_lowM.pdf}};
+
+    \draw[color=clr1,thick,line width=1.5,|-|] ($(c1)+(0.55\wdth,-0.2\wdth)$) coordinate(c3) --++ (0,0.64\wdth) coordinate (c4) node[pos=0.5,right]{$h_1$};
+    \draw[color=clr3,thick,line width=1.5,|-|] ($(c2)+(0.55\wdth,0.35)$) coordinate(c3) --++ (0,0.25\wdth) coordinate (c4) node[pos=0.5,right]{$h_2$};
+
+
+    %% Reservoir Area %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \coordinate (c) at (p4);
+    \node at ($(c)+(-1,\plotheight+0.3cm)$){\large\textbf{d)}};
+    \coordinate(c1) at ($(c)+(0.18\plotwidth,0.80\plotheight)$);
+    \coordinate(c2) at ($(c)+(0.5\plotwidth,0.32\plotheight)$);
+    \setlength\wdth{0.26\plotwidth}
+    \begin{axis} 
+      [
+        at={(c)},
+        xmin=0, xmax=800, ymin=0, ymax=140, 
+      ]
+      \input{sub/reservoirRadius_plot.tex}
+      \addlegendimage{empty legend}\addlegendentry{\hspace{-0.3cm} \textbf{Sample}}
+      \addlegendimage{empty legend}\addlegendentry{\hspace{-0.5cm} \textbf{diameter} $d$}
+      \addlegendimage{no markers,color=clr1,line width=\lwidth} \addlegendentry{$\times$1.2}
+      \addlegendimage{no markers,color=clr2,line width=\lwidth} \addlegendentry{\phantom{$\times$}3000 \textmu m}
+      \addlegendimage{no markers,color=clr3,line width=\lwidth} \addlegendentry{$\times$0.8}
+
+    \end{axis}
+
+    \node at (c1) {\includegraphics[width=\wdth]{sub/DDS_highD.pdf}};
+    \node at (c2) {\includegraphics[width=0.7\wdth]{sub/DDS_std.pdf}};
+
+    \draw[color=clr1,thick,line width=1.5,|-|] ($(c1)+(-0.5\wdth,-0.37\wdth)$) coordinate(c3) --++ (\wdth,0) coordinate (c4) node[below,pos=0.5]{$d_1$};
+    \draw[color=clr3,thick,line width=1.5,|-|] ($(c2)+(-0.35\wdth,-0.5\wdth)$) coordinate(c3) --++ (0.7\wdth,0) coordinate (c4) node[below,pos=0.5]{$d_2$};
+
+    %% Concentration %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \coordinate (c) at (p5);
+    \node at ($(c)+(-1,\plotheight+0.3cm)$){\large\textbf{e)}};
+    \coordinate(c1) at ($(c)+(0.15\plotwidth,0.78\plotheight)$);
+    \coordinate(c2) at ($(c)+(0.45\plotwidth,0.25\plotheight)$);
+    \setlength\wdth{0.20\plotwidth}
+    \begin{axis} 
+      [
+        at={(c)},
+        xmin=0, xmax=800, ymin=0, ymax=140 
+      ]
+      \input{sub/concentration_plot.tex}
+      \addlegendimage{empty legend}\addlegendentry{\hspace{-0.8cm} \bf Initial conc. $c$}
+      \addlegendimage{no markers,color=clr1,line width=\lwidth} \addlegendentry{$\times$1.2}
+      \addlegendimage{no markers,color=clr2,line width=\lwidth} \addlegendentry{\phantom{$\times$}100 mM}
+      \addlegendimage{no markers,color=clr3,line width=\lwidth} \addlegendentry{$\times$0.8}
+
+    \end{axis}
+
+    \node at (c1) {\includegraphics[width=\wdth]{sub/DDS_highC.pdf}};
+    \node at (c2) {\includegraphics[width=\wdth]{sub/DDS_lowC.pdf}};
+    \node[color=clr1,fill=lblue,inner sep=1pt] at (c1) {$c_1$};
+    \node[color=clr3,fill=lblue,inner sep=1pt] at (c2) {$c_2$};
+
+
+    %% Reservoir volume %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \coordinate (c) at (p6);
+    \node at ($(c)+(-1,\plotheight+0.3cm)$){\large\textbf{f)}};
+    \coordinate(c1) at ($(c)+(0.15\plotwidth,0.77\plotheight)$);
+    \coordinate(c2) at ($(c)+(0.45\plotwidth,0.25\plotheight)$);
+    \setlength\wdth{0.20\plotwidth}
+    \begin{axis} 
+      [
+        at={(c)},
+        xmin=0, xmax=800, ymin=0, ymax=140
+      ]
+      \input{sub/reservoirVolume_plot.tex}
+      \addlegendimage{empty legend}\addlegendentry{\hspace{-0.6cm} \bf Reservoir}
+      \addlegendimage{empty legend}\addlegendentry{\hspace{-0.5cm} \bf volume $V$}
+      \addlegendimage{no markers,color=clr1,line width=\lwidth} \addlegendentry{$\times$1.2}
+      \addlegendimage{no markers,color=clr2,line width=\lwidth} \addlegendentry{\phantom{$\times$}3.50 \textmu l}
+      \addlegendimage{no markers,color=clr3,line width=\lwidth} \addlegendentry{$\times$0.8}
+    \end{axis}
+
+    \node at (c1) {\includegraphics[width=\wdth]{sub/DDS_std.pdf}};
+    \node at (c2) {\includegraphics[width=\wdth]{sub/DDS_lowV.pdf}};
+    \node[color=clr1] at (c1){$V_1$};
+    \node[color=clr3] at ($(c2)+(0,0.1\wdth)$){$V_2$};
+
+    %% Release rate %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \coordinate (c) at (p7);
+    \node at ($(c)+(-1,\plotheight+0.3cm)$){\large\textbf{g)}};
+    \begin{axis} 
+      [
+        at={(c)},
+        xmin=0.79, xmax=1.21, ymin=0.4, ymax=2.1,
+        ytick distance={0.2},
+        xlabel={Normalized parameter},
+        ylabel={Normalized release rate},
+        legend pos=north west,
+        /pgf/number format/.cd,
+        fixed,
+        precision=2
+      ]
+      \input{sub/releaseRate_plot.tex}
+      \addlegendimage{mark=*,dashed,mark options={solid,shift={(-0.04cm,0)}},color=clr1,line width=\lwidth} \addlegendentry{Porosity}
+      \addlegendimage{mark=asterisk,dashed,mark options={solid,shift={(-0.04cm,0)}},color=clr2,line width=\lwidth} \addlegendentry{Membrane height}
+      \addlegendimage{mark=diamond*,dashed,mark options={solid,shift={(-0.04cm,0)}},color=clr4,line width=\lwidth} \addlegendentry{Membrane width}
+      \addlegendimage{mark=square*,dashed,mark options={solid,shift={(-0.04cm,0)}},color=clr3,line width=\lwidth} \addlegendentry{Sample Diameter}
+      \addlegendimage{mark=triangle*,dashed,mark options={solid,shift={(-0.04cm,0)}},color=clr5,line width=\lwidth} \addlegendentry{Concentration}
+      \addlegendimage{mark=triangle*,dashed,mark options={solid,rotate=180,shift={(0.04cm,0)}},color=clr6,line width=\lwidth} \addlegendentry{Reservoir volume}
+    \end{axis}
+
+    %\node at (c1) {\includegraphics[width=\wdth]{sub/DDS_std.pdf}};
+    %\node at (c2) {\includegraphics[width=\wdth]{sub/DDS_lowV.pdf}};
+    %\node[color=clr1] at (c1){$V_1$};
+    %\node[color=clr3] at ($(c2)+(0,0.1\wdth)$){$V_2$};
+
+
+    %% Release Time %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \coordinate (c) at (p8);
+    \node at ($(c)+(-1,\plotheight+0.3cm)$){\large\textbf{h)}};
+    \begin{axis} 
+      [
+        at={(c)},
+        xmin=0.79, xmax=1.21, ymin=0.5, ymax=2.5,
+        ytick distance={0.5},
+        xlabel={Normalized parameter},
+        ylabel={Normalized release time},
+        legend pos=north east,
+        /pgf/number format/.cd,
+        fixed,
+        precision=2
+      ]
+      \input{sub/releaseTime_plot.tex}
+      \addlegendimage{mark=*,dashed,mark options={solid,shift={(-0.04cm,0)}},color=clr1,line width=\lwidth} \addlegendentry{Porosity}
+      \addlegendimage{mark=asterisk,dashed,mark options={solid,shift={(-0.04cm,0)}},color=clr2,line width=\lwidth} \addlegendentry{Membrane height}
+      \addlegendimage{mark=diamond*,dashed,mark options={solid,shift={(-0.04cm,0)}},color=clr4,line width=\lwidth} \addlegendentry{Membrane width}
+      \addlegendimage{mark=square*,dashed,mark options={solid,shift={(-0.04cm,0)}},color=clr3,line width=\lwidth} \addlegendentry{Sample Diameter}
+      \addlegendimage{mark=triangle*,dashed,mark options={solid,shift={(-0.04cm,0)}},color=clr5,line width=\lwidth} \addlegendentry{Concentration}
+      \addlegendimage{mark=triangle*,dashed,mark options={solid,rotate=180,shift={(0.04cm,0)}},color=clr6,line width=\lwidth} \addlegendentry{Reservoir volume}
+    \end{axis}
+
+    
+  \end{tikzpicture}
+\end{document}

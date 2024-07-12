@@ -1,0 +1,181 @@
+\documentclass{standalone}
+
+\usepackage{tikz,pgfplots,textcomp}
+\usetikzlibrary{pgfplots.groupplots,backgrounds,shapes.arrows,arrows.meta,decorations.pathreplacing}
+
+\begin{document}
+  \begin{tikzpicture}
+
+    \input{sub/stdSettings.tex}
+
+    \definecolor{bl}{rgb}{0.1,0.7,0.9}
+    \definecolor{bl2}{rgb}{0.2,0.35,0.6}
+    \definecolor{bl3}{rgb}{0.2,0.55,0.9}
+    \definecolor{rd}{rgb}{0.8,0,0.2}
+    \definecolor{gr}{rgb}{0.8,0.8,0.8}
+    \definecolor{gr2}{rgb}{0.5,0.5,0.5}
+
+    \pgfplotsset{
+      every non boxed y axis/.style={}
+    }
+
+    \setlength\wdth{5cm}
+    \coordinate (c1) at (0.35\wdth,0.8\wdth+\plotheight);
+    \coordinate (c2) at ($(c1)+(1.2\wdth,0)$);
+    \coordinate (c3) at ($(c2)+(1.6\wdth,0)$);
+    \coordinate (c4) at ($(c2)+(0.8\wdth,0)$);
+    \coordinate (c5) at ($(c2)+(-0.1\wdth,0.45\wdth)$);
+    \coordinate (c6) at ($(c3)+(-0.1\wdth,0.45\wdth)$);
+
+    \node at ($(p1)+(-1,\plotheight+1.33\wdth)$){\large\bf a)};
+    \node at (c1) {\includegraphics[width=\wdth]{sub/cross_section_reservoir_2.png}};
+
+    % hydrogel cold
+    \draw[fill=dds,dotted,rounded corners=0.08\wdth,line width=1.5] ($(c2)+(-0.4\wdth,-0.4\wdth)$) coordinate (t2) rectangle ($(c2)+(0.4\wdth,0.4\wdth)$); 
+    \newdimen\R
+    \R = 0.35\wdth
+    \fill[shift=(c2),color=bl2] (0:\R) \foreach \x in {60,120,...,360}{--(\x:\R)}--cycle;
+    \path[shift=(c2)] ($(0:\R)!0.03!(180:\R)$) -- ($(0:\R)!0.97!(180:\R)$) node[pos=0.5]{\bf \large Hydrogel};
+    \coordinate (shft) at ($(c1)+(0.3\wdth,0.3\wdth)$);
+    \draw[shift=(shft),dotted,line width=2] ($(c1)+(0.4\wdth,0.2\wdth)$) coordinate(t1) circle (0.03\wdth);
+    \draw[dotted,line width=1.5]($(t1)-(0,0.03\wdth)$)--($(t2)+(0,0.04\wdth)$);
+    \draw[dotted,line width=1.5]($(t1)+(0,0.03\wdth)$)--($(t2)+(0,0.76\wdth)$);
+
+    % arrow 
+    \node[single arrow, shading=axis, left color=bl3, right color=rd, opacity=0.7,
+    minimum width = 0.4\wdth, single arrow head extend=0.02\wdth,
+    minimum height=0.6\wdth] at ($(c4)+(-0.04\wdth,0)$) {};
+    \node at (c4){\bf \large Heating};
+
+    \begin{scope}[scale=0.5,shift=(c5)]
+    \fill[color=gr] (0,0) circle (0.055\wdth);
+    \fill[color=gr,rounded corners=0.02\wdth] (-0.03\wdth,0) rectangle (0.03\wdth,0.3\wdth);
+    \fill[color=bl3] (0,0) circle (0.04\wdth);
+    \fill[color=bl3] (-0.02\wdth,0) rectangle (0.02\wdth,0.2\wdth);
+    \foreach \x in {0,0.05,0.1,0.15}{
+      \draw[color=gr2] ($(-0.03\wdth,0.05\wdth)+(0,\x\wdth)$) --++ (0.02\wdth,0);
+      \draw[color=gr2] ($(-0.03\wdth,0.0625\wdth)+(0,\x\wdth)$) --++ (0.01\wdth,0);
+      \draw[color=gr2] ($(-0.03\wdth,0.075\wdth)+(0,\x\wdth)$)--++ (0.015\wdth,0);
+      \draw[color=gr2] ($(-0.03\wdth,0.0875\wdth)+(0,\x\wdth)$) --++ (0.01\wdth,0);
+    }
+    \draw[color=gr2] ($(-0.03\wdth,0.05\wdth)+(0,0.2\wdth)$) --++ (0.02\wdth,0);
+    \end{scope}
+    \node[color=bl3] at ($(c5)+(0.2\wdth,0.05\wdth)$){\bf\large$<$32$^\circ$C};
+
+    % hydrogel hot
+    \draw[fill=dds,dotted,rounded corners=0.08\wdth,line width=1.5] ($(c3)+(-0.4\wdth,-0.4\wdth)$) rectangle ($(c3)+(0.4\wdth,0.4\wdth)$); 
+    \newdimen\R
+    \R = 0.35\wdth
+    \fill[shift=(c3),fill=bl2] (0:\R) \foreach \x in {60,120,...,360}{--(\x:\R)}--cycle;
+    \fill[shift=(c3),fill=white] (0:0.8\R) \foreach \x in {60,120,...,360}{--(\x:0.8\R)}--cycle;
+
+    \begin{scope}[scale=0.5,shift=(c6)]
+      \fill[color=gr] (0,0) circle (0.055\wdth);
+      \fill[color=gr,rounded corners=0.02\wdth] (-0.03\wdth,0) rectangle (0.03\wdth,0.3\wdth);
+      \fill[color=rd] (0,0) circle (0.04\wdth);
+      \fill[color=rd] (-0.02\wdth,0) rectangle (0.02\wdth,0.2\wdth);
+      \foreach \x in {0,0.05,0.1,0.15}{
+        \draw[color=gr2] ($(-0.03\wdth,0.05\wdth)+(0,\x\wdth)$) --++ (0.02\wdth,0);
+        \draw[color=gr2] ($(-0.03\wdth,0.0625\wdth)+(0,\x\wdth)$) --++ (0.01\wdth,0);
+        \draw[color=gr2] ($(-0.03\wdth,0.075\wdth)+(0,\x\wdth)$)--++ (0.015\wdth,0);
+        \draw[color=gr2] ($(-0.03\wdth,0.0875\wdth)+(0,\x\wdth)$) --++ (0.01\wdth,0);
+      }
+      \draw[color=gr2] ($(-0.03\wdth,0.05\wdth)+(0,0.2\wdth)$) --++ (0.02\wdth,0);
+      \end{scope}
+      \node[color=rd] at ($(c6)+(0.2\wdth,0.05\wdth)$){\bf\large$>$32$^\circ$C};
+
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \coordinate (c) at (p1);
+    \node at ($(c)+(-1,\plotheight+0.3cm)$){\large\textbf{b)}};
+    \begin{groupplot}[
+      at=(c),
+      group style={
+        group name=my fancy plots,
+        group size=2 by 1,
+        horizontal sep=2pt
+      },
+      height=\plotheight,
+      ymin=0, ymax=110,
+      minor x tick num=1
+    ]
+      \nextgroupplot[
+        xmin=0,xmax=420,
+        axis y line=left,
+        xlabel={Time [h]}, 
+        ylabel={Cumulative release [\%]},
+        every axis x label/.append style={at=(ticklabel cs:0.625)}, 
+        width=0.8\plotwidth,
+        legend pos=north west,
+        clip=false
+      ]
+      \addplot[only marks,color=clr1,mark size=1.5,restrict x to domain=0:420,error bars/.cd, y dir=both,y explicit] table[x=Time, y=average2,col sep=comma,y error=STDEV2]{data/hydrogel.csv};
+      \addplot[dashed,color=clr1,forget plot,restrict x to domain=0:420] table[x=Time, y=average2,col sep=comma]{data/hydrogel.csv};
+      \addplot[color=black,only marks, mark size=1.5,restrict x to domain=0:420] table[domain=0:420,x=Time, y=3N2,col sep=comma]{data/hydrogel.csv};
+      \addplot[dashed,color=black,forget plot,restrict x to domain=0:420] table[x=Time, y=3N2,col sep=comma]{data/hydrogel.csv};
+      \legend{Hydrogel,Reference}
+
+      \begin{scope}[on background layer]
+        \fill[color=bl,opacity=0.3] (0,0) rectangle (28,110);
+        \fill[color=rd,opacity=0.3] (28,0) rectangle (52,110);
+        \fill[color=bl,opacity=0.3] (52,0) rectangle (76,110);
+        \fill[color=rd,opacity=0.3] (76,0) rectangle (100,110);
+        \fill[color=bl,opacity=0.3] (100,0) rectangle (172,110);
+        \fill[color=rd,opacity=0.3] (172,0) rectangle (196,110);
+        \fill[color=bl,opacity=0.3] (196,0) rectangle (220,110);
+        \fill[color=rd,opacity=0.3] (220,0) rectangle (334,110);
+        \fill[color=bl,opacity=0.3] (334,0) rectangle (420,110);
+      \end{scope}
+
+      \draw (axis description cs:1,0) -- (axis description cs:1,0.05)-- (axis description cs:1,-0.05);
+      \draw (axis description cs:1,1) -- (axis description cs:1,1.05)-- (axis description cs:1,0.95);
+
+      \nextgroupplot[xmin=800,xmax=1500, axis y line=right,yticklabels={},width=0.2\plotwidth,xtick={1000,1500},clip=false]
+      \addplot[restrict x to domain=800:1500,only marks,color=clr1,mark size=1.5,error bars/.cd, y dir=both,y explicit] table[x=Time, y=average2,col sep=comma,y error=STDEV2]{data/hydrogel.csv};
+      \addplot[dashed,color=clr1,forget plot,restrict x to domain=800:1500] table[x=Time, y=average2,col sep=comma]{data/hydrogel.csv};
+      \addplot[restrict x to domain=800:1500,only marks,color=black,mark size=1.5] table[x=Time, y=3N2,col sep=comma]{data/hydrogel.csv};
+      \addplot[dashed,color=black,forget plot,restrict x to domain=800:1500] table[x=Time, y=3N2,col sep=comma]{data/hydrogel.csv};
+      \draw(axis description cs:0,0) -- (axis description cs:0,0.05)-- (axis description cs:0,-0.05);
+      \draw (axis description cs:0,1) -- (axis description cs:0,1.05)-- (axis description cs:0,0.95);
+
+      \begin{scope}[on background layer]
+        \fill[color=bl,opacity=0.3] (800,0) rectangle (1500,110);
+      \end{scope}
+
+    \end{groupplot}
+
+    % Release rate %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+    \coordinate (c) at (p2);
+    \node at ($(c)+(-1,\plotheight+0.3cm)$){\large\textbf{c)}};
+    \begin{axis}[
+      at=(c),
+      every x tick label/.append style={},
+      xtick={1,2,3,4,5,6,7},
+      xticklabels={RT,36$^\circ$C,RT,36$^\circ$C,RT,36$^\circ$C,RT},
+      ymin=0,ymax=3,
+      xmin=0.5, xmax=7.5,
+      xlabel={},ylabel={Release rate [\textmu M/h]},
+      legend pos=north east
+    ]
+    \addplot[color=clr1, mark=*, mark size=1.5, only marks,error bars/.cd, y dir=both, y explicit] table[x=Nr,y=average,y error=STDEV,col sep=comma]{data/hydrogel_rates.csv};
+    \addplot[dashed,color=clr1,forget plot] table[x=Nr, y=average,col sep=comma]{data/hydrogel_rates.csv};
+    \addplot[color=black, mark=*, mark size=1.5,only marks] table[x=Nr,y=3N,col sep=comma]{data/hydrogel_rates.csv};
+    \addplot[dashed,color=black,forget plot] table[x=Nr, y=3N,col sep=comma]{data/hydrogel_rates.csv};
+
+    \legend{Hydrogel,Reference}
+
+    \begin{scope}[on background layer,opacity=0.5]
+      \fill[color=bl,opacity=0.3] (0.5,0) rectangle (1.5,3);
+      \fill[color=rd,opacity=0.3] (1.5,0) rectangle (2.5,3);
+      \fill[color=bl,opacity=0.3] (2.5,0) rectangle (3.5,3);
+      \fill[color=rd,opacity=0.3] (3.5,0) rectangle (4.5,3);
+      \fill[color=bl,opacity=0.3] (4.5,0) rectangle (5.5,3);
+      \fill[color=rd,opacity=0.3] (5.5,0) rectangle (6.5,3);
+      \fill[color=bl,opacity=0.3] (6.5,0) rectangle (7.5,3);
+    \end{scope}
+
+    \end{axis}
+
+
+  \end{tikzpicture}
+\end{document}

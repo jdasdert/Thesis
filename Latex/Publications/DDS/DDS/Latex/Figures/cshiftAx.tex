@@ -1,0 +1,75 @@
+\documentclass{standalone}
+
+\usepackage{tikz,pgfplots}
+\usepackage{textcomp}
+\usetikzlibrary{arrows.meta,calc}
+
+\begin{document}
+  \begin{tikzpicture}[>={Latex[length=0.8mm,width=0.8mm]}]
+    \newlength{\plotwidth}\setlength{\plotwidth}{10cm}
+    \newlength{\plotheight}\setlength{\plotheight}{7cm}
+    \coordinate (plotpos1) at (0,0);
+
+    \def\fs{14}
+    \def\lw{1.5}
+    \def\ttl{Center shift (cs)}
+    \pgfplotsset{
+      legend image code/.code={
+      \draw[mark repeat=2,mark phase=2]
+      plot coordinates {
+      (0cm,0cm)
+      (0.15cm,0cm)        %% default is (0.3cm,0cm)
+      (0.5cm,0cm)         %% default is (0.6cm,0cm)
+      };%
+      }
+      }
+
+      \pgfplotsset{
+        legend image with text/.style={
+            legend image code/.code={%
+                \node[anchor=center] at (0.3cm,0cm) {#1};
+            }
+        },
+    }
+
+    \input{colors}
+
+    \begin{axis} 
+    [
+      /pgf/number format/.cd,
+      use comma,
+      1000 sep={},
+      at={(plotpos1)}, width=\plotwidth, height=\plotheight, scale only axis, 
+      xmin=0, xmax=1200, ymin=0, ymax=115, 
+      xlabel={Time [h]}, 
+      ylabel={Concentration [\textmu M]},
+      tick label style={font={\fontsize{\fs}{\fs}}},
+      label style={font={\fontsize{\fs}{\fs}\selectfont}},
+      legend pos=south east,
+      legend style={font={\fontsize{\fs}{\fs} \selectfont}},
+      legend cell align=left,
+      title={\fontsize{\fs}{\fs}\textbf{\ttl}}
+    ] 
+      \addplot[forget plot]graphics[xmin=0, xmax=1200, ymin=0, ymax=115]{cshift.pdf};
+      \addlegendimage{legend image with text=\vphantom{[}cs} \addlegendentry{[\textmu m]}
+      \addlegendimage{no markers,color=clrA,line width=\lw} \addlegendentry{0}
+      \addlegendimage{no markers,color=clrB,line width=\lw} \addlegendentry{50}
+      \addlegendimage{no markers,color=clrC,line width=\lw} \addlegendentry{100}
+      \addlegendimage{no markers,color=clrD,line width=\lw} \addlegendentry{150}
+      \addlegendimage{no markers,color=clrE,line width=\lw} \addlegendentry{200}
+    \end{axis}
+
+    \coordinate (pic) at (4.7,2.7);
+    \newlength\wdth\setlength\wdth{4.5cm}
+    \node at (pic) {\includegraphics[width=\wdth]{CTshift.png}};
+    \draw[red,thick,line width=1.5] (pic) circle (0.49\wdth);
+    \draw[red,thick,line width=1.5] (pic) --++ (45:0.1) --++ (45:-0.2) --(pic) --++(135:0.1)--++(134:-0.2); 
+    \draw[clrE,thick, line width=1.5] ($(pic)+(0.032\wdth,0)$) coordinate (c2) circle (0.36\wdth);
+    \draw[clrE,thick,line width=1.5] (c2) --++ (45:0.1) --++ (45:-0.2) --(c2) --++(135:0.1)--++(134:-0.2); 
+    \draw[white] ($(pic)-(0,0.2)$) -- ($(c2)-(0,0.2)$) node[below,pos=0.5]{\fontsize{\fs}{\fs}\textbf{cs}};
+    \draw[white,thick] ($(pic)-(0,0.15)$) --++(0,-0.1);
+    \draw[white,thick] ($(c2)-(0,0.15)$) --++(0,-0.1);
+    \node[below] at ($(pic)+(0.4\wdth,-0.45\wdth)$){\small 400 \textmu m};
+
+  \end{tikzpicture}
+\end{document}

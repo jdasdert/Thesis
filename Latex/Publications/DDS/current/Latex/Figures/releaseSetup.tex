@@ -1,0 +1,60 @@
+\documentclass{standalone}
+
+\usepackage{tikz,pgfplots,textcomp}
+\usetikzlibrary{calc,arrows.meta}
+
+\begin{document}
+  \begin{tikzpicture}[>=Latex]
+
+    \input{sub/stdSettings.tex}
+
+    \pgfplotsset{
+      xlabel={Time [h]},
+      ylabel={Concentration [\textmu M]}
+    }
+
+
+\setlength\wdth{1.7cm}
+\coordinate (c1) at (0,0);
+\coordinate (c2) at (1.7\wdth,0\wdth);
+\fill[color=lblue,rounded corners=0.2\wdth] ($(c1)-(0.9\wdth,0.9\wdth)$) rectangle ($(c1)+(0.9\wdth,0.9\wdth)$);
+
+\node at (c1) {\includegraphics[height=\wdth]{sub/DDS_std.pdf}};
+\node at (c2) {\includegraphics[height=\wdth]{sub/porosity1.pdf}};
+
+
+\node at ($(c1)+(-0.6\wdth,0.6\wdth)$){\legfont $V_C$};
+\node at ($(c1)+(0,0.1\wdth)$){\legfont $V_R$};
+\node at ($(c1)+(0,-0.2\wdth)$){\legfont $c$};
+\node at ($(c2)+(0,0.6\wdth)$){\legfont $P$};
+\draw[|-|,line width=0.75] ($(c1)+(-0.23\wdth,0.1\wdth)$) --++ (-0.2\wdth,0) node[left]{\legfont $w$};
+\draw[|-|,line width=0.75] ($(c1)+(+0.45\wdth,0.08\wdth)$) --++ (0\wdth,0.3\wdth) node[pos=0.5,right]{\legfont $h$};
+\draw[|-|,line width=0.75] ($(c1)+(-0.42\wdth,-0.55\wdth)$) --++ (0.84\wdth,0) node[pos=0.5,below]{\legfont $d$};
+\draw[shift=(c2),dotted,line width=1] (-0.5\wdth,-0.5\wdth) rectangle (0.5\wdth,0.5\wdth);
+\draw[dotted,line width=0.75,->,shorten >=0.05\wdth] ($(c1)+(0.3\wdth,0.08\wdth)$) -- ($(c2)+(-0.5\wdth,-0.3\wdth)$);
+
+\draw ($(c1)+(-0.2\wdth,-1.15\wdth)$) node(t1){\legfont Concentration simulation}coordinate;
+\draw (t1) --++ (-0.1\wdth,0.35\wdth);
+
+
+
+
+\setlength\wdth{0.75\wdth}
+\fill[shift=(c1),color=clr1] (\wdth,0) circle(0.5pt);
+\fill[shift=(c1),color=clr1] (0.95\wdth,\wdth) circle(0.5pt);
+\fill[shift=(c1),color=clr1] (0.45\wdth,0.95\wdth) circle(0.5pt);
+
+\fill[shift=(c1),color=clr1] (-\wdth,0) circle(0.5pt);
+\fill[shift=(c1),color=clr1] (-0.95\wdth,\wdth) circle(0.5pt);
+\fill[shift=(c1),color=clr1] (-0.45\wdth,-0.65\wdth) circle(0.5pt);
+\fill[shift=(c1),color=clr1] (-\wdth,-0.5\wdth) circle(0.5pt);
+\fill[shift=(c1),color=clr1] (-0.25\wdth,-\wdth) circle(0.5pt);
+\fill[shift=(c1),color=clr1] (0.66\wdth,-0.7\wdth) circle(0.5pt);
+\fill[shift=(c1),color=clr1] (-0.7\wdth,0.5\wdth) circle(0.5pt);
+\fill[shift=(c1),color=clr1] (-0.1\wdth,0.78\wdth) circle(0.5pt);
+\fill[shift=(c1),color=clr1] (-1.05\wdth,-1\wdth) circle(0.5pt);
+\fill[shift=(c1),color=clr1] (0.75\wdth,0.55\wdth) circle(0.5pt);
+\fill[shift=(c1),color=clr1] (0.95\wdth,-\wdth) circle(0.5pt);
+\fill[shift=(c1),color=clr1] (-0.25\wdth,1.01\wdth) circle(0.5pt);
+\end{tikzpicture}
+\end{document}

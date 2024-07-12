@@ -1,0 +1,41 @@
+\documentclass{standalone}
+
+\usepackage{tikz,pgfplots,textcomp}
+\usetikzlibrary{calc}
+
+\begin{document}
+  \begin{tikzpicture}
+
+    \input{sub/stdSettings.tex}
+
+    \pgfplotsset{
+      xlabel={Time [h]},
+      ylabel={Concentration [\textmu M]}
+    }
+
+    \coordinate(c) at (p1);
+    \node at ($(c)+(-1,\plotheight+0.3cm)$){\large\textbf{a)}};
+    \node[above right] at ($(c)+(0,-0.03\plotheight)$) {\includegraphics[height=\plotheight]{sub/samples.png}};
+
+
+    \coordinate (c) at (p2);
+    \node at ($(c)+(-1,\plotheight+0.3cm)$){\large\textbf{b)}};
+    \coordinate(c1) at ($(c)+(0.32\plotwidth,0.25\plotheight)$);
+    \coordinate(c2) at ($(c)+(0.59\plotwidth,0.25\plotheight)$);
+    \setlength\wdth{0.25\plotwidth}
+    \begin{axis} 
+      [
+        at={(c)},
+        width=\plotwidth, height=\plotheight,
+        xmin=0, xmax=2200, ymin=0, ymax=650, 
+      ]
+      \input{sub/longtermRelease_plot.tex}
+
+      \addlegendimage{no markers, color=black, line width=0.5, dashed}\addlegendentry{Exp.}
+      \addlegendimage{no markers, color=black, line width=0.5}\addlegendentry{Sim.}
+      \addlegendimage{empty legend}\addlegendentry{}
+      \addlegendimage{no markers,color=clr1,line width=\lwidth} \addlegendentry{large}
+      \addlegendimage{no markers,color=clr3,line width=\lwidth} \addlegendentry{standard}
+    \end{axis}
+  \end{tikzpicture}
+\end{document}

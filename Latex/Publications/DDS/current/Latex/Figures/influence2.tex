@@ -1,0 +1,135 @@
+\documentclass{standalone}
+
+\usepackage{tikz,pgfplots,textcomp}
+\usetikzlibrary{calc}
+
+\begin{document}
+  \begin{tikzpicture}
+
+    \input{sub/stdSettings.tex}
+
+    \pgfplotsset{
+      xlabel={Time [h]},
+      ylabel={Concentration [\textmu M]},
+      ytick distance={20}
+    }
+
+    %% Center shift %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \coordinate (c) at (p1);
+    \node at ($(c)+(-1,\plotheight+0.3cm)$){\large\textbf{a)}};
+    \begin{axis} 
+      [
+        at={(c)},
+        xmin=0, xmax=800, ymin=0, ymax=105, 
+      ]
+      \input{sub/centerShift_plot.tex}
+      \addlegendimage{empty legend}\addlegendentry{\hspace{-0.7cm}\textbf{Center shift}}
+      \addlegendimage{no markers,color=clr1,line width=\lwidth} \addlegendentry{\phantom{10}0 \textmu m}
+      \addlegendimage{no markers,color=clr2,line width=\lwidth} \addlegendentry{125 \textmu m}
+      \addlegendimage{no markers,color=clr3,line width=\lwidth} \addlegendentry{250 \textmu m}
+    \end{axis}
+
+    \coordinate (pic) at ($(c)+(0.45\plotwidth,0.39\plotheight)$);
+    \setlength\wdth{0.57\plotheight}
+    \definecolor{clrC2}{rgb}{0,0.5,1}
+    \node at (pic) {\includegraphics[width=\wdth]{sub/CTshift.png}};
+    \draw[clr1,thick,line width=0.75] (pic) circle (0.49\wdth);
+    \draw[clr1,thick,line width=0.75] (pic) --++ (45:0.1) --++ (45:-0.2) --(pic) --++(135:0.1)--++(134:-0.2); 
+    \draw[clr3,thick, line width=0.75] ($(pic)+(0.031\wdth,0)$) coordinate (c2) circle (0.36\wdth);
+    \draw[clr3,thick,line width=0.75] (c2) --++ (45:0.1) --++ (45:-0.2) --(c2) --++(135:0.1)--++(134:-0.2); 
+    \draw[white] ($(pic)-(0,0.2)$) -- ($(c2)-(0,0.2)$) node[below,pos=0.5]{\legfont\textbf{Center shift}};
+    \draw[white,thick] ($(pic)-(0,0.15)$) --++(0,-0.1);
+    \draw[white,thick] ($(c2)-(0,0.15)$) --++(0,-0.1);
+    \node[below] at ($(pic)+(0.4\wdth,-0.45\wdth)$){\small 400 \textmu m};
+
+
+    % %% Cone shape %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \coordinate (c) at (p2);
+    \node at ($(c)+(-1,\plotheight+0.3cm)$){\large\textbf{b)}};
+    \begin{axis} 
+      [
+        at={(c)},
+        xmin=0, xmax=800, ymin=0, ymax=105, 
+      ]
+      \input{sub/coneShape_plot.tex}
+      \addlegendimage{empty legend}\addlegendentry{\hspace{-0.6cm}\textbf{Cone shape}}
+      \addlegendimage{no markers,color=clr1,line width=1} \addlegendentry{$\pm$\phantom{10}0 \textmu m}
+      \addlegendimage{no markers,color=clr2,line width=1} \addlegendentry{$\pm$125 \textmu m}
+      \addlegendimage{no markers,color=clr3,line width=1} \addlegendentry{$\pm$250 \textmu m}
+    \end{axis}
+
+    \newlength\wdthI\setlength\wdthI{0.3\plotwidth}
+    \newlength\wdthII\setlength\wdthII{0.35\plotwidth}
+    \coordinate (pic1) at ($(c)+(0.8\plotwidth,0.6\plotheight)$);
+    \node at (pic1) {\includegraphics[width=\wdthI]{sub/CTcone1.png}};
+    \coordinate (pic2) at ($(c)+(0.45\plotwidth,0.27\plotheight)$);
+    \node at (pic2) {\includegraphics[width=\wdthII]{sub/CTcone2.png}}; 
+    \draw[dashed,thick,line width=1.5] ($(pic2)-(0.51\wdthII,-0.41\wdthII)$) coordinate (c1) rectangle ($(pic2)+(0.51\wdthII,-0.41\wdthII)$) coordinate (c2);
+    \draw[dash pattern=on 2pt off 2pt,line width=0.5] ($(pic1)+(-0.49\wdthI,0.14\wdthI)$) coordinate (c3) rectangle ($(pic1)+(-0.29\wdthI,-0.04\wdthI)$) coordinate (c4);
+    \draw[thick,line width=0.5](c1) -- (c3);
+    \draw[thick,line width=0.5](c2) -- (c4);
+
+    \draw[clr1,thick,line width=2] ($(pic2)+(0.24\wdthII,0.37\wdthII)$) coordinate (c1) --++ (0,-0.75\wdthII) coordinate[pos=0.5] (avg); 
+    \draw[clr3,thick,line width=2]($(c1)-(0.09\wdthII,0)$) --++ (285:0.78\wdthII);
+    \coordinate (c) at ($(avg)-(0.25\wdthII,0)$);
+    \node[clr1,fill=white] at (c) {\legfont\textbf{avg.}};
+    \node[clr3,fill=white] at ($(c)-(0,-0.3\wdthII)$){\legfont $\mathbf{-}$};
+    \node[clr3,fill=white] at ($(c)-(0,0.3\wdthII)$){\legfont $\mathbf{+}$};
+
+
+    % %% Tetrapod size %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \coordinate (c) at (p3);
+    \node at ($(c)+(-1,\plotheight+0.4)$){\large\textbf{c)}};
+    \begin{axis} 
+      [
+        at={(c)},
+        xmin=0, xmax=800, ymin=0, ymax=125, 
+      ]
+      \input{sub/sizeTpod_plot.tex}
+      \addlegendimage{empty legend}\addlegendentry{\hspace{-0.6cm} \textbf{ZnO arm}}
+      \addlegendimage{empty legend}\addlegendentry{\hspace{-0.45cm} \textbf{length $l$}}
+      \addlegendimage{no markers,color=clr1,line width=\lwidth} \addlegendentry{$\times$1.2}
+      \addlegendimage{no markers,color=clr2,line width=\lwidth} \addlegendentry{\phantom{$\times$}24 \textmu m}
+      \addlegendimage{no markers,color=clr3,line width=\lwidth} \addlegendentry{$\times$0.8}
+    \end{axis}
+
+    \coordinate (c1) at ($(c)+(0.15\plotwidth,0.8\plotheight)$);
+    \coordinate (c2) at ($(c)+(0.45\plotwidth,0.3\plotheight)$);
+    \setlength{\wdth}{0.3\plotwidth}
+    \node[rotate=0] at (c1) {\includegraphics[width=0.5\wdth]{sub/tpod_slim.png}};
+    \node[rotate=0] at (c2) {\includegraphics[width=\wdth]{sub/tpod_slim.png}};
+
+    \draw[color=clr1,line width=1.5, |-|] ($(c2)+(0.08\wdth,-0.16\wdth)$) coordinate (c3)--++ (0,0.62\wdth) coordinate (c4) node[right,pos=0.5]{$l_2$};
+    % \draw[color=clr1,thick,line width=1] (c3) --++(0.04\wdth,0) --++(-0.08\wdth,0);
+    % \draw[color=clr1,thick,line width=1] (c4) --++(0.04\wdth,0) --++(-0.08\wdth,0);
+    \draw[color=clr3,line width=1.5,|-|] ($(c1)+(0.08\wdth,-0.08\wdth)$) coordinate (c3)--++ (0,0.33\wdth) coordinate (c4) node[right,pos=0.5]{$l_1$};
+    % \draw[color=clr3,thick,line width=1] (c3) --++(0.04\wdth,0) --++(-0.08\wdth,0);
+    % \draw[color=clr3,thick,line width=1] (c4) --++(0.04\wdth,0) --++(-0.08\wdth,0);
+
+    % %% lrratio %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \coordinate (c) at (p4);
+    \node at ($(c)+(-1,\plotheight+0.3cm)$){\large\textbf{d)}};
+    \begin{axis} 
+      [
+        at={(c)},
+        xmin=0, xmax=800, ymin=0, ymax=125, 
+      ]
+      \input{sub/lrratio_plot.tex}
+      \addlegendimage{empty legend}\addlegendentry{\hspace{-0.55cm} \textbf{ZnO arm}}
+      \addlegendimage{empty legend}\addlegendentry{\hspace{-0.8cm} \textbf{ratio $l/d^{\rm ZnO}$}}
+      \addlegendimage{no markers,color=clr1,line width=\lwidth} \addlegendentry{$\times$1.2}
+      \addlegendimage{no markers,color=clr2,line width=\lwidth} \addlegendentry{\phantom{$\times$}12}
+      \addlegendimage{no markers,color=clr3,line width=\lwidth} \addlegendentry{$\times$0.8}
+    \end{axis}
+
+
+    \setlength\wdth{0.2\plotwidth}
+    \coordinate (c1) at ($(c)+(0.13\plotwidth,0.82\plotheight)$);
+    \coordinate (c2) at ($(c)+(0.55\plotwidth,0.21\plotheight)$);
+    \node at (c1) {\includegraphics[width=\wdth]{sub/tpod_slim.png}};
+    \node at (c2) {\includegraphics[width=\wdth]{sub/tpod_fat.png}};
+    % \node[rotate=90] at (c2) {\includegraphics[width=\wdth,trim=100 0 450 0,clip]{sub/lr_ratio15.png}};
+    % \draw[color=clr5, line width=\lwidth] ($(c1)-(-0.5\wdth,0.5\wdth)$) rectangle ($(c1)+(-0.5\wdth,0.5\wdth)$);
+    % \draw[color=clr3, line width=\lwidth] ($(c2)-(-0.5\wdth,0.5\wdth)$) rectangle ($(c2)+(-0.5\wdth,0.5\wdth)$);
+\end{tikzpicture}
+\end{document}

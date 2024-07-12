@@ -1,0 +1,55 @@
+\documentclass{standalone}
+
+\usepackage{tikz,pgfplots}
+\usepackage{textcomp}
+
+\usetikzlibrary{calc}
+
+\begin{document}
+  \begin{tikzpicture}
+    \newlength{\plotwidth}\setlength{\plotwidth}{10cm}
+    \newlength{\plotheight}\setlength{\plotheight}{7cm}
+    \coordinate (plotpos1) at (0,0);
+
+    \def\fs{14}
+    \pgfplotsset{
+      legend image code/.code={
+      \draw[mark repeat=2,mark phase=2]
+      plot coordinates {
+      (0cm,0cm)
+      (0.15cm,0cm)        %% default is (0.3cm,0cm)
+      (0.45cm,0cm)         %% default is (0.6cm,0cm)
+      };%
+      }
+      }
+
+    \input{colors}
+
+    \begin{axis} 
+    [
+    /pgf/number format/.cd,
+    use comma,
+    1000 sep={},
+    at={(plotpos1)}, width=\plotwidth, height=\plotheight, scale only axis, 
+    xmin=0, xmax=1000, ymin=0, ymax=110, 
+    xlabel={Time [h]}, 
+    ylabel={Concentration [\textmu M]},
+    xtick={200,400,600,800,1000},
+    tick label style={font={\fontsize{\fs}{\fs}}},
+    label style={font={\fontsize{\fs}{\fs}\selectfont}},
+    legend pos=south east,
+    legend style={font={\fontsize{\fs}{\fs} \selectfont}},
+    legend cell align={left}
+    ] 
+      \addplot[forget plot]graphics[xmin=0, xmax=1000, ymin=0, ymax=110]{longtermSmall.pdf};
+      \addlegendimage{no markers,color=clrA,line width=1} \addlegendentry{Sim.}
+      \addlegendimage{no markers,color=clrG,line width=1} \addlegendentry{Exp.}
+    \end{axis}
+    \coordinate (c) at (0.05\plotwidth,\plotheight-0.4cm);
+    \node[right]  at (c) {Porosity = 8.0 \%};
+    \node[right] at ($(c)+(0,-0.4cm)$) {Initial conc. = 100 mM};
+
+    \coordinate (leg) at (5,1);
+
+  \end{tikzpicture}
+\end{document}

@@ -1,0 +1,110 @@
+\documentclass{standalone}
+
+\usepackage{tikz,pgfplots,textcomp}
+\usetikzlibrary{calc}
+
+\begin{document}
+  \begin{tikzpicture}
+
+    \input{sub/stdSettings.tex}
+
+    %% Image of samples %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \coordinate(c) at (p1);
+    \node at ($(c)+(-1,\plotheight+0.3cm)$){\large\textbf{a)}};
+    \node[above right] at ($(c)+(0,-0.03\plotheight)$) {\includegraphics[height=\plotheight]{sub/samples_small.png}};
+
+
+    %% longterm release with small sample %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \coordinate(c) at (p2);
+    \node at ($(c)+(-1,\plotheight+0.3cm)$){\large\textbf{b)}};
+    \begin{axis}[
+      at={(c)},  
+      xmin=0.0, xmax=1000, ymin=0.0, ymax=120, 
+      xlabel={Time [h]}, 
+      ylabel={Concentration [\textmu M]}
+    ]
+      \input{sub/longtermSmall_plot.tex}
+      \addlegendimage{no markers,color=clr1,line width=\lwidth} \addlegendentry{Exp.}
+      \addlegendimage{no markers,color=clr2,line width=\lwidth} \addlegendentry{Sim.}
+    \end{axis}
+    \coordinate (c) at ($(p2)+(0.05\plotwidth,\plotheight-0.4cm)$);
+    \node[right]  at (c) {\legfont Porosity = 4.5\%};
+    \node[right] at ($(c)+(0,-0.4cm)$) {\legfont Initial conc. = 100 mM};
+
+
+    % comparison Porosity %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \coordinate(c) at (p3);
+    \node at ($(c)+(-1,\plotheight+0.3cm)$){\large\textbf{c)}};
+    \begin{axis}[
+      at={(c)},  
+      xmin=0.0, xmax=100.0, ymin=0.0, ymax=5.5, 
+      xlabel={Time [h]}, 
+      ylabel={Concentration [\textmu M]}
+    ]
+      \input{sub/comparisonPorosity_plot.tex}
+      \addlegendimage{no markers, color=black, line width=0.5, dashed}\addlegendentry{Exp.}
+      \addlegendimage{no markers, color=black, line width=0.5}\addlegendentry{Sim.}
+      \addlegendimage{empty legend}\addlegendentry{}
+      \addlegendimage{empty legend} \addlegendentry{\hspace{-0.35cm}\textbf{Porosity}}
+      \addlegendimage{no markers,color=clr2,line width=\lwidth} \addlegendentry{10.7\%}
+      \addlegendimage{no markers,color=clr4,line width=\lwidth} \addlegendentry{\phantom{1}9.8\%}
+      \addlegendimage{no markers,color=clr6,line width=\lwidth} \addlegendentry{\phantom{1}8.9\%}
+      \addlegendimage{no markers,color=clr8,line width=\lwidth} \addlegendentry{\phantom{1}8.0\%}
+      \addlegendimage{no markers,color=clr10,line width=\lwidth} \addlegendentry{\phantom{1}5.4\%}
+    \end{axis}
+    \node[right] at ($(c)+(0.05\plotwidth,\plotheight-0.4cm)$){\legfont Initial conc. = 5 mM};
+
+
+    % J Porosity %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \coordinate(c) at (p4);
+    \node at ($(c)+(-1,\plotheight+0.3cm)$){\large\textbf{d)}};
+    \begin{axis}[
+      at={(c)},  
+      xmin=4, xmax=12, ymin=0.0, ymax=0.8, 
+      xlabel={Membrane porosity [\%]}, 
+      ylabel={Initial release rate  [nM/h]}
+    ]
+      \input{sub/JPorosity_plot.tex}
+      \addlegendimage{color=clr1,only marks,mark size=1pt} \addlegendentry{Exp.}
+      \addlegendimage{color=clr3,only marks,mark size=1pt} \addlegendentry{Sim.}
+    \end{axis}
+
+
+    % comparison Concentration %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \coordinate(c) at (p5);
+    \node at ($(c)+(-1,\plotheight+0.3cm)$){\large\textbf{e)}};
+    \begin{axis}[
+      at={(c)},  
+      xmin=0, xmax=75, ymin=0, ymax=20, 
+      xlabel={Time [h]}, 
+      ylabel={Concentration [\textmu M]}
+    ]
+      \input{sub/comparisonConcentration_plot.tex}
+      \addlegendimage{no markers, color=black, line width=0.5, dashed}\addlegendentry{Exp.}
+      \addlegendimage{no markers, color=black, line width=0.5}\addlegendentry{Sim.}
+      \addlegendimage{empty legend}\addlegendentry{}
+      \addlegendimage{empty legend}\addlegendentry{\hspace{-0.6cm} \textbf{Initial conc.}}
+      \addlegendimage{no markers,color=clr2,line width=\lwidth} \addlegendentry{20.0 mM}
+      \addlegendimage{no markers,color=clr4,line width=\lwidth} \addlegendentry{10.0 mM}
+      \addlegendimage{no markers,color=clr6,line width=\lwidth} \addlegendentry{\phantom{1}5.0 mM}
+      \addlegendimage{no markers,color=clr8,line width=\lwidth} \addlegendentry{\phantom{1}2.5 mM}
+    \end{axis}
+    \node[right] at ($(c)+(0.05\plotwidth,\plotheight-0.4cm)$){\legfont Porosity. = 8.0\%};
+
+    % J Porosity %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \coordinate(c) at (p6);
+    \node at ($(c)+(-1,\plotheight+0.3cm)$){\large\textbf{f)}};
+    \begin{axis}[
+      at={(c)},  
+      xmin=0, xmax=25, ymin=0, ymax=2.2, 
+      xlabel={Initial concentration [mM]}, 
+      ylabel={Initial release rate  [nM/h]}
+    ]
+      \input{sub/JConcentration_plot.tex}
+      \addlegendimage{color=clr3,only marks,mark size=1pt} \addlegendentry{Exp.}
+      \addlegendimage{color=clr1,only marks,mark size=1pt} \addlegendentry{Sim.}
+    \end{axis}
+
+
+  \end{tikzpicture}
+\end{document}

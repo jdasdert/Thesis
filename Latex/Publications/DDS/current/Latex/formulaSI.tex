@@ -1,0 +1,147 @@
+\usepackage{amsmath}
+
+\newcommand{\derivative}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\dderivative}[2]{\frac{\partial^2 #1}{\partial {#2}^2}}
+\renewcommand{\exp}[1]{\ {\rm exp}\left( {#1} \right)}
+\newcommand{\ext}[1]{#1^{\rm ext}}
+\newcommand{\red}[1]{#1_{\rm red}}
+\newcommand{\redn}[1]{#1_{\rm red,n}}
+\newcommand{\inve}[1]{#1^{e-1}}
+\newcommand{\transpose}[1]{#1^{\top}}
+\newcommand{\ue}[1]{\underline{#1}^{e}}
+\newcommand{\eT}[1]{{#1}^{e \top}}
+\newcommand{\uT}[1]{\underline{#1}^{\top}}
+\newcommand{\uprime}[1]{\underline{#1}^{\prime}}
+\newcommand{\uTprime}[1]{\underline{#1}^{\prime \top}}
+\newcommand{\vect}[1]{{\bf{#1}}}
+\renewcommand{\sin}[1]{\ {\rm sin}\left( {#1} \right)}
+\renewcommand{\sinh}[1]{\ {\rm sinh}\left( {#1} \right)}
+\renewcommand{\cos}[1]{\ {\rm cos}\left( {#1} \right)}
+\renewcommand{\cosh}[1]{\ {\rm cosh}\left( {#1} \right)}
+
+\newcommand{\Am}{A^m}
+
+\newcommand{\BB}{\vect{B}}
+\newcommand{\BBT}{\transpose{\vect{B}}}
+\newcommand{\BBe}{\vect{B}^e}
+\newcommand{\BBeT}{\eT{\vect{B}}}
+
+\newcommand{\cc}{\vect{c}}
+\newcommand{\cC}{c_{\rm C}}
+\newcommand{\CC}{\vect{C}}
+\newcommand{\cce}{\vect{c}^e}
+\newcommand{\CCe}{\vect{C}^e}
+\newcommand{\CCei}{\vect{C}^e_i}
+\newcommand{\ccek}{\vect{c}^e_{\rm k}}
+\newcommand{\ccen}{\vect{c}^e_{\rm n}}
+\newcommand{\ccenI}{\vect{c}^e_{\rm n+1}}
+\newcommand{\cck}{\cc_{\rm k}}
+\newcommand{\ccn}{\vect{c}_{\rm n}}
+\newcommand{\ccnred}{\redn{\cc}}
+\newcommand{\ccntilde}{\tilde{\vect{c}}_{\rm n}}
+\newcommand{\ccred}{\red{\cc}}
+\newcommand{\CCred}{\red{\CC}}
+\newcommand{\cctilde}{\tilde{\vect{c}}}
+\newcommand{\CCtilde}{\tilde{\vect{C}}}
+\newcommand{\cin}{c_{\rm in}}
+\newcommand{\cout}{c_{\rm out}}
+
+\newcommand{\cdt}{\dot{c}}
+\newcommand{\cdtue}{\ue{\dot{c}}}
+\newcommand{\cie}{c_i^e}
+\newcommand{\cprime}{c^{\prime}}
+\newcommand{\cpprime}{c^{\prime \prime}}
+\newcommand{\cR}{c_{\rm R}}
+\newcommand{\cu}{\underline{c}}
+\newcommand{\cue}{\ue{c}}
+\newcommand{\cceT}{\eT{c}}
+\renewcommand{\d}{{\rm d}}
+
+\newcommand{\FF}{\vect{F}}
+\newcommand{\FFe}{\vect{F}^e}
+\newcommand{\FFext}{\ext{\FF}}
+\newcommand{\FFred}{\red{\FF}}
+
+\newcommand{\JC}{J_{\rm C}}
+\newcommand{\jje}{\vect{j}^e}
+\newcommand{\Je}{J^{e}}
+\newcommand{\Jex}{J_{\rm ex}}
+\newcommand{\Jeinv}{\inve{J}}
+\newcommand{\jprime}{j^{\prime}}
+\newcommand{\JR}{J_{\rm R}}
+
+\newcommand{\KK}{\vect{K}}
+\newcommand{\KKe}{\vect{K}^e}
+\newcommand{\KKei}{\vect{K}^e_i}
+\newcommand{\KKred}{\red{\KK}}
+\newcommand{\KKtilde}{\tilde{\vect{K}}}
+
+\newcommand{\LLC}{\vect{L}^{\rm C}}
+\newcommand{\LLCT}{\vect{L}^{\rm C \top}}
+\newcommand{\LLe}{\vect{L}^{e}}
+\newcommand{\LLeT}{\eT{\vect{L}}}
+\newcommand{\LLR}{\vect{L}^{\rm R}}
+\newcommand{\LLRT}{\vect{L}^{\rm R \top}}
+\newcommand{\lm}{l^m}
+
+\newcommand{\Nch}{N_{\rm ch}}
+\newcommand{\Nel}{N_{\rm el}}
+\newcommand{\Nen}{N_{\rm en}}
+\newcommand{\Nie}{N_i^e}
+\newcommand{\Nip}{N_{\rm ip}}
+\newcommand{\NN}{\vect{N}}
+\newcommand{\NNe}{\vect{N}^e}
+\newcommand{\NNeT}{\eT{\vect{N}}}
+\newcommand{\NNT}{\transpose{\vect{N}}}
+
+\newcommand{\Omegae}{\Omega^{e}}
+
+\newcommand{\tn}{t_{\rm n}}
+
+\newcommand{\vC}{v_{\rm C}}
+\newcommand{\VC}{V_{\rm C}}
+\newcommand{\Vchm}{V_{\rm ch}^m}
+\newcommand{\Vex}{V_{\rm ex}}
+\newcommand{\vve}{\vect{v}^e}
+\newcommand{\vveT}{\eT{\vect{v}}}
+\newcommand{\Vnet}{V_{\rm net}}
+\newcommand{\vR}{v_{\rm R}}
+\newcommand{\VR}{V_{\rm R}}
+\newcommand{\vv}{\vect{v}}
+\newcommand{\vvT}{\transpose{\vect{v}}}
+
+
+\newcommand{\xxe}{\vect{x}^e}
+
+\newcommand{\zzero}{\vect{0}}
+
+
+\newcommand{\dx}{\d x}
+\newcommand{\dxi}{\d \xi}
+\newcommand{\dxDxi}{\derivative{x}{\xi}}
+\newcommand{\dDt}{\frac{\partial}{\partial t}}
+\newcommand{\Dt}{\Delta t}
+\newcommand{\dcDx}{\derivative{c}{x}}
+\newcommand{\dcDxi}{\derivative{c}{\xi}}
+\newcommand{\dcDt}{\derivative{c}{t}}
+\newcommand{\dccDt}{\derivative{\cc}{t}}
+\newcommand{\dcceDt}{\derivative{\cce}{t}}
+\newcommand{\ddcDDx}{\dderivative{c}{x}}
+\newcommand{\djDx}{\derivative{j}{x}}
+\newcommand{\dGDt}{\derivative{G}{t}}
+\newcommand{\dphiDx}{\derivative{\varphi}{x}}
+\newcommand{\ddphiDDx}{\dderivative{\varphi}{x}}
+\newcommand{\dNieDx}{\derivative{\Nie}{x}}
+\newcommand{\dvDx}{\derivative{v}{x}}
+\newcommand{\ddvDDx}{\dderivative{v}{x}}
+\newcommand{\dvDt}{\derivative{v}{t}}
+
+\newcommand{\intlm}{\int\displaylimits_{x=0}^{\lm}}
+\newcommand{\intOmega}{\int\displaylimits_{\Omega}}
+\newcommand{\intOmegae}{\int\displaylimits_{\Omegae}}
+\newcommand{\intXi}{\int\displaylimits_{\xi=-1}^{1}}
+\newcommand{\sumch}{\sum_{m=1}^{\Nch}}
+\newcommand{\sumel}{\sum_{e=1}^{\Nel}}
+\newcommand{\sumip}{\sum_{p=1}^{\Nip}}
+\newcommand{\sumNen}{\sum_{i=1}^{\Nen}}
+

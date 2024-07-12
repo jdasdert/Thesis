@@ -1,0 +1,38 @@
+\documentclass{standalone}
+
+\usepackage{tikz,pgfplots}
+\usepackage{textcomp}
+\usetikzlibrary{calc}
+
+\begin{document}
+  \begin{tikzpicture}
+    \newlength{\plotwidth}\setlength{\plotwidth}{10cm}
+    \newlength{\plotheight}\setlength{\plotheight}{7cm}
+    \newlength{\margX}\setlength{\margX}{2cm}
+    \newlength{\margY}\setlength{\margY}{2.5cm}
+    \coordinate (p1) at (0,0);
+    \coordinate (p2) at ($(p1)+(\plotwidth+\margX,0)$);
+    \coordinate (p3) at ($(p1)+(0,-\plotheight-\margY)$);
+    \coordinate (p4) at ($(p3)+(\plotwidth+\margX,0)$);
+    \coordinate (p5) at ($(p3)+(0,-\plotheight-\margY)$);
+    \coordinate (p6) at ($(p5)+(\plotwidth+\margX,0)$);
+    \coordinate (p7) at ($(p5)+(0,-\plotheight-\margY)$);
+    \coordinate (p8) at ($(p7)+(\plotwidth+\margX,0)$);
+    \coordinate (p9) at ($(p7)+(0,-\plotheight-\margY)$);
+    \coordinate (p10) at ($(p9)+(\plotwidth+\margX,0)$);
+    \coordinate (p11) at ($(p9)+(0,-\plotheight-\margY)$);
+    \coordinate (p12) at ($(p11)+(\plotwidth+\margX,0)$);
+    \coordinate (p13) at ($(p11)+(0,-\plotheight-\margY)$);
+
+    \node at (p1) {\includegraphics{ZnOdensAx.pdf}};
+    \node at (p2) {\includegraphics{thicknessAx.pdf}};
+    \node at (p3) {\includegraphics{cshiftAx.pdf}};
+    \node at (p4) {\includegraphics{coneAx.pdf}};
+    \node at (p5) {\includegraphics{lrratioAx.pdf}};
+    \node at (p6) {\includegraphics{volumeTpodAx.pdf}};
+    \node at (p7) {\includegraphics{volumeResAx.pdf}};
+    \node at (p8) {\includegraphics{concentrationAx.pdf}};
+
+
+  \end{tikzpicture}
+\end{document}

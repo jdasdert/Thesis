@@ -1,0 +1,178 @@
+\section{1D time dependent diffusion}
+
+Fick's laws describe concentration gradient driven diffusion. In the one dimensional case one has
+  \begin{equation}
+    \dcDt = - \djDx \qquad {\rm with} \qquad j = -D \dcDx, 
+  \end{equation}
+  where $c$ is the concentration, $j$ is the particle current density $t$ is the time, $x$ is the position and $D$ is the diffusion coefficient.
+  Neglecting any internal particle sources (e.g. chemical reactions) and convection one finds: 
+  \begin{equation}
+    \dcDt = D \ddcDDx.
+    \label{eq:diffEq}
+  \end{equation}
+  The solution is found by separation of the variables $x$ and $t$:
+  \begin{equation}
+    c(x,t) = \varphi(x) G(t).
+    \label{eq:sepVar}
+  \end{equation}
+  Assuming $D$ to be constant and inserting \cref{eq:sepVar} into \cref{eq:diffEq} one finds
+  \begin{equation}
+    \frac{1}{GD} \dGDt = \frac{1}{\varphi} \ddphiDDx.
+    \label{eq:diffEqSepVar}
+  \end{equation}
+  Defining
+  \begin{equation}
+    \lambda = -\frac{1}{GD} \dGDt
+  \end{equation}
+  one obtains the following differential equation
+  \begin{equation}
+    \ddphiDDx + \lambda \varphi = 0.
+    \label{eq:diffEqX}
+  \end{equation}
+  For $\lambda>0$ the ansatz for $\varphi$ is given by 
+  \begin{equation}
+    \varphi(x) = A \cos{\sqrt{\lambda}x} + B \sin{\sqrt{\lambda}x}
+    \label{eq:ansatzPhi}
+  \end{equation}
+  Inserting \cref{eq:diffEqX} into \cref{eq:diffEqSepVar} one obtains:
+  \begin{equation}
+    \dGDt + D \lambda G = 0.
+    \label{eq:diffEqT}.
+  \end{equation}
+  The ansatz for $G$ is given by:
+  \begin{equation}
+    G(t) = a \exp{-D\lambda t}.
+  \end{equation}
+  The ansatz for the time dependent concentration (\cref{eq:sepVar}) thus reads:
+  \begin{equation}
+    c(x,t) = \left( A \cos{\sqrt{\lambda}x} + B \sin{\sqrt{\lambda}x} \right) \exp{ -\lambda Dt}
+    \label{eq:ansatzC}
+  \end{equation}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Examples with analytical solutions}
+\subsubsection{Insulated Bar}
+For an insulated bar the particle flux at the boundaries is zero. The boundary conditions therefore read:
+\begin{equation}
+  \dcDx(x=0,t) = 0; \qquad \dcDx(x=L,t)=0.
+  \label{eq:IBarBC}
+\end{equation}
+The initial condition is given by:
+\begin{equation}
+  c(x,t=0) = f(x)
+  \label{eq:IBarInit}
+\end{equation}
+where $f(x)$ is a known function. Using the boundary conditions in \cref{eq:IBarBC}, the ansatz from \cref{eq:ansatzPhi} yields the following results:
+\begin{equation}
+  \begin{split}
+    0 = \dphiDx(x=0) &= B \sqrt{\lambda} \\
+    &\Rightarrow B =0
+  \end{split}
+  \label{eq:IBarB}
+\end{equation}
+and 
+\begin{equation}
+  \begin{split}
+  0 = \dphiDx(x=L) &= -A \sqrt{\lambda} \sin{\sqrt{\lambda}L} \\ &\Rightarrow \lambda_n = \left(\frac{n \pi}{L}\right)^2
+  \end{split}
+  \label{eq:IBarLambdan}
+\end{equation}
+where $n$ is an integer number and $\lambda_n$ denotes the nth possible solution for $\lambda$. Inserting \cref{eq:IBarB,eq:IBarLambdan,eq:IBarInit} into the ansatz in \cref{eq:ansatzC} one obtains:
+\begin{equation}
+  f(x) = c(x,t=0) = \sum_{n=0}^{\infty} A_n \cos{\frac{n\pi x}{L}}.
+  \label{eq:f}
+\end{equation}
+Note that due to symmetry, only positive $n$ are considered. \cref{eq:f} takes the form of a fourier series. Thus the parameters $A_n$ are given by:
+\begin{equation}
+  A_n = \begin{cases}
+    \displaystyle \frac{1}{L} \int\limits_0^L f(x) \dx & \text{if} \quad n = 0 \\
+    \displaystyle \frac{2}{L} \int\limits_0^L f(x) \cos{\frac{n\pi x}{L}} \dx & \text{if} \quad n \ne 0.
+  \end{cases}
+\end{equation}
+
+\paragraph{Example:}The initial concentration is given by a linear function of the following form:
+\begin{equation}
+  f(x) = c_0 + \frac{c_L-c_0}{L}x
+\end{equation}
+where $c_0=c(x=0,t=0)$ and $c_L=c(x=L,t=0)$. The parameters $A_n$ are then given by:
+\begin{equation}
+  A_n = \begin{cases}
+    \displaystyle \frac{c_0+c_L}{2} & \text{if} \quad n=0 \\[10pt]
+    \displaystyle 4 \frac{(c_L-c_0)}{(n \pi)^2} & \text{if} \quad n = 1,3,5 ... \\[10pt]
+    0 & \text{if} \quad n=2,4,6 ... 
+  \end{cases}
+\end{equation}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Bar with non-zero Dirichlet BC}
+For a bar with prescribed concentration at the boundaries the boundary conditions are given by:
+\begin{equation}
+  c(x=0,t) = c_0; \qquad c(x=L,t)= c_L.
+\end{equation}
+Again, the initial condition reads:
+\begin{equation}
+  c(x,t=0) = f(x)
+\end{equation}
+The equilibrium concentration $c_{\infty}$ is given by:
+\begin{equation}
+  c(x,t \rightarrow \infty) = c_\infty(x) = c_0 + \frac{c_L-c_0}{L}x 
+\end{equation}
+Introducing the deviation from equilibrium $v(x,t)$ one has:
+\begin{equation}
+  v(x,t) = c(x,t) - c_\infty(x).
+\end{equation}
+In analogy to \cref{eq:diffEq} the differential equations is now given by 
+\begin{equation}
+  \dvDt = D \ddvDDx 
+\end{equation}
+with the ansatz (compare \cref{eq:ansatzC})
+\begin{equation}
+  v(x,t) = \left( A \cos{\sqrt{\lambda}x} + B \sin{\sqrt{\lambda}x} \right) \exp{-\lambda Dt}.
+\end{equation}
+The boundary conditions are then given by
+\begin{equation}
+  v(x=0,t) = 0; \qquad v(x=L,t) = 0
+\end{equation}
+and the initial condition reads:
+\begin{equation}
+  v(x,t=0) = f(x) - c_\infty
+\end{equation}
+From the boundary conditions one obtains
+\begin{equation}
+  \begin{split}
+    0 = v(x=0,t) &= A \exp{-\lambda Dt} = 0 \\
+    &\Rightarrow A = 0
+  \end{split}
+\end{equation}
+and
+\begin{equation}
+  \begin{split}
+    0 = v(x=L,t) &= B \sin{\sqrt{\lambda} L} \exp{-\lambda Dt} = 0 \\
+    &\Rightarrow \lambda_n = \left(\frac{n\pi}{L}\right)^2.
+  \end{split}
+\end{equation}
+Then the ansatz for the concentration is given by:
+\begin{equation}
+  c(x,t) = c_0 + \frac{c_L-c_0}{L}x + \sum_{n=1}^{\infty} B_n \sin{\frac{n\pi x}{L}} \exp{-D\left(\frac{n\pi}{L}\right)^2 t}
+\end{equation}
+with
+\begin{equation}
+  B_n = \frac{2}{L} \int\limits_0^L (f(x)-c_\infty(x)) \sin{\frac{n\pi x}{L}} \dx.
+\end{equation}
+
+\paragraph{Example:} The initial deviation from equilibrium is given by a the following function:
+\begin{equation}
+  f(x)-c_\infty = b \left[\frac{x}{L}\left( \frac{x}{L}-1 \right) \right].
+\end{equation}
+\begin{equation}
+  B_n = \begin{cases}
+    \displaystyle 0 & \text{if} \quad n=0,2,4,6 \\[10pt]
+    \displaystyle -\frac{8b}{(n\pi)^3}& \text{if} \quad n=1,2,3,5
+  \end{cases}
+\end{equation}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+

@@ -1,0 +1,191 @@
+\documentclass{article}
+
+\usepackage[left=3cm,right=3cm,top=1cm,bottom=1.5cm,includeheadfoot]{geometry}
+\usepackage{graphicx}
+\usepackage{tabularx, caption, multirow}
+\captionsetup[table]{position=above, skip=1pt, singlelinecheck=false}
+\newcolumntype{Y}{>{\centering\arraybackslash}X}
+\setlength\parindent{0pt} %no indent at the beginning of new paragraph
+\renewcommand{\arraystretch}{1.2}
+
+
+% fonts etc
+\usepackage{textcomp}
+
+\input{formulaSI.tex}
+\usepackage{cleveref}
+
+\renewcommand{\figurename}{Figure S\hspace{-0.8ex}}
+\renewcommand{\tablename}{Table S\hspace{-0.8ex}}
+
+\begin{document}
+  \section*{Supplementary Information}
+  \subsection*{Fabrication of reservoir-based drug delivery system}
+
+  \begin{figure}[h!]
+    \centering
+    \includegraphics[width=\textwidth]{Figures/SI-sample_preparation.png}
+    \caption{Schematic of fabrication method for reservoir-based drug delivery system including the following steps:1) Preparation of sacrificial template of tetrapodal zinc oxide (t-ZnO), 2) vacuum infiltration of t-ZnO template with polydimethylsiloxane (PDMS), 3) laser cutting of reservoir-containing cylinders, 4) etching of t-ZnO by HCL and subsequent washing of samples to obtain membrane with hollow microchannels, 5) sealing of reservoir by PDMS thin film, 6) final drug delivery system consisting of reservoir surrounded by porous membrane.}
+  \end{figure}
+
+  \newpage
+
+  \begin{figure}[h!]
+    \centering
+    \includegraphics[width=\textwidth]{Figures/SI-dye_injection.png}
+    \caption{a) Loading of reservoir with methylene blue solution via syringe injection (0.3 mm). b) Top view  and c) side view of loaded reservoir-based drug delivery system.}
+  \end{figure}
+
+  \newpage
+  \subsection*{Synchrotron radiation-based \textmu CT Analysis of PDMS templates}
+
+  Figure S3 shows the variability of the PDMS thickness per sample as a function of its height as a box plot. All samples show a change of median thickness of approx. 20\% between top and bottom. This emphasises irregularities from the laser cutting process of the reservoir during manufacturing.
+
+  \begin{figure}[h!]
+    \includegraphics[width=\textwidth]{Figures/SI-box_plot.png}
+    \caption{PDMS thickness as a function of the position along the height of the sample for the four rDDS imaged using SR\textmu CT. A decrease in thickness toward the top of the template is visible for all samples. The median thickness from top to bottom deviates by approx. 20\%.}
+  \end{figure}
+
+  Table S1 displays the quantitative analysis of sample porosity, reservoir surface area and microchannel size.
+
+  \begin{table}[h!]
+    \centering
+    \begin{minipage}{0.8\textwidth}
+      \caption{Quantitative PDMS microchannel network analysis.}
+      \begin{tabularx}{\textwidth}{l Y}
+        \hline\hline
+        & Mean $\pm$ Std \\
+        \hline
+        Reservoir surface area [mm$^2$] & 4.30 $\pm$ 0.22 \\
+        Microchannel-reservoir interface area [mm$^2$] & 0.16 $\pm$ 0.03 \\
+        Microchannel-reservoir surface area fraction [\%] & 3.61 $\pm$ 0.54 \\
+        PDMS porosity (largest connected) [\%] & 5.94 $\pm$ 0.77 \\
+        PDMS porosity [\%] & 6.61 $\pm$ 0.68 \\
+        Microchannel connectivity [\%] & 90.34 $\pm$ 3.14 \\
+        Microchannel thickness [\textmu m] & 4.14 $\pm$ 0.21
+      \end{tabularx}
+  \end{minipage}
+  \end{table}
+
+  All of the computed parameters are prone to some error due to the segmentation, but as all samples were segmented identically, the segmentation error should be invariant between computed parameters. The quantitative analysis points to a number of reasons for the differences in the release of fluids from the rDDS. While the reservoir surface area standard deviation is less than 5\%, the interface surface area and surface area fraction deviate by up to 19\% from their mean value which is most likely due to the partial filling of the reservoir with PDMS during the sealing. Sample 4 in particular shows a low surface area fraction of 2.74\%, while sample 2 displays the highest fraction at 4.13\%.
+
+  \newpage
+  \subsection*{FEM model}
+
+ 
+  % Neglecting any internal particle sources (e.g. chemical reactions) and convection, the development of concentration over time is described by Fick's second law. In the one dimensional case it is given by:
+  % \begin{equation}
+  %   \dcDt = D \ddcDDx, 
+  %   \label{eq:diffEq}
+  % \end{equation}
+  % where $c$ denotes the concentration, $t$ the time, $D$ the diffusion coefficient and $x$ the position. 
+  % The weak form of the the differential equation (\ref{eq:diffEq}) is obtained by multiplying with a test function $v$ and integrating over the volume. In case of a network of interconnected microchannels the total volume of the network is given by the sum of volumes $\Vchm$ of each channel with index~$m$. 
+  % \begin{equation}
+  %   \sumch \ \intlm v \left(\dcDt - D \ddcDDx \right) \Am \ \dx = 0.
+  % \end{equation}
+  % Here, $\Am$ is the constant cross section and $\lm$ is the total length of channel $m$. The total number of channels is given by $\Nch$. Note that the test function $v$ is zero at Dirichlet boundaries and continuous in the network but otherwise arbitrary. Using partial integration one obtains:
+  % \begin{equation}
+  %   \sumch \ \intlm \left( v \dcDt + \dvDx D \dcDx \right) \Am \ \dx=  -\sumch \left[ v \Am j \right]_{x=0}^{\lm}.
+  % \end{equation}
+  % Due to particle conservation the sum of particle currents $J=jA$ at each intersection in the network is zero except at the boundaries. In case of the rDDS the network has a boundary to the inside reservoir and to the outside cavity. Thus, two particle currents $\JR$ and $\JC$ are defined:
+  % \begin{equation}
+  %   \sumch \ \intlm \left( v \dcDt + \dvDx D \dcDx \right) \Am \ \dx=  \vr\JR - \vc\JC.
+  % \end{equation}
+  % The particle current at the reservoir boundary $\JR$ is obtained by the rate of change of particles in the reservoir:
+  % \begin{equation}
+  %   \JR = -\frac{\partial}{\partial t} (\cR\VR), 
+  % \end{equation}
+  % where $\cR$ and $\VR$ are the concentration and volume of the reservoir, respectively. For the cavity an additional particle current $\Jex$ removing particles from the cavity due to liquid exchange with the surrounding body is considered. Thus one has:
+  % \begin{equation}
+  %   \JC = \frac{\partial}{\partial t} (\cC\VC) + \Jex \qquad \text{with} \qquad \Jex = \cC Q,
+  % \end{equation} 
+  % where $\cC$ and $\VC$ are the concentration and volume of the cavity, respectively and $Q = \partial\Vex/\partial t$ is the volume current of exchanged liquid. Note that a homogeneous concentration both in the reservoir and the cavity and a constant volume current is assumed. With that one obtains:
+  The weak form of the 1D diffusion equation derived in the manuscript is given by:
+  \begin{equation}
+    \sumch \ \intlm \left( v \dcDt + \dvDx D \dcDx \right) \Am \ \dx= - \vR \frac{\partial \cR}{\partial t} \VR - \vC \left( \frac{\partial \cC}{\partial t} \VC + \cC Q\right), 
+    \label{eq:weakForm}
+  \end{equation}  
+  Introducing finite elements with shape functions $N$ that interpolate between the nodes $i$ the concentration in one element $e$ can be given by:
+  \begin{align}
+    c(x,t) &= \sumNen \Nie(x) \cie(t) = \NNeT \cce \label{eq:cN};\\
+    \dcDx &= \sumNen \dNieDx c_i^e= \BBeT \cce.
+    \label{eq:dcDxN}
+  \end{align}
+  Choosing one dimensional linear elements with two nodes ($\Nen=2$), the vectors $\NNe$, $\BBe$ and $\cce$ are given by:
+  \begin{equation}
+    \NNe = \begin{pmatrix} N_1^e(x) \\ N_2^e(x) \end{pmatrix}; \qquad 
+    \BBe = \begin{pmatrix} \partial N_1^e / \partial x \\ \partial N_2^e / \partial x \end{pmatrix}; \qquad 
+    \cce = \begin{pmatrix} c_1^e \\ c_2^e \end{pmatrix}
+    \label{eq:NNeBBecce}
+  \end{equation}
+  The function $v(x)$, its derivative as well as the vectors $\vve$ and $\xxe$ are given in analogy to \cref{eq:cN,eq:dcDxN,eq:NNeBBecce}. Further, introducing a reference element in a separate coordinate $\xi$ is, which is mapped to $x$ by the Jacobian \mbox{$J=\partial x / \partial \xi$}, one obtains:
+  \begin{equation}
+    c(\xi,t) = \NNT \cce; \qquad \dcDxi = \BBT \cce; \qquad \BBe = \Jeinv \BB
+  \end{equation}
+  with
+  \begin{equation}
+    \NN = \begin{pmatrix} N_1(\xi) \\ N_2(\xi) \end{pmatrix}; \qquad 
+    \BB = \begin{pmatrix} \partial N_1 / \partial \xi \\ \partial N_2 /\partial \xi \end{pmatrix}.
+  \end{equation}
+  The shape functions of the reference element with $-1\le\xi\le 1$ are given by:
+  \begin{equation}
+    N_1(\xi) = \frac{1}{2}(1-\xi); \qquad N_2(\xi) = \frac{1}{2}(1+\xi)
+  \end{equation}
+  and the Jacobian $\Je$ is obtained by:
+  \begin{equation}
+    x(\xi) = \NNT\xxe ; \qquad \dxDxi = \BBT \xxe = \Je.
+  \end{equation}
+  Now it is possible to define the element damping matrix $\CCe$ and element stiffness matrix $\KKe$ as follows:
+  \begin{align}
+    \CCe &= \intXi A \NN \NNT \Je \dxi&&\hspace{-2.5cm}\approx \sumip A \NN(\xi_p) \NNT(\xi_p) \Je(\xi_p) w_p; \label{eq:CCe}\\
+    \KKe &= \intXi D A \BB \BBT \Jeinv \dxi&&\hspace{-2.5cm}\approx \sumip D A \BB(\xi_p) \BBT(\xi_p) \Jeinv(\xi_p) w_p. \label{eq:KKe}
+  \end{align}
+  Here, the integral is approximated by a summation over integration points with index $p$ and weight $w_p$. The position in the reference element is given by $\xi_p$ and the number of integration points is denoted by $\Nip$. Now, \cref{eq:weakForm} can be reformulated as follows:
+  \begin{equation}
+     \sumel \vveT \CCe \dcceDt + \sumel \vveT \KKe \cce = - \vR \frac{\partial \cR}{\partial t} \VR - \vC \left( \frac{\partial \cC}{\partial t} \VC + \cC Q\right)
+     \label{eq:FEMe}
+  \end{equation}
+  Introducing a connectivity matrix $\LLe$ that maps the local nodes of the element to the global nodes and two line vectors $\LLR$ and $\LLC$ it is possible to write:
+  \begin{alignat}{3}
+    \vve &= \LLe \vv; \qquad \vR &&= \LLR \vv; \qquad \vC &&= \LLC \vv; \\
+    \cce &= \LLe \cc; \qquad \cR &&= \LLR \cc; \qquad \cC &&= \LLC \cc;
+  \end{alignat}
+  where $\cc$ and $\vv$ contain the concentration and test function values at the global nodes and
+  \begin{align}
+    \CC &= \left(\sumel \LLeT \CCe \LLe\right) + \LLRT\LLR\VR + \LLCT\LLC\VC; \\
+    \KK &= \left(\sumel \LLeT \KKe \LLe\right) + \LLCT\LLC Q.
+  \end{align}
+  Note that all element nodes on the same boundary are mapped to the same global node. With that one can reformulate \cref{eq:FEMe} as follows:
+  \begin{equation}
+    \vvT \left(\CC \dccDt + \KK \cc \right) = 0 \label{eq:FEM}
+  \end{equation}
+  Finally the discretization in time is done as follows:
+  \begin{equation}
+    \dcceDt \approx \frac{\Delta \cce}{\Dt}  = \frac{\ccenI-\ccen}{\Delta t}
+  \end{equation}
+  where the index $n$ indicates known quantities from the previous time step and the index $n+1$ indicates quantities of the current time step. The latter is omitted from here on for simplicity.
+  Thus, one has: 
+  \begin{equation}
+    \vvT \left( \frac{1}{\Dt}\CC+ \KK \right) \cc = \vvT \left(\frac{1}{\Dt} \CC \ccn\right).
+  \end{equation}
+  For the model of the rDDS no Dirichlet-BC are applied, which finally leads to: 
+  \begin{equation}
+    \left( \frac{1}{\Dt}\CC+ \KK \right) \cc = \frac{1}{\Dt}\CC \ccn.
+  \end{equation} 
+
+  \newpage
+  \subsection*{Mesh reproducibility}
+  \begin{figure}[h!]
+    \includegraphics[width=\textwidth]{Figures/SI-reproduceAx.png}
+    \caption{Simulation of release curves using 5 different meshes demonstrating the reproducibility of the meshing algorithm.}
+  \end{figure}
+
+  \newpage
+  \subsection*{Release curves}
+  \begin{figure}[h!]
+    \includegraphics[width=0.9\textwidth]{Figures/SI-expComparison.png}
+    \caption{Release curves of methylene blue from reservoir-based drug delivery system with varying porosities and initial concentrations. Blue curves are the average of all measured samples (grey curves) and red curves are the respective simulated release curves. }
+  \end{figure}
+
+
+\end{document}

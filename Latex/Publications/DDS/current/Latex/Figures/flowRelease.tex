@@ -1,0 +1,127 @@
+\documentclass{standalone}
+
+\usepackage{tikz,pgfplots,textcomp}
+\usetikzlibrary{calc,arrows.meta}
+
+\begin{document}
+  \begin{tikzpicture}[>=Latex]
+
+    \input{sub/stdSettings.tex}
+
+    \pgfplotsset{
+      xlabel={Time [h]},
+      ylabel={Concentration [\textmu M]}
+    }
+
+
+    \setlength\wdth{0.15\plotwidth}
+    \coordinate (c) at (p1);
+    \node at ($(c)+(-1,\plotheight+2.5\wdth)$){\large\textbf{a)}};
+    \node at ($(c)+(-1,\plotheight+0.3cm)$){\large\textbf{b)}};
+    \node at ($(c)+(-1+\plotwidth,\plotheight+2.5\wdth)$){\large\textbf{c)}};
+    \coordinate(c1) at ($(c)+(1.25\plotwidth,0.92\plotwidth)$);
+    \coordinate(c2) at ($(c1)+(1.9\wdth,0)$);
+    \coordinate(c3) at ($(c1)+(0,-2\wdth)$);
+    \coordinate(c4) at ($(c3)+(1.9\wdth,0)$);
+    \coordinate(c5) at ($(c3)+(0,-2\wdth)$);
+    \coordinate(c6) at ($(c5)+(1.9\wdth,0)$);
+    \coordinate(c7) at ($(c5)+(0,-2\wdth)$);
+    \coordinate(c8) at ($(c7)+(1.9\wdth,0)$);
+
+    \begin{axis} 
+      [
+        at={(c)},
+        width=\plotwidth, height=\plotheight,
+        xmin=0, xmax=800, ymin=0, ymax=7, 
+      ]
+      \input{sub/flowRelease_plot.tex}
+
+      \node[color=clr1,circle,draw, inner sep=1pt,line width=1] at ($(p1)+(0.08\plotwidth,0.55\plotheight)$){\bf\large 1};
+      \node[color=clr2,circle,draw, inner sep=1pt,line width=1] at ($(p1)+(0.08\plotwidth,0.37\plotheight)$){\bf\large 2};
+      \node[color=clr3,circle,draw, inner sep=1pt,line width=1] at ($(p1)+(0.08\plotwidth,0.18\plotheight)$){\bf\large 3};
+      \node[color=clr4,circle,draw, inner sep=1pt,line width=1] at ($(p1)+(0.5\plotwidth,0.55\plotheight)$){\bf\large 4};
+      \node[color=clr5,circle,draw, inner sep=1pt,line width=1] at ($(p1)+(0.6\plotwidth,0.85\plotheight)$){\bf\large 5};
+    \end{axis}
+
+    \node[color=clr1,circle,draw, inner sep=1pt,line width=1] at ($(c1)-(\wdth,0)$) {\large\bf 1};
+    \node at (c1) {\includegraphics[height=\wdth]{sub/porosity1.pdf}};
+    \node at ($(c1)+(0,0.7\wdth)$) {\legfont P = 4.5\%};
+    \node at (c2) {\includegraphics[height=\wdth]{sub/porosity2.pdf}};
+    \node[color=clr2,circle,draw, inner sep=1pt,line width=1] at ($(c2)+(\wdth,0)$) {\bf\large 2};
+    \node at ($(c2)+(0,0.7\wdth)$) {\legfont P = 3.6\%};
+    \draw[->,line width=1] ($(c1)!0.35!(c2)$)--($(c1)!0.65!(c2)$);
+
+    \draw[color=lgray]($(c1)!0.35!(c3)-(\wdth,0)$) --++ (4\wdth,0);
+    \node at (c3) {\includegraphics[height=\wdth]{sub/DDS1.pdf}};
+    \node[align=center] at ($(c3)+(0,0.9\wdth)$) {\legfont $h=400$ \textmu m \\ \legfont $w=375$ \textmu m};
+    \node[color=clr2,circle,draw, inner sep=1pt,line width=1] at ($(c3)-(\wdth,0)$) {\bf\large 2};
+    \node at (c4) {\includegraphics[height=\wdth]{sub/DDS3.pdf}};
+    \node[align=center] at ($(c4)+(0,0.9\wdth)$) {\legfont $h=300$ \textmu m \\ \legfont $w=1000$ \textmu m};
+    \node[color=clr3,circle,draw, inner sep=1pt,line width=1] at ($(c4)+(\wdth,0)$) {\bf\large 3};
+    \draw[->,line width=1] ($(c3)!0.35!(c4)$)--($(c3)!0.65!(c4)$);
+
+    \draw[color=lgray]($(c3)!0.35!(c5)-(\wdth,0)$) --++ (4\wdth,0);
+    \node at (c5) {\includegraphics[height=\wdth]{sub/DDS3.pdf}};
+    \node at ($(c5)+(0,0.7\wdth)$) {\legfont $c=5 \ \rm mM$};
+    \node[color=clr3,circle,draw, inner sep=1pt,line width=1] at ($(c5)-(\wdth,0)$) {\bf\large 3};
+    \node at (c6) {\includegraphics[height=\wdth]{sub/DDS4.pdf}};
+    \node at ($(c6)+(0,0.7\wdth)$) {\legfont $c=35 \ \rm mM$};
+    \draw[->,line width=1] ($(c5)!0.35!(c6)$)--($(c5)!0.65!(c6)$);
+    \node[color=clr4,circle,draw, inner sep=1pt,line width=1] at ($(c6)+(\wdth,0)$) {\bf\large 4};
+
+    \draw[color=lgray]($(c5)!0.35!(c7)-(\wdth,0)$) --++ (4\wdth,0);
+    \node at (c7) {\includegraphics[height=\wdth]{sub/DDS4.pdf}};
+    \node at ($(c7)+(0,0.7\wdth)$) {\legfont $V=3.5$ \textmu l};
+    \node[color=clr4,circle,draw, inner sep=1pt,line width=1] at ($(c7)-(\wdth,0)$) {\bf\large 4};
+    \node at (c8) {\includegraphics[height=\wdth]{sub/DDS5.pdf}};
+    \node at ($(c8)+(0,0.7\wdth)$) {\legfont $V=10.5$ \textmu l};
+    \node[color=clr5,circle,draw, inner sep=1pt,line width=1] at ($(c8)+(\wdth,0)$) {\bf\large 5};
+    \draw[->,line width=1] ($(c7)!0.35!(c8)$)--($(c7)!0.65!(c8)$);
+
+
+    %%
+    \coordinate (c9) at (0.4\plotwidth,1.35\plotheight);
+    \draw[color=clr1,circle,line width=1,shift=(c9)] (-1.5\wdth,0.75\wdth) node[circle,inner sep=1pt,draw] {\large\bf 1};
+    \fill[color=lblue,rounded corners=0.2\wdth] ($(c9)-(0.9\wdth,0.9\wdth)$) rectangle ($(c9)+(0.9\wdth,0.9\wdth)$);
+    \fill[color=lblue] ($(c9)-(1.6\wdth,0.3\wdth)$) rectangle ($(c9)+(1.6\wdth,0.3\wdth)$);
+    % \node at ($(c9)+(0,1.05\wdth)$){\legfont Cavity};
+
+
+    \node at (c9) {\includegraphics[height=\wdth]{sub/DDS1}};
+    \draw[->] ($(c9)+(-2.05\wdth,0)$) coordinate (t1) --++(0.4\wdth,0);
+    \draw[->] ($(t1)+(0,0.22\wdth)$) --++(0.4\wdth,0) node[above,pos=0.5]{};%{$q$};;
+    \draw[->] ($(t1)+(0,-0.22\wdth)$) --++(0.4\wdth,0);
+
+    \draw[->] ($(c9)+(1.65\wdth,0)$) coordinate (t1) --++(0.4\wdth,0) node[right,align=center]{\legfont Liquid \\[-0.7ex] \legfont exchange};
+    \draw[->] ($(t1)+(0,0.22\wdth)$) --++(0.4\wdth,0) node[above,pos=0.5]{};%{$q$};
+    \draw[->] ($(t1)+(0,-0.22\wdth)$) --++(0.4\wdth,0);
+
+    \draw ($(c9)+(0,-1.15\wdth)$) node(t1){\legfont Concentration simulation}coordinate;
+    \draw (t1) --++ (0.15\wdth,0.45\wdth);
+
+
+
+    \fill[shift=(c9),color=clr1] (1.5\wdth,0.1\wdth) circle(0.5pt);
+    \fill[shift=(c9),color=clr1] (1.25\wdth,-0.17\wdth) circle(0.5pt);
+    \fill[shift=(c9),color=clr1] (1.15\wdth,0.16\wdth) circle(0.5pt);
+    \setlength\wdth{0.75\wdth}
+    \fill[shift=(c9),color=clr1] (\wdth,0) circle(0.5pt);
+    \fill[shift=(c9),color=clr1] (0.95\wdth,\wdth) circle(0.5pt);
+    \fill[shift=(c9),color=clr1] (0.45\wdth,0.95\wdth) circle(0.5pt);
+
+    \fill[shift=(c9),color=clr1] (-\wdth,0) circle(0.5pt);
+    \fill[shift=(c9),color=clr1] (-0.95\wdth,\wdth) circle(0.5pt);
+    \fill[shift=(c9),color=clr1] (-0.45\wdth,-0.65\wdth) circle(0.5pt);
+    \fill[shift=(c9),color=clr1] (-\wdth,-0.5\wdth) circle(0.5pt);
+    \fill[shift=(c9),color=clr1] (-0.25\wdth,-\wdth) circle(0.5pt);
+    \fill[shift=(c9),color=clr1] (0.66\wdth,-0.7\wdth) circle(0.5pt);
+    \fill[shift=(c9),color=clr1] (-0.7\wdth,0.5\wdth) circle(0.5pt);
+    \fill[shift=(c9),color=clr1] (-0.1\wdth,0.78\wdth) circle(0.5pt);
+    \fill[shift=(c9),color=clr1] (-1.05\wdth,-1\wdth) circle(0.5pt);
+    \fill[shift=(c9),color=clr1] (0.75\wdth,0.55\wdth) circle(0.5pt);
+    \fill[shift=(c9),color=clr1] (0.95\wdth,-\wdth) circle(0.5pt);
+    \fill[shift=(c9),color=clr1] (-0.25\wdth,1.01\wdth) circle(0.5pt);
+
+
+    \end{tikzpicture}
+\end{document}

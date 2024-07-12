@@ -1,0 +1,87 @@
+\documentclass{standalone}
+
+\usepackage{tikz,pgfplots}
+\usepackage{textcomp}
+\usetikzlibrary{calc}
+
+\pgfplotsset{
+legend image code/.code={
+\draw[mark repeat=2,mark phase=2]
+plot coordinates {
+(0cm,0cm)
+(0.15cm,0cm)        %% default is (0.3cm,0cm)
+(0.45cm,0cm)         %% default is (0.6cm,0cm)
+};%
+}
+}
+
+\begin{document}
+  \begin{tikzpicture}
+    \newlength{\plotwidth}\setlength{\plotwidth}{8cm}
+    \newlength{\plotheight}\setlength{\plotheight}{5cm}
+    \newlength{\margX}\setlength{\margX}{1.5cm}
+    \newlength{\margY}\setlength{\margY}{1.5cm}
+    \coordinate (p1) at (0,0);
+    \coordinate (p2) at ($(p1)+(\plotwidth+\margX,0)$);
+    \coordinate (p3) at ($(p1)+(0,-\plotheight-\margY)$);
+    \coordinate (p4) at ($(p3)+(\plotwidth+\margX,0)$);
+    \coordinate (p5) at ($(p3)+(0,-\plotheight-\margY)$);
+    \coordinate (p6) at ($(p5)+(\plotwidth+\margX,0)$);
+    \coordinate (p7) at ($(p5)+(0,-\plotheight-\margY)$);
+    \coordinate (p8) at ($(p7)+(\plotwidth+\margX,0)$);
+    \coordinate (p9) at ($(p7)+(0,-\plotheight-\margY)$);
+    \coordinate (p10) at ($(p9)+(\plotwidth+\margX,0)$);
+    \coordinate (p11) at ($(p9)+(0,-\plotheight-\margY)$);
+    \coordinate (p12) at ($(p11)+(\plotwidth+\margX,0)$);
+    \coordinate (p13) at ($(p11)+(0,-\plotheight-\margY)$);
+
+
+    \definecolor{clrA}{rgb}{1,0,0}
+    \definecolor{clrB}{rgb}{0,0,0}
+    \definecolor{clrC}{rgb}{0,0.7,0}
+    \definecolor{clrD}{rgb}{0.7,0,0.7}
+    \definecolor{clrE}{rgb}{0,0.5,1}
+    \definecolor{clrF}{rgb}{1,0.5,0}
+    \definecolor{clrG}{rgb}{0.2,0.2,0.8}
+
+    \coordinate (c) at (p1);
+    \begin{axis} 
+    [
+    at={(c)}, width=\plotwidth, height=\plotheight, scale only axis, 
+    xmin=0, xmax=70, ymin=0, ymax=6.5, 
+    xlabel={$t$ [h]}, 
+    ylabel={$c$ [\textmu M]},
+    y label style={at={(axis description cs:0,0.5)},anchor=north},
+    legend pos=north west,
+    legend style={font=\fontsize{8}{8}\selectfont},
+    legend cell align=left,
+    legend columns = -1
+    ] 
+      \addplot[forget plot]graphics[xmin=0, xmax=70, ymin=0, ymax=5]{comparisonDensMB_AB.pdf};
+      \addlegendimage{empty legend} \addlegendentry{$\rho$ [g/cm$^3$] \quad }
+      \addlegendimage{no markers,color=clrE,line width=1} \addlegendentry{0.6}
+      \addlegendimage{no markers,color=clrD,line width=1} \addlegendentry{0.55}
+      \addlegendimage{no markers,color=clrC,line width=1} \addlegendentry{0.5}
+      \addlegendimage{no markers,color=clrB,line width=1} \addlegendentry{0.45}
+      \addlegendimage{no markers,color=clrA,line width=1} \addlegendentry{0.3}
+    \end{axis}
+    \node[align=left] at ($(c)+(0.14\plotwidth,\plotheight-1cm)$){\small $c_0$=5 mM};
+
+    \coordinate (c) at (p2);
+    \begin{axis} 
+      [
+      /pgf/number format/1000 sep={},
+      at={(c)}, width=\plotwidth, height=\plotheight, scale only axis, 
+      xmin=0.2, xmax=0.70, ymin=0, ymax=0.75, 
+      xlabel={$\rho$ [g/cm$^3$]}, 
+      ylabel={$J$ [nmol/h]},
+      y label style={at={(axis description cs:0,0.5)},anchor=north},
+      legend pos=south east
+      ] 
+        \addplot[forget plot]graphics[xmin=0.2, xmax=0.7, ymin=0, ymax=0.75]{JdensMB_AB.pdf};
+        \addlegendimage{color=clrG,only marks,mark size=1pt} \addlegendentry{exp.}
+        \addlegendimage{color=clrA,only marks,mark size=1pt} \addlegendentry{sim.}
+    \end{axis}
+
+  \end{tikzpicture}
+\end{document}

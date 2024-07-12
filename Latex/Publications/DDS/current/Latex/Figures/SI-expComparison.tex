@@ -1,0 +1,177 @@
+\documentclass{standalone}
+
+\usepackage{tikz,pgfplots}
+\usepackage{textcomp}
+\usetikzlibrary{calc}
+
+\begin{document}
+  \begin{tikzpicture}
+    \newlength{\plotwidth}\setlength{\plotwidth}{8cm}
+    \newlength{\plotheight}\setlength{\plotheight}{4cm}
+    \newlength{\margX}\setlength{\margX}{1.5cm}
+    \newlength{\margY}\setlength{\margY}{1.5cm}
+    \coordinate (p1) at (0,0);
+    \coordinate (p2) at ($(p1)+(\plotwidth+\margX,0)$);
+    \coordinate (p3) at ($(p1)+(0,-\plotheight-\margY)$);
+    \coordinate (p4) at ($(p3)+(\plotwidth+\margX,0)$);
+    \coordinate (p5) at ($(p3)+(0,-\plotheight-\margY)$);
+    \coordinate (p6) at ($(p5)+(\plotwidth+\margX,0)$);
+    \coordinate (p7) at ($(p5)+(0,-\plotheight-\margY)$);
+    \coordinate (p8) at ($(p7)+(\plotwidth+\margX,0)$);
+    \coordinate (p9) at ($(p7)+(0,-\plotheight-\margY)$);
+    \coordinate (p10) at ($(p9)+(\plotwidth+\margX,0)$);
+    \coordinate (p11) at ($(p9)+(0,-\plotheight-\margY)$);
+    \coordinate (p12) at ($(p11)+(\plotwidth+\margX,0)$);
+    \coordinate (p13) at ($(p11)+(0,-\plotheight-\margY)$);
+
+    \def\labelfontsize{10}
+    \def\labfont{\fontsize{\labelfontsize}{\labelfontsize}\bf\selectfont}
+    \definecolor{clrA}{rgb}{0,0,0}
+    \def\opct{0.3}
+    \definecolor{clrB}{rgb}{0.2,0.2,0.8}
+    \definecolor{clrC}{rgb}{1,0,0}
+
+    \pgfplotsset{
+      compat=1.15,
+      xlabel={Time [h]},
+      ylabel={Concentration [\textmu M]},
+      y label style={font={\labfont}},
+      x label style={font={\labfont}},
+      legend pos=south east,
+      /pgf/number format/.cd,
+      1000 sep={}
+    }
+
+    \coordinate (c) at (p2);
+    \begin{axis} 
+    [
+    at={(c)}, width=\plotwidth, height=\plotheight, scale only axis, 
+    xmin=0, xmax=70, ymin=0, ymax=3.5,
+    legend pos=south east
+    ] 
+      \addplot[forget plot]graphics[xmin=0, xmax=70, ymin=0, ymax=3.5]{sub/d030c0050.pdf};
+      \addlegendimage{no markers,color=clrA,line width=1,opacity=\opct} \addlegendentry{data}
+      \addlegendimage{no markers,color=clrB,line width=1} \addlegendentry{avg.}
+      \addlegendimage{no markers,color=clrC,line width=1} \addlegendentry{sim.}
+    \end{axis}
+    \node[align=left] at ($(c)+(0.17\plotwidth,0.85\plotheight)$){\small $c$=5 mM \\ \small $P$=5.4\%};
+
+    \coordinate (c) at (p1);
+    \begin{axis} 
+      [
+      at={(c)}, width=\plotwidth, height=\plotheight, scale only axis, 
+      xmin=0, xmax=1000, ymin=0, ymax=120, 
+      ] 
+        \addplot[forget plot]graphics[xmin=0, xmax=1000, ymin=0, ymax=120]{sub/d025c1000.pdf};
+        \addlegendimage{no markers,color=clrA,line width=1,opacity=\opct} \addlegendentry{data}
+        \addlegendimage{no markers,color=clrB,line width=1} \addlegendentry{avg.}
+        \addlegendimage{no markers,color=clrC,line width=1} \addlegendentry{sim.}
+    \end{axis}
+    \node[align=left] at ($(c)+(0.17\plotwidth,0.85\plotheight)$){\small $c$=100 mM \\ \small $P$=4.5\%};
+
+    \coordinate (c) at (p3);
+    \begin{axis} 
+      [
+      at={(c)}, width=\plotwidth, height=\plotheight, scale only axis, 
+      xmin=0, xmax=50, ymin=0, ymax=2.5
+      ] 
+        \addplot[forget plot]graphics[xmin=0, xmax=50, ymin=0, ymax=2.5]{sub/d045c0025.pdf};
+        \addlegendimage{no markers,color=clrA,line width=1,opacity=\opct} \addlegendentry{data}
+        \addlegendimage{no markers,color=clrB,line width=1} \addlegendentry{avg.}
+        \addlegendimage{no markers,color=clrC,line width=1} \addlegendentry{sim.}
+    \end{axis}
+    \node[align=left] at ($(c)+(0.17\plotwidth,0.85\plotheight)$){\small $c$=2.5 mM \\ \small $P$=8.0\%};
+
+    \coordinate (c) at (p4);
+    \begin{axis} 
+      [
+      at={(c)}, width=\plotwidth, height=\plotheight, scale only axis, 
+      xmin=0, xmax=35, ymin=0, ymax=4.5
+      ] 
+        \addplot[forget plot]graphics[xmin=0, xmax=35, ymin=0, ymax=4.5]{sub/d045c0050.pdf};
+        \addlegendimage{no markers,color=clrA,line width=1,opacity=\opct} \addlegendentry{data}
+        \addlegendimage{no markers,color=clrB,line width=1} \addlegendentry{avg.}
+        \addlegendimage{no markers,color=clrC,line width=1} \addlegendentry{sim.}
+    \end{axis}
+    \node[align=left] at ($(c)+(0.17\plotwidth,0.85\plotheight)$){\small $c$=5 mM \\ \small $P$=8.0\%};
+
+    \coordinate (c) at (p5);
+    \begin{axis} 
+      [
+      at={(c)}, width=\plotwidth, height=\plotheight, scale only axis, 
+      xmin=0, xmax=50, ymin=0, ymax=9
+      ] 
+        \addplot[forget plot]graphics[xmin=0, xmax=50, ymin=0, ymax=9]{sub/d045c0100.pdf};
+        \addlegendimage{no markers,color=clrA,line width=1,opacity=\opct} \addlegendentry{data}
+        \addlegendimage{no markers,color=clrB,line width=1} \addlegendentry{avg.}
+        \addlegendimage{no markers,color=clrC,line width=1} \addlegendentry{sim.}
+    \end{axis}
+    \node[align=left] at ($(c)+(0.17\plotwidth,0.85\plotheight)$){\small $c$=10 mM \\ \small $P$=8.0\%};
+
+    \coordinate (c) at (p6);
+    \begin{axis} 
+      [
+      at={(c)}, width=\plotwidth, height=\plotheight, scale only axis, 
+      xmin=0, xmax=100, ymin=0, ymax=20
+      ] 
+        \addplot[forget plot]graphics[xmin=0, xmax=100, ymin=0, ymax=20]{sub/d045c0200.pdf};
+        \addlegendimage{no markers,color=clrA,line width=1,opacity=\opct} \addlegendentry{data}
+        \addlegendimage{no markers,color=clrB,line width=1} \addlegendentry{avg.}
+        \addlegendimage{no markers,color=clrC,line width=1} \addlegendentry{sim.}
+    \end{axis}
+    \node[align=left] at ($(c)+(0.17\plotwidth,0.85\plotheight)$){\small $c$=20 mM \\ \small $P$=8.0\%};
+
+    \coordinate (c) at (p7);
+    \begin{axis} 
+      [
+      at={(c)}, width=\plotwidth, height=\plotheight, scale only axis, 
+      xmin=0, xmax=80, ymin=0, ymax=6
+      ] 
+        \addplot[forget plot]graphics[xmin=0, xmax=80, ymin=0, ymax=6]{sub/d050c0050.pdf};
+        \addlegendimage{no markers,color=clrA,line width=1,opacity=\opct} \addlegendentry{data}
+        \addlegendimage{no markers,color=clrB,line width=1} \addlegendentry{avg.}
+        \addlegendimage{no markers,color=clrC,line width=1} \addlegendentry{sim.}
+    \end{axis}
+    \node[align=left] at ($(c)+(0.17\plotwidth,0.85\plotheight)$){\small $c$=5 mM \\ \small $P$=8.9\%};
+
+    \coordinate (c) at (p8);
+    \begin{axis} 
+      [
+      at={(c)}, width=\plotwidth, height=\plotheight, scale only axis, 
+      xmin=0, xmax=80, ymin=0, ymax=6
+      ] 
+        \addplot[forget plot]graphics[xmin=0, xmax=80, ymin=0, ymax=6]{sub/d055c0050.pdf};
+        \addlegendimage{no markers,color=clrA,line width=1,opacity=\opct} \addlegendentry{data}
+        \addlegendimage{no markers,color=clrB,line width=1} \addlegendentry{avg.}
+        \addlegendimage{no markers,color=clrC,line width=1} \addlegendentry{sim.}
+    \end{axis}
+    \node[align=left] at ($(c)+(0.17\plotwidth,0.85\plotheight)$){\small $c$=5 mM \\ \small $P$=9.8\%};
+
+    \coordinate (c) at (p9);
+    \begin{axis} 
+      [
+      at={(c)}, width=\plotwidth, height=\plotheight, scale only axis, 
+      xmin=0, xmax=50, ymin=0, ymax=5
+      ] 
+        \addplot[forget plot]graphics[xmin=0, xmax=50, ymin=0, ymax=5]{sub/d060c0050.pdf};
+        \addlegendimage{no markers,color=clrA,line width=1,opacity=\opct} \addlegendentry{data}
+        \addlegendimage{no markers,color=clrB,line width=1} \addlegendentry{avg.}
+        \addlegendimage{no markers,color=clrC,line width=1} \addlegendentry{sim.}
+    \end{axis}
+    \node[align=left] at ($(c)+(0.17\plotwidth,0.85\plotheight)$){\small $c$=5 mM \\ \small $P$=10.7\%};
+
+    % \coordinate (c) at (p10);
+    % \begin{axis} 
+    %   [
+    %   at={(c)}, width=\plotwidth, height=\plotheight, scale only axis, 
+    %   xmin=0, xmax=30, ymin=0, ymax=5
+    %   ] 
+    %     \addplot[forget plot]graphics[xmin=0, xmax=30, ymin=0, ymax=5]{sub/d070c0050.pdf};
+    %     \addlegendimage{no markers,color=clrA,line width=1,opacity=\opct} \addlegendentry{data}
+    %     \addlegendimage{no markers,color=clrB,line width=1} \addlegendentry{avg.}
+    %     \addlegendimage{no markers,color=clrC,line width=1} \addlegendentry{sim.}
+    % \end{axis}
+    % \node[align=left] at ($(c)+(0.17\plotwidth,0.85\plotheight)$){\small $c$=5 mM \\ \small $P$=12.5 \%};
+
+  \end{tikzpicture}
+\end{document}

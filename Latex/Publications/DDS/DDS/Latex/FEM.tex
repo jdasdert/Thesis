@@ -1,0 +1,110 @@
+\section{Finite Element Modeling}
+  The approximation with finite elements is obtained starting by reformulating the differential equation in \cref{eq:diffEq} by multiplying with a weight function $v$ and integrating over the volume of the domain:
+  \begin{equation}
+    \intl v \dcDt A \ \dx = \intl v D \ddcDDx A \ \dx.
+  \end{equation}
+  Here, $A$ is a constant cross section and $l$ is the total length of the domain.  Note that the weight function $v$ is zero at Dirichlet boundaries but otherwise arbitrary. Using partial integration one obtains:
+  \begin{equation}
+    \begin{split}
+    \intl v A \dcDt \ \dx + \intl \dvDx D A \dcDx \ \dx=  - \left[ v A j \right]_{x=0}^{l}
+    \end{split}
+    \label{eq:weakForm}
+  \end{equation}
+  Dividing the domain into finite elements and introducing shape functions $N$ that interpolate between the nodes $i$ the concentration in one element $e$ can be given by:
+  \begin{align}
+    c(x,t) &= \sumNen \Nie(x) \cie(t) = \NNeT \cce \label{eq:cN}\\
+    \dcDx &= \sumNen \dNieDx c_i^e= \BBeT \cce
+    \label{eq:dcDxN}
+  \end{align}
+ For a one dimensional linear element with two nodes the vectors $\NNe$, $\BBe$ and $\cce$ are given by
+  \begin{equation}
+    \NNe = \begin{pmatrix} N_1^e(x) \\ N_2^e(x) \end{pmatrix}; \qquad 
+    \BBe = \begin{pmatrix} \partial N_1^e / \partial x \\ \partial N_2^e / \partial x \end{pmatrix}; \qquad 
+    \cce = \begin{pmatrix} c_1^e \\ c_2^e \end{pmatrix}
+    \label{eq:NNeBBecce}
+  \end{equation}
+  The function $v(x)$, its derivative as well as the vectors $\vve$ and $\xxe$ are given in analogy to \cref{eq:cN,eq:dcDxN,eq:NNeBBecce}. Further, it is possible to introduce a reference element in a separate coordinate $\xi$ which is mapped to $x$ by the Jacobian \mbox{$J=\partial x / \partial \xi$}.
+  \begin{equation}
+    c(\xi,t) = \NNT \cce; \qquad \dcDxi = \BBT \cce; \qquad \BBe = \Jeinv \BB
+  \end{equation}
+  with
+  \begin{equation}
+    \NN = \begin{pmatrix} N_1(\xi) \\ N_2(\xi) \end{pmatrix}; \qquad 
+    \BB = \begin{pmatrix} \partial N_1 / \partial \xi \\ \partial N_2 /\partial \xi \end{pmatrix}; \qquad 
+  \end{equation}
+  The Jacobian $\Je$ is obtained by:
+  \begin{equation}
+    x(\xi) = \NNT\xxe ; \qquad \dxDxi = \BBT \xxe = \Je 
+  \end{equation}
+  For an element with $-1\le\xi\le 1$ one can define
+  \begin{align}
+    \CCe &= \intXi A \NN \NNT \Je \dxi&&\approx \sumip A \NN(\xi_i) \NNT(\xi_i) \Je(\xi_i) w_i&& \\
+    \KKe &= \intXi D A \BB \BBT \Jeinv \dxi&&\approx \sumip D A \BB(\xi_i) \BBT(\xi_i) \Jeinv(\xi_i) w_i&&
+  \end{align}
+  Here, the integral is approximated by a summation over integration points with index $i$ and weight $w_i$. The position in the reference element is given by $\xi_i$ and the number of integration points is denoted by $\Nip$. For a one-dimensional element with linear shape functions one integration point at $\xi=0$ and $w=2$ would be sufficient for an exact solution. Now, \cref{eq:weakForm} can be reformulated as follows:
+  \begin{equation}
+     \sumel \vveT \CCe \dcceDt + \sumel \vveT \KKe \cce = \vvT \FFext \label{eq:FEMe}
+  \end{equation}
+  The vector $\FFext$ contains all known external forces that are applied at the global nodes. Introducing a matrix $\LLe$ that maps the local nodes of the element to the global nodes (similar to connectivity martrix) one obtains 
+  \begin{equation}
+    \vve = \LLe \vv; \qquad \cce = \LLe \cc; \qquad \CC = \sumel \LLeT \CCe \LLe; \qquad \KK = \sumel \LLeT \KKe \LLe
+  \end{equation}
+  and can reformulate \cref{eq:FEMe} as 
+  \begin{equation}
+    \vvT \CC \dccDt + \vvT \KK \cc = \vvT \FFext \label{eq:FEM}
+  \end{equation}
+  The discretization in time leads to the following approximation
+  \begin{equation}
+    \dcceDt \approx \frac{\Delta \cce}{\Dt}  = \frac{\ccenI-\ccen}{\Delta t}
+  \end{equation}
+  where the index $n$ indicates known quantities from the previous time step and the index $n+1$ indicates quantities of the current time step. The latter is omitted from here on for simplicity.
+  Thus, one has: 
+  \begin{equation}
+    \vvT \left( \frac{\CC}{\Dt}+ \KK \right) \cc = \vvT \left(\FFext + \frac{\CC}{\Dt} \ccn\right).
+  \end{equation}
+
+  Note that the entries of $\vv$ are only arbitrary at nodes that have no Dirichlet BC. To eliminate $\vv$ from the equation it is possible to split the vector $\cc$ into a vector $\cc_{\rm u}$, containing the unknowns and zeros at the Dirichlet nodes, and a vector $\cck$, containing the known values at the Dirichlet nodes and zeros everywhere else. Rearranging then yields:
+  \begin{equation}
+    \vvT \left( \frac{\CC}{\Dt}+\KK\right) \cc_{\rm u} = \vvT \left( \underbrace{\FFext - \KK \cc_{\rm k}}_{\FF} +\frac{\CC}{\Dt}(\ccn-\cc_{\rm k})  \right).
+  \end{equation}
+  Finally, as $\vv$, $\cc_{\rm u}$ and $\ccn-\cck$ contain zeros at all entries of Dirichlet nodes, it is possible to eliminate all corresponding lines columns. And with $\FF = \FFext - \KK\cck$ one obtains:
+  \begin{equation}
+    \left(\frac{\CCred}{\Dt}+\KKred\right) \ccred = \FFred + \frac{\CCred}{\Dt} \ccnred.
+  \end{equation} 
+  
+  % \begin{algorithm}
+  %   \caption{FEM - 1D time dependent diffusion (simple algorithm)}
+  %   \begin{algorithmic}
+  %     \State Get element connectivity matrix \texttt{elmt}
+  %     \State Define boolean array for Dirichlet nodes \texttt{isDiri}
+  %     \State $\KK\gets\zzero$; $\CC\gets\zzero$; $\FF\gets\FFext$
+  %     \For{$e=1$, $\Nel$}
+  %     \State Get integration point data $\Nip$, $\xi_i$, $w_i$
+  %     \State $\CCe = \zzero$; $\KKe=\zzero$; $\ccek=\zzero$
+  %     \For{$i=1$, $\Nip$} \Comment Computation of $\CCe$ and $\KKe$
+  %       \State Get $\NN(\xi_i)$, $\BB(\xi_i)$ and $\Je(\xi_i)$ at position $\xi_i$
+  %       \State $\CCe \gets \CCe+A\NN \NNT \Je w_i$
+  %       \State $\KKe \gets \KKe+DA \BB \BBT \Jeinv w_i$
+  %     \EndFor
+  %     \For{$i=1$, $\Nen$} \Comment Assembly of $\ccek$ and computation of $\FFe$
+  %     \If{$\mathtt{isDiri}(\mathtt{elmt}(e,i))$}
+  %       \State $\cc^{e}_{{\rm k}, i} = \cc_{{\rm n},\mathtt{elmt}(e,i)}$
+  %     \EndIf
+  %     \EndFor
+  %     \State $\FFe\gets-\KKe\ccek$
+  %     \For{$i=1$, $\Nen$} \Comment Assembly of $\KK$, $\CC$ and $\FF$
+  %       \For{$j=1$, $\Nen$}
+  %         \State $K_{\mathtt{elmt}(e,i),\mathtt{elmt}(e,j)} \gets K_{\mathtt{elmt}(e,i),\mathtt{elmt}(e,j)} + K^e_{ij}$
+  %         \State $C_{\mathtt{elmt}(e,i),\mathtt{elmt}(e,j)} \gets C_{\mathtt{elmt}(e,i),\mathtt{elmt}(e,j)} + C^e_{ij}$
+  %       \EndFor
+  %       \State $F_{\mathtt{elmt}(e,i)} \gets F_{\mathtt{elmt}(e,i)} + F^e_{i}$
+  %     \EndFor
+
+  %     \EndFor
+  %     \State $\KKred\gets\KK$; $\CCred\gets\CC$; $\FFred\gets\FF$ 
+  %     \State Delete lines and columns of Dirichlet nodes
+  %     \For{n=1, nsteps}
+
+  %     \EndFor
+  %   \end{algorithmic}
+  % \end{algorithm}

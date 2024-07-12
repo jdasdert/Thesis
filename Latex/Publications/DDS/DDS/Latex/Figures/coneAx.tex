@@ -1,0 +1,74 @@
+\documentclass{standalone}
+
+\usepackage{tikz,pgfplots}
+\usepackage{textcomp}
+\usetikzlibrary{arrows.meta,calc}
+
+
+
+\begin{document}
+  \begin{tikzpicture}
+    \newlength{\plotwidth}\setlength{\plotwidth}{10cm}
+    \newlength{\plotheight}\setlength{\plotheight}{7cm}
+    \coordinate (plotpos1) at (0,0);
+
+    \def\fs{14}
+    \def\ttl{Cone shape}
+    \pgfplotsset{
+      legend image code/.code={
+      \draw[mark repeat=2,mark phase=2]
+      plot coordinates {
+      (0cm,0cm)
+      (0.15cm,0cm)        %% default is (0.3cm,0cm)
+      (0.45cm,0cm)         %% default is (0.6cm,0cm)
+      };%
+      }
+      }
+
+    \input{colors}
+
+    \begin{axis} 
+    [
+      /pgf/number format/.cd,
+      use comma,
+      1000 sep={},
+      at={(plotpos1)}, width=\plotwidth, height=\plotheight, scale only axis, 
+      xmin=0, xmax=1200, ymin=0, ymax=115, 
+      xlabel={Time [h]}, 
+      ylabel={Concentration [\textmu M]},
+      tick label style={font={\fontsize{\fs}{\fs}}},
+      label style={font={\fontsize{\fs}{\fs}\selectfont}},
+      legend pos=south east,
+      legend cell align=left,
+      legend style={font={\fontsize{\fs}{\fs} \selectfont}},
+      title={\fontsize{\fs}{\fs}\textbf{\ttl}}
+    ] 
+      \addplot[forget plot]graphics[xmin=0, xmax=1200, ymin=0, ymax=115]{cone.pdf};
+      \addlegendimage{empty legend} \addlegendentry{[\textmu m]}
+      \addlegendimage{no markers,color=clrA,line width=1} \addlegendentry{$\pm$0}
+      \addlegendimage{no markers,color=clrB,line width=1} \addlegendentry{$\pm$25}
+      \addlegendimage{no markers,color=clrC,line width=1} \addlegendentry{$\pm$50}
+      \addlegendimage{no markers,color=clrD,line width=1} \addlegendentry{$\pm$100}
+      \addlegendimage{no markers,color=clrE,line width=1} \addlegendentry{$\pm$150}
+    \end{axis}
+
+    \newlength\wdthI\setlength\wdthI{3cm}
+    \newlength\wdthII\setlength\wdthII{4.5cm}
+    \coordinate (pic1) at (8.2,4.7);
+    \node at (pic1) {\includegraphics[width=\wdthI]{CTcone1.png}};
+    \coordinate (pic2) at (4.4,2.1);
+    \node at (pic2) {\includegraphics[width=\wdthII]{CTcone2.png}}; 
+    \draw[red,dashed,thick,line width=1.5] ($(pic2)-(0.51\wdthII,-0.41\wdthII)$) coordinate (c1) rectangle ($(pic2)+(0.51\wdthII,-0.41\wdthII)$) coordinate (c2);
+    \draw[red,dash pattern=on 2pt off 2pt,line width=0.5] ($(pic1)+(-0.49\wdthI,0.14\wdthI)$) coordinate (c3) rectangle ($(pic1)+(-0.29\wdthI,-0.04\wdthI)$) coordinate (c4);
+    \draw[red,thick,line width=0.5](c1) -- (c3);
+    \draw[red,thick,line width=0.5](c2) -- (c4);
+
+    \draw[red,thick,line width=2] ($(pic2)+(0.24\wdthII,0.37\wdthII)$) coordinate (c1) --++ (0,-0.75\wdthII) coordinate[pos=0.5] (avg); 
+    \draw[clrE,thick,line width=2]($(c1)-(0.09\wdthII,0)$) --++ (285:0.78\wdthII);
+    \coordinate (c) at ($(avg)-(0.25\wdthII,0)$);
+    \node[red,fill=white] at (c) {\textbf{avg.}};
+    \node[clrE,fill=white] at ($(c)-(0,-0.3\wdthII)$){\textbf{-}};
+    \node[clrE,fill=white] at ($(c)-(0,0.3\wdthII)$){\textbf{+}};
+
+  \end{tikzpicture}
+\end{document}

@@ -1,0 +1,44 @@
+\documentclass{standalone}
+
+\usepackage{tikz,pgfplots,textcomp}
+\usetikzlibrary{calc,arrows.meta}
+
+\begin{document}
+  \begin{tikzpicture}[>=Latex]
+
+    \input{sub/stdSettings.tex}
+    \setlength\wdth{5cm}
+
+    \coordinate (n1) at (0,1);
+    \coordinate (n2) at (0,0);
+    \coordinate (n3) at (1,0.5);
+    \coordinate (n4) at (2,1);
+    \coordinate (n5) at (2,0);
+
+    \fill[color=lblue] (-2,-0.4) rectangle (0.1,1.4);
+    \fill[color=lblue] (4,-0.4) rectangle (1.9,1.4);
+
+    \foreach \x in {1,2,...,5}{
+      \draw[fill=red] (n\x) circle (2pt);
+    }
+
+    \foreach \x in {1,2}{
+      \node[left] at (n\x){$\x$};
+    }
+    \node[above] at (n3){$3$};
+    \foreach \x in {4,5}{
+      \node[right] at (n\x){$\x$};
+    }
+
+    \node[above] at (3,1.4){cavity};
+    \node[above] at (1,1.4){membrane};
+    \node[above] at (-1,1.4){reservoir};
+    \node[align=center] at (-1,0.5){$V_R$\\[1ex]$c_{\rm in}$};
+    \node[align=center] at (3,0.5){$V_C$\\[1ex]$c_{\rm out}$};
+
+    \draw[red] (n1) -- (n3) -- (n4);
+    \draw[red] (n2) -- (n3) -- (n5);
+
+
+  \end{tikzpicture}
+\end{document}

@@ -23,15 +23,22 @@
   \pretolerance=10000\tolerance=2000\emergencystretch=10pt\sloppy %no linebreaks
 
 % color
-  \usepackage{color,soul}
+  \usepackage[table]{xcolor}
+  \usepackage{soul}
+  \definecolor{gray1}{rgb}{0.9,0.9,0.9}
+  \definecolor{gray2}{rgb}{0.7,0.7,0.7}
 
 % figures
   \usepackage{graphicx}
+  \usepackage[font=small,labelfont=bf]{caption}
+  \captionsetup{width=.98\textwidth,skip=1pt}
+  \usepackage[section]{placeins}
 
 % tables and list styles
   \usepackage{tabularx}
   \usepackage{enumitem}
   \usepackage{xltabular}
+  \usepackage{multirow}
   \newcolumntype{Y}{>{\centering\arraybackslash}X}
   \newcolumntype{L}{>{\raggedright\arraybackslash}X}
   \newcommand{\centered}[1]{\begin{tabular}{l} #1 \end{tabular}}
@@ -140,10 +147,10 @@
 		  \input{Fundamentals.tex}
 	    \newpage
     \fakesection{Article 1}
-      % \input{Publications/DDS.tex}
+      % \input{Publications/DDS/DDS.tex}
       \newpage
     \fakesection{Article 2}
-      % \input{Publications/MgPlas/MgPlas.tex}
+      \input{Publications/MgPlas/MgPlas.tex}
       \newpage
     \fakesection{Article 3}
       % \input{Publications/Corrosion.tex}

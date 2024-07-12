@@ -1,0 +1,91 @@
+\documentclass{standalone}
+
+\usepackage{tikz,pgfplots,textcomp}
+\usetikzlibrary{calc,arrows.meta}
+
+\begin{document}
+  \begin{tikzpicture}[>=Latex]
+
+    \input{sub/stdSettings.tex}
+
+    \definecolor{lblue2}{rgb}{0.2,0.2,0.9}
+    \definecolor{dgreen}{rgb}{0,0.7,0}
+
+    \setlength\wdth{6cm}
+    \newlength\hght\setlength\hght{2\wdth}
+    \def\descFsize{8}
+
+    \coordinate (c1) at (0.5\wdth,0.55\hght);
+    \coordinate (c2) at ($(c1)+(-0.25\wdth,-0.65\wdth)$);
+    \coordinate (c3) at ($(c1)+(0.25\wdth,-0.65\wdth)$);
+
+    \coordinate(l1) at (0,0);
+    \coordinate(l2) at (1.2\wdth,0);
+    \coordinate(l3) at (3.4\wdth,0);
+
+
+    \node[below, align=center] at ($(l1)+(0.5\wdth,\hght)$){\bf Reservoir based \\ \bf drug delivery systems (rDDS)};
+    % \node[right] at ($(l2)+(0.1\wdth,-0.1\wdth)$){\bf \large b) Customizable release kinetics};
+
+    % rDDS
+    \node (p1) at (c1) {\includegraphics[width=0.8\wdth]{sub/cross_section_reservoir_2.png}};
+    \draw[<-,line width=1.5, align=center] ($(c1)+(-0.325\wdth,0.15\wdth)$) --++ (0,0.3\wdth) node[above,xshift=0.05\wdth]{\fontsize{\descFsize}{\descFsize}\selectfont Membrane with \\[-3pt] \fontsize{8}{8}\selectfont microchannels};
+    \draw[<-,line width=1.5, align=center] ($(c1)+(0.15\wdth,0.15\wdth)$) --++ (0.0\wdth,0.3\wdth) node[above, xshift=0.05\wdth]{\fontsize{\descFsize}{\descFsize}\selectfont Drug loaded\\[-3pt] \fontsize{\descFsize}{\descFsize}\selectfont reservoir};
+    \draw[line width=1.5, align=center] ($(c2)+(0\wdth,-0.25\wdth)$) node[below, outer sep=0.01\wdth]{\fontsize{\descFsize}{\descFsize}\selectfont Microchannel\\[-3pt] \fontsize{\descFsize}{\descFsize}\selectfont network};
+    \draw[line width=1.5, align=center] ($(c3)+(0\wdth,-0.25\wdth)$) node[below, outer sep=0.01\wdth]{\fontsize{\descFsize}{\descFsize}\selectfont Microchannel\\[-3pt] \fontsize{\descFsize}{\descFsize}\selectfont cross section};
+
+    % channel network
+    \node at (c2) {\includegraphics[width=0.4\wdth]{sub/porosity1.pdf}};
+    \coordinate(shft) at ($(c1)+(-0.34\wdth,-0.25\wdth)$);
+    \draw[shift=(shft),dotted,line width=2] (0,0) rectangle (0.08\wdth,0.08\wdth);
+    \draw[shift=(c2),dotted,line width=1.5] (-0.2\wdth,-0.2\wdth) rectangle (0.2\wdth,0.2\wdth);
+    \draw[shift=(shft),dotted,line width=1.5] (0,0) -- ($(c2)+(-0.2\wdth,0.2\wdth)$);
+    \draw[shift=(shft),dotted,line width=1.5] (0.08\wdth,0) -- ($(c2)+(0.2\wdth,0.2\wdth)$);
+    
+    % channel
+    \draw[fill=dds,dotted,rounded corners=0.02\wdth,line width=1.5] ($(c3)+(-0.2\wdth,-0.2\wdth)$) rectangle ($(c3)+(0.2\wdth,0.2\wdth)$); 
+    \newdimen\R
+    \R = 0.15\wdth
+    \draw[shift=(c3),fill=white,line width=1.5] (0:\R) \foreach \x in {60,120,...,360}{--(\x:\R)}--cycle;
+    \draw[<->,shift=(c3)] ($(0:\R)!0.03!(180:\R)$) -- ($(0:\R)!0.97!(180:\R)$) node[pos=0.5,above]{\bf $\sim$2\textmu m}; 
+
+    \draw[dotted,rounded corners=0.01\wdth,line width=1.5] ($(c2)+(0.1\wdth,-0.17\wdth)$) rectangle ($(c2)+(0.15\wdth,-0.12\wdth)$); 
+    \draw[dotted, line width=1.5] ($(c2)+(0.15\wdth,-0.12\wdth)$) -- ($(c3)+(-0.2\wdth,0.2\wdth)$);
+    \draw[dotted, line width=1.5] ($(c2)+(0.15\wdth,-0.17\wdth)$) -- ($(c3)+(-0.2\wdth,-0.2\wdth)$);
+
+    %
+    \begin{scope}[shift=(l2)] 
+      \node at (0.48\wdth,0.76\hght){\includegraphics[width=0.9\wdth]{sub/SamplesOnFinger.png}};
+      \node at (1.45\wdth,0.74\hght){\includegraphics[width=\wdth]{abstractExperiments.png}};
+      \node at (0.93\wdth,0.25\hght){\includegraphics[width=1.95\wdth]{abstractSimulations.png}};
+      \node[below] at (1\wdth,\hght){\bf Fabrication and experiments};
+      \node[below] at (1\wdth,0.5\hght){\bf Modelling and simulations};
+      \draw[dotted,color=lgray, line width=0.7] (0.02\wdth,0.5\hght) -- (1.98\wdth,0.5\hght);
+      \node at (0.35\wdth,0.4\hght){\fontsize{\descFsize}{\descFsize}\selectfont 3D mesh}; 
+      \node at (1.63\wdth,0.4\hght){\fontsize{\descFsize}{\descFsize}\selectfont 1D finite element}; 
+    \end{scope}
+
+    %
+    \begin{scope}[shift=(l3)] 
+      \node[align=center, below] at (0.5\wdth,\hght){\bf Patient specific \\ \bf customizable release};
+      \node[above] at (0.5\wdth,0.82\hght){\fontsize{\descFsize}{\descFsize}\selectfont Parameters to customize release kinetics};
+      \node at (0.5\wdth,0.7\hght){\includegraphics[width=0.95\wdth]{abstractParameters.png}};
+      \node[above, align=center] at (0.5\wdth,0.43\hght){\fontsize{\descFsize}{\descFsize}\selectfont Adjusting parameters allows for \\[-3pt] \fontsize{\descFsize}{\descFsize}\selectfont various concentration profiles};
+      \node at (0.5\wdth,0.25\hght){\includegraphics[width=0.98\wdth]{abstractCustomRelease.png}};
+    \end{scope}
+
+    % boxes
+    \draw[color=lgray,rounded corners=0.1\wdth] (0,0) coordinate(l1) rectangle ($(l1)+(\wdth,\hght)$);
+    \draw[color=lgray,rounded corners=0.1\wdth] (1.2\wdth,0) coordinate(l2) rectangle ($(l2)+(2\wdth,\hght)$);
+    \draw[color=lgray,rounded corners=0.1\wdth] (3.4\wdth,0) coordinate(l3) rectangle ($(l3)+(1\wdth,\hght)$);
+
+    \fill[lgray](1.02\wdth,0.72\hght)--++(0.14\wdth,0.03\hght)--++(-0.14\wdth,0.03\hght)--cycle; 
+    \fill[lgray](1.02\wdth,0.22\hght)--++(0.14\wdth,0.03\hght)--++(-0.14\wdth,0.03\hght)--cycle; 
+    \fill[lgray](3.22\wdth,0.47\hght)--++(0.14\wdth,0.03\hght)--++(-0.14\wdth,0.03\hght)--cycle; 
+    \fill[lgray](2.9\wdth,0.48\hght)--++(0.03\wdth,0.05\hght)--++(0.03\wdth,-0.05\hght)--cycle; 
+    \fill[lgray](1.4\wdth,0.52\hght)--++(0.03\wdth,-0.05\hght)--++(0.03\wdth,0.05\hght)--cycle; 
+    
+    \end{tikzpicture}
+
+
+\end{document}
