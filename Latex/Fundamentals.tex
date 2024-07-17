@@ -16,21 +16,21 @@ With $\FF$ and \mbox{$J=\det{\FF}$} it is possible to map any infinitesimal vect
 \begin{align}
   \d\xx = \FF\d\XX; \qquad \d\aa = J \FFinvT \d\AA; \qquad \d v = J\dV.
 \end{align}
-The deformation rate is given by the velocity gradient $\ll$ is defined as:
+The deformation rate is given by the velocity gradient $\ll$ which is defined as:
 \begin{align}
   \ll = \grad{\dot{\uu}} = \dot\FF\FFinv.
 \end{align}
 where \mbox{$\uu(\XX,t)=\xx-\XX$} is the displacement. 
-Since deformation can have different origins and mechanisms, it often makes sense to decompose the deformation to be able to describe each deformation mechanism separately. In scenarios involving chemistry the deformation is often decomposed into an elastic mechanical part and a chemical part, where the chemical part is assumed to be an concentration dependent isotropic swelling, similar to an isotropic thermal expansion.
+Since deformation can have different origins and mechanisms, it often makes sense to decompose the deformation to be able to describe each deformation mechanism separately. For the deformation gradient the multiplicative decomposition\supercite{} is widely accepted. In scenarios involving chemistry the deformation is often decomposed into an elastic mechanical part and a chemical part, where the chemical part is assumed to be an concentration dependent isotropic swelling, similar to an isotropic thermal expansion.
 \begin{align}
-  \FF=\FF^\e\FF^\c \qquad \text{with}\qquad \FF^\c = (\J^\c)^{\third}\II.
+  \FF=\FF^\e\FF^\c \qquad \text{with}\qquad \FF^\c = (J^\c)^{\third}\II.
 \end{align} 
 Here, $\II$ is the identity tensor and $J^\c(C)=\det{\FF^\c}$ is the concentration dependent determinant of the chemical deformation. In crystal plasticity on the other hand, the deformation is usually decomposed into an elastic part and an irreversible plastic part, where the plastic part is assumed to be a volume conserving shear deformation:
 \begin{align}
   \FF = \FF^\e\FF^\p \qquad \text{with}\qquad \det\FFp = 1
   \label{eq:FFeFFp}
 \end{align}
-This opens the possibility to define an intermediate configuration which can be interpreted as the configuration of a virtual elastic unloading i.e. the deformation that would be obtained if the stress was elastically released to get a stress free state. A graphical interpretation for the two decompositions and the intermediate configuration can be found in Figure~\ref{fig:DecompositionF}. 
+The two decompositions open the possibility to define an intermediate configuration which can be interpreted as the configuration of a virtual elastic unloading i.e. the deformation that would be obtained if the stress was elastically released and a stress free state obtained. A graphical interpretation for the two decompositions and the intermediate configuration can be found in Figure~\ref{fig:DecompositionF}. 
 \begin{figure}[h!]
   \centering
   \includegraphics[width=\textwidth]{Figs/DecompositionF/DecompositionF.pdf}
@@ -42,7 +42,7 @@ This opens the possibility to define an intermediate configuration which can be 
 \begin{align}
   \ll = \FFedot\FFeinv + \FFe \FFpdot \FFpinv \FFeinv = \lle + \FFe\LLp\FFeinv.
 \end{align}
-This enables to describe the plastic deformation in the intermediate configuration, which has the advantage that elastic distortions and rotations do not have to be considered and the crystal lattice therefore has a well defined orientation.
+This enables to describe the plastic deformation in the intermediate configuration, which has the advantage that elastic distortions and rotations do not have to be considered and a given crystal lattice therefore has a well defined orientation.
 
 \subsection{Balances and Thermodynamic Consistency}
 To be consistent with fundamental principles from physics and thermodynamics, balance laws are used, which have always a similar structure. This is examplary shown for an arbitrary quantity $Z$. The rate of change of $Z$ depends on the external supply and internal sources. The corresponding balance equation can be given in integral form or equivalently in the local form as:
@@ -55,7 +55,7 @@ where, $z$ is the volume density, $\JJ^\z$ is the current density and $\omega^\z
 \begin{figure}[h!]
   \centering
   \includegraphics[width=\textwidth]{Figs/Balance/Balance.pdf}
-  \caption[]{}
+  \caption[]{Balance of an arbitrary quantity $Z$ can be given for a finite Volume $V$ or locally for an infinitesimal volume $\d V$.}
   \label{fig:Balance}
 \end{figure}
 
@@ -87,7 +87,7 @@ where $\rho^\e$ is the electric charge density, $\JJ^\e$ is the electric current
     \label{eq:balancep}
   \end{aligned}
 \end{align}
-where $\hat\tt=\PP\NN$ are tractions, $\PP$ is the first Piola-Kirchhoff stress tensor and $\bb$ are body forces. The balance for angular momentum $\LL$ reads:
+where $\hat\tt=\PP\NN$ are tractions on the surface, $\PP$ is the first Piola-Kirchhoff stress tensor and $\bb$ are body forces. The balance for angular momentum $\LL$ reads:
 \begin{align}
   \begin{aligned}
     \dot \LL  &= \intVO \xx \times \rho_0 \,\ddot\xx \dV  = \intdVO \xx \times \hat\tt \dA + \intVO \xx \times \bb \dV\\
@@ -137,17 +137,17 @@ Using the definition for free energy densitiy $\psi=\rho_0(e-sT)$, for chemical 
 
 At this point it is necessary to define functions for the expressions given in the dissipation equation. These functions will define the material behavior and are therefore called material laws. 
 
-\subsection{Materials}
-In this section the material laws used in the presented articles are explained further and related 
-
+\subsection{Material Models}
 \subsubsection{Diffusion Controlled Drug Delivery System}
 The choice of the material law for the drug delivery system is based on a few assumptions which are shortly explained here. The drug delivery system investigated in this thesis is schematically depicted in \cref{fig:DDS}
 \begin{figure}[h!]
-  \caption{}
+  \centering
+  \includegraphics{Figs/DDS_schematic/DDS_schematic.pdf}
+  \caption{Schematic of the drug delivery system. A drug loaded reservoir is surrounded by a porous membrane interpenetrated by a microchannel network. The channels are assumed to have a constant cross section and are therefore approximated by one dimensional connections.}
   \label{fig:DDS}
 \end{figure}
 
-The systems has a drug loaded reservoir which is connected to the outside by a microchannel interpenetrated membrane. It is assumed that the channels can be approximated by a network of tubes, where each tube has a constant cross sectional area. With these assumptions it is possible to describe the microchannels as a three dimensional network of one dimensional interconnections. Further it is assumed that diffusion is the only release mechanism and that the diffusion can be describes by Fick's law, which is given for one dimension by: 
+The systems has a drug loaded reservoir which is connected to the outside by a microchannel interpenetrated membrane. It is assumed that the channels can be approximated by a network of tubes, where each tube has a constant cross sectional area. With these assumptions it is possible to describe the microchannels as a three dimensional network of one dimensional interconnections. Further it is assumed that diffusion is the only release mechanism and that the diffusion can be described by Fick's law, which is given for one dimension by: 
 \begin{align}
   j = -D \ \frac{\partial c}{\partial x},
 \end{align}
@@ -163,11 +163,11 @@ The solution of this partial differential equation is obtained by the finite ele
 \begin{align}
   \mathcal{D} = \mu \dot c - \frac{\partial \mu}{\partial x} \, j - \dot \psi \geq 0
 \end{align} 
-Assuming the total concentration of particles to be constant and the free energy to be a function only of the concentration one has:
+Assuming the total concentration of particles to be approximately constant and the free energy to be a function for a dilute ideal mixture, where only of the concentration of the diffusing species is considered, one has:
 \begin{align}
   \partial_c \psi = \mu = \mu^{\circ} + R T \ln{\chi} \qquad \Rightarrow \qquad \frac{\partial \mu}{\partial x} = \frac{R T}{\chi} \frac{\partial \chi}{\partial x} = \frac{RT}{c} \frac{\partial c}{\partial x}
 \end{align}
-where, $R$ is the gas constant and $\chi$ is the molar fraction we obtain
+where, $\munord$ is the standard Gibb's free energy of formation, $R$ is the gas constant and $\chi$ is the molar fraction we obtain
 \begin{align}
   \mathcal{D} = \frac{RTD}{c} \bigg(\frac{\partial c}{\partial x}\bigg)^2 \geq 0
 \end{align}
@@ -177,8 +177,8 @@ which is always true since $R$, $T$, $D$ and $c$ are always positive.
 The aim of the crystal plasticity model is to predict the deformation and stress of a metallic material under mechanical load correctly. A possible schematic stress-strain diagram for such a material exhibiting easily activated twinning modes and an anisotropic grain orientation is depicted in \cref{fig:MgPlas}.
 \begin{figure}[h!]
   \centering
-  \includegraphics*[width=0.95\textwidth]{Figs/MgPlas_schematic/MgPlas_schematic.pdf}
-  \caption{}
+  \includegraphics*[width=0.93\textwidth]{Figs/MgPlas_schematic/MgPlas_schematic.pdf}
+  \caption{Schematic stress-strain curve for anisotropic metal with loading direction favorable for easily activated twinning systems. Twinning can only occur until 100 \% has transformed which results in a second elastic regime followed by deformation due to slip. }
   \label{fig:MgPlas}
 \end{figure}
 
@@ -204,7 +204,7 @@ Here $\cb$ are the volume fraction for the twinning mode and $\beta=0$ denotes t
 \end{align}
 where $\SSe$ is the second Piola-Kirchhoff stress tensor in the intermediate configuration, \mbox{$\EEe=\half(\FFeT\FFe-\II)$} is the Green-Lagrange strain tensor of the intermediate configuration and $\CCCC$ is the material dependent fourth order stiffness tensor. For the shear rates a power law of the following form is assumed:
 \begin{align}
-    \nu = \sign{\tau} \nu_0 \left( \frac{\abs{\tau}}{\tau^\c} \right)^{p}
+    \nu = \nu_0 \, \sign{\tau} \left( \frac{\abs{\tau}}{\tau^\c} \right)^{p}
     \label{eq:powerlaw}
 \end{align}
 The dissipation equation for the purely mechanical case reads:
@@ -219,7 +219,7 @@ The processes considered for the degradation of a metallic material in a corrosi
 \begin{figure}[h!]
   \centering
   \includegraphics*[width=0.95\textwidth]{Figs/Corrosion/Corrosion.pdf}
-  \caption{}
+  \caption{Schematic representation of processes considered in electro-chemo-mechanical model. Different phases have different properties. Chemical reactions may cause phase transformations, which can cause mechanical stresses. Diffusion of ions leads to a electric fields which can cause electric currents due to electrons.}
   \label{fig:Corrosion}
 \end{figure}
 
@@ -227,28 +227,26 @@ In the beginning the metal and medium are in contact and chemical reactions can 
 \begin{align}
   \jj_i = -\sum_j D_{ij} \, \grad{\mu_j^\e}
 \end{align}
-The chemical potential $\mu_i$ is assumed to be given by the law for an ideal mixture: 
+where $D_ij$ are diffusion components consistent with the Maxwell Stefan diffusion. The chemical potential $\mu_i$ is assumed to be given by the law for an ideal mixture: 
 \begin{align}
   \mu_i = \munordi + RT \ln{\chi_i}
+\end{align}
+Chemical reactions are assumed to always have a forward and a backward reaction. 
+\begin{align}
+  R = k\sinh\bigg(\frac{\Delta_R \mu}{\RT}\bigg)
 \end{align}
 The material is assumed to be isotropic, thus the mechanical stress $\ssigma^\m$ is given by the isotropic Neo-Hookean model: 
 \begin{align}
   \ssigma^\m = 
 \end{align}
 where
-The change of concentration leads to an isotropic mechanical swelling, influencing the pressure given by:  
-\begin{align}
-  p = -\third\trace\ssigma^\m
-\end{align}
-where 
-
-
+The electric displacement field in the current configuration $\tilde \DD$ is assumed to take the commonly known form: 
 \begin{align}
   \tilde\DD = -\epsilon \, \grad \varphi
 \end{align}
-
-Electric currents due to electrons are assumed to follow Ohm's law:
+where $\epsilon$ is the material dependent permittivity and $\varphi$ is the electric potential. For electric currents due to electrons $\jj^\e$ Ohm's law is assumed:
 \begin{align}
-  \jj^\e = -\ssigma^\e \, \grad \varphi
+  \jj^\e = -\sigma^\e \, \grad \varphi
 \end{align}
+where $\sigma^\e$ is the material specific conductivity.
 The dissipation equation is ensured by using the potential based variational framework of generalized standard materials.  

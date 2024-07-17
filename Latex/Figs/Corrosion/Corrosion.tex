@@ -22,6 +22,7 @@
 
   \begin{tikzpicture}[>=Latex
     ]
+    \clip[rounded corners=15pt] (0,0) rectangle (10.2,6);
     \path[fill=gray1] (0,0) rectangle ++(3,4);
     \path[fill=blue1] (0,4) rectangle ++(3,2);
     \path[fill=gray1] (3,0) rectangle ++(4.2,4);
@@ -32,7 +33,7 @@
     \path[fill=blue1] (7.2,3.5) rectangle ++(3,2.5);
     \draw[dashed](3,0)--++(0,6);
     \draw[dashed](7.2,0)--++(0,6);
-    \draw[<-] (1.5,4) --++ (-0.3,-0.4) node[below,align=center]{Chemical\\Reactions};
+    \draw[<-] (1.5,4) --++ (-0.3,-0.4) node[below,align=center]{\small Chemical\\Reactions};
     \node[gray5] at (1.5,2){Metal};
     \node[blue2] at (1.5,5){Medium};
     \node[gray6,align=center] at (4,3.6){Corrosion\\layer};
@@ -58,9 +59,9 @@
       \draw[white,thick] (1.5,0) -- (1.5,0.5)--(1.65,1.05)--(1.65,1.65);
     \end{scope}
 
-    \draw[<-] (3.8,2.5)--++(0.2,-0.8) node[align=center,below]{Mechanical\\stresses}; 
-    \draw[<-] (5.2,3.8)--++(-0.6,0.8) node[align=center,above]{Diffusion \\ of ions};
-    \draw[<-] (6.5,4.5)--++(-0.1,0.5) node[align=center,above]{Electric \\ fields};
+    \draw[<-] (3.8,2.5)--++(0.2,-0.8) node[align=center,below]{\small Mechanical\\stresses}; 
+    \draw[<-] (5.2,3.8)--++(-0.6,0.8) node[align=center,above]{\small Diffusion \\ of ions};
+    \draw[<-] (6.5,4.5)--++(-0.1,0.5) node[align=center,above]{\small Electric \\ fields};
     \draw[->,red,ultra thick] (6.5,4.2) --++(0,-1.7) node[right,pos=0.5,black]{$\EE$}; 
     \node at (6.5,4.35){\tiny \bf +\, + \,+};
     \node at (6.5,2.35){\footnotesize \bf - \ - \ -};
@@ -71,8 +72,8 @@
       \path[fill,gray3] (0.4,-0.4)  circle (3pt);
       \path[fill,gray3] (-0.05,-0.8) circle (3pt); 
       \path[fill,gray3] (-0.9,-0.5) circle (3pt); 
-      \draw[ultra thick,->,gray3] ($(co1)+(0,0.2)$)--++(0,1)node[right=0.15cm,black,align=center,pos=0.5]{Dissolution};
-      \draw[ultra thick,->,gray3] ($(co1)+(0,-2.6)$)--++(0,-1) node[right=0.15cm,black,align=center,pos=0.5]{Growth};
+      \draw[ultra thick,->,gray3] ($(co1)+(0,0.2)$)--++(0,1)node[right=0.15cm,black,align=center,pos=0.5]{\small Dissolution};
+      \draw[ultra thick,->,gray3] ($(co1)+(0,-2.6)$)--++(0,-1) node[right=0.15cm,black,align=center,pos=0.5]{\small Growth};
     \end{scope} 
    
 
