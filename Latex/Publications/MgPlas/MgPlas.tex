@@ -156,7 +156,7 @@ In this work we present the algorithm for a fully implicit crystal plasticity fi
   where $\nuOa$, $\cbOdot$ are the reference slip and twin evolution rates, respectively, $\psl$ and $\ptw$ are the rate sensitivity exponents and $\tauacb$ and $\xibc$ are the critical stresses for slip and twinning, respectively. Note that in our case the phase transformation rate depends on the concentration of the parent phase $c_0$ which automatically impedes further twinning when no parent phase exists anymore. This ensures that the constraints from \cref{eq:c_constraints} are satisfied. Furthermore, as can be seen from \cref{eq:nuab_cbdot}, de-twinning is not considered in this example but could be included by using an appropriate law for the case $\xib < 0$.
 
   \subsubsection{Deformation mechanisms and hardening in hcp magnesium} \label{sec:hardening}
-  Magnesium has a hexagonal close-packed structure with a transverse isotropic elastic behaviour. The elastic properties can be characterized by the five elastic constants $C_{11}$, $C_{12}$, $C_{13}$, $C_{33}$ and $C_{44}$ which were taken from \authorcite{slutsky1957elastic} and are given in \cref{tab:elasticConstantsMg}. The fourth order stiffness tensor in Mandel notation $\Cu$ is given by \cref{eq:Cu}.
+  Magnesium has a hexagonal close-packed structure with a transverse isotropic elastic behavior. The elastic properties can be characterized by the five elastic constants $C_{11}$, $C_{12}$, $C_{13}$, $C_{33}$ and $C_{44}$ which were taken from \authorcite{slutsky1957elastic} and are given in \cref{tab:elasticConstantsMg}. The fourth order stiffness tensor in Mandel notation $\Cu$ is given by \cref{eq:Cu}.
   \begin{table}[h!]
   \begin{minipage}{0.28\textwidth} 
       \captionsetup{width=\textwidth}   
@@ -279,7 +279,7 @@ In this work we present the algorithm for a fully implicit crystal plasticity fi
       \xibc = 
       \begin{cases}
           \displaystyle A_0 \gammatt \left( \tauO + (\taus - \tauO) \tanh{\frac{\hO \gammaacctt}{\taus-\tauO}} \right)& \text{(TT)}\\[15pt]
-          \displaystyle A_0 \gammact \frac{\hO (\gammaaccct)^{b+1}}{(b+1){(\gammact})^b}  & \text{(CT)}
+          \displaystyle A_0 \gammact \frac{\hO (\gammaaccct)^{b+1}}{(b+1){(\gammact)}^b}  & \text{(CT)}
       \end{cases}
   \end{equation}
 
@@ -396,20 +396,20 @@ In this work we present the algorithm for a fully implicit crystal plasticity fi
   where $\Delta\gammau(\SSe,\Delta\gammautilde)$ corresponds to \cref{eq:dgammau} expressed in terms of \cref{eq:dgammaab,eq:dgammab}.
   In case of a given deformation gradient, the linearization of the nonlinear equation system reads:
   \begin{align}
-    \rrS + \d \rrS &= \rrS + \left(\dEEeDSSe-\SSSS\right):\d \SSe + \left(\dEEeDDeltagammau-\SSe:\derivative{\SSSS}{\Delta\gammautilde} \right)\d \Delta \gammautilde \label{eq:rrS} = \zzero; \\ %+ \dEEeDCCetr : \dCCetr \\ 
-    \rg + \d \rg &= \rg + \dDeltagammauDSSe:\d \SSe + \left( \dDeltagammauDDeltagammau - \II \right) \d \Delta \gammautilde = \zerou \label{eq:rg}.
+    \rrS + \rmd\rrS &= \rrS + \left(\dEEeDSSe-\SSSS\right):\rmd\SSe + \left(\dEEeDDeltagammau-\SSe:\derivative{\SSSS}{\Delta\gammautilde} \right)\rmd\Delta\gammautilde \label{eq:rrS} = \zzero; \\ %+ \dEEeDCCetr : \dCCetr \\ 
+    \rg + \rmd\rg &= \rg + \dDeltagammauDSSe:\rmd\SSe + \left( \dDeltagammauDDeltagammau - \II \right) \rmd\Delta\gammautilde = \zerou \label{eq:rg}.
   \end{align}
   The partial derivatives are given in the appendix. Introducing the vector notation $\ru$ for the residuals and $\xu$ for the unknowns as well as the Mandel-notations $\rSu$ and $\Seu$, the linearization of the Newton-scheme is given by:
   \begin{equation}
-    \ru + \druDxu \d\xu = \zerou \qquad \text{with} \qquad \ru = \pmat{\rSu \\ \rg}; \quad \xu = \pmat{\Seu \\ \Delta\gammautilde}.
+    \ru + \druDxu \rmd\xu = \zerou \qquad \text{with} \qquad \ru = \pmat{\rSu \\ \rg}; \quad \xu = \pmat{\Seu \\ \Delta\gammautilde}.
   \end{equation}
 
   The algorithmic tangent $\calgo$ (see appendix) for the global iteration is calculated by:
   \begin{align}
-    \FFetr \d\SSebar \FFetrT = \underbrace{\FFetr \sBox \FFetrT : \dSSebarDxu \dxuDCCetr : \FFetrT \sBox \FFetr}_{\calgo} : \ddd
+    \FFetr \rmd\SSebar \FFetrT = \underbrace{\FFetr \sBox \FFetrT : \dSSebarDxu \dxuDCCetr : \FFetrT \sBox \FFetr}_{\calgo} : \ddd
     \label{eq:calgo}
   \end{align}
-  where $\SSebar=\FFetrinv \ttau \FFetrinvT$ is the second Piola-Kirchhoff stress tensor with respect to the intermediate trial configuration and $\ddd=\sym{(\d\FF\FFinv)}$. As before, the partial derivatives are given in the appendix. \\
+  where $\SSebar=\FFetrinv \ttau \FFetrinvT$ is the second Piola-Kirchhoff stress tensor with respect to the intermediate trial configuration and $\ddd=\sym{(\rmd\FF\FFinv)}$. As before, the partial derivatives are given in the appendix. \\
  
   \subsection{Simulation results and discussion} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   The material routine was implemented into the finite element analysis program FEAP\supercite{taylor2014feap} and tested in FEM simulations using quadratic tetrahedral elements and hexahedral elements with reduced integration and hourglass stabilization. In this section the simulation results are compared to experimental data of single-crystal and polycrystal deformation. Since the model does not resolve individual twins, the focus lies on the effective material response rather than on the material behavior on the sub-grain scale. One of the most sophisticated characterizations for crystal plasticity of magnesium are the experiments of \authorcite{kelly1967report} in which single-crystal as well as polycrystal compression experiments were performed for several different loading directions and constraints which were designed to activate and impede different slip and twinning modes. Furthermore, the influence of the change of elastic energy upon twinning and the compliance to plastic incompressibility are discussed.
@@ -565,7 +565,7 @@ In this work we present the algorithm for a fully implicit crystal plasticity fi
   \subsubsection*{Linearization of $\SSSS$}
   The linearization of the compliance $\SSSS$ is given by:
   \begin{equation}
-    \d\SSSS = - \sumbI \frac{1}{\gammatwb} \SSSS : \left( \CCCCb - \CCCC_0 \right) : \SSSS \ \d\gammab.
+    \rmd\SSSS = - \sumbI \frac{1}{\gammatwb} \SSSS : \left( \CCCCb - \CCCC_0 \right) : \SSSS \ \rmd\gammab.
   \end{equation}
   
   \subsubsection*{Linearization of $\EEe$}
@@ -579,7 +579,7 @@ In this work we present the algorithm for a fully implicit crystal plasticity fi
   
   They are derived by the linearization of $\EEe$ as follows:
   \begin{equation}
-    \dEEe = \half \total(\ffpinvT \CCetr \ffpinv - \II) = \sym{(\CCe \ffp \dffpinv)} + \half \ffpinvT \sBox \ffpinv : \d\CCetr.
+    \dEEe = \half \total(\ffpinvT \CCetr \ffpinv - \II) = \sym{(\CCe \ffp \dffpinv)} + \half \ffpinvT \sBox \ffpinv : \rmd\CCetr.
     \label{eq:dEEe}
   \end{equation}
   With
@@ -590,7 +590,7 @@ In this work we present the algorithm for a fully implicit crystal plasticity fi
 
   and
   \begin{equation}
-      \dhhp =  \sumbO \cb \sumaI \MMab \d \Delta \gammaab + \sumbI \left(\MMb + \frac{1}{\gammatwb}\sumaI\left(\MMab\Delta\gammaab-\MMaO\Delta\gammaaO\right)\right)  \d \Delta \gammab
+      \dhhp =  \sumbO \cb \sumaI \MMab \rmd \Delta \gammaab + \sumbI \left(\MMb + \frac{1}{\gammatwb}\sumaI\left(\MMab\Delta\gammaab-\MMaO\Delta\gammaaO\right)\right)  \rmd \Delta \gammab
       \label{eq:dhhp}
   \end{equation}
   and 
@@ -622,12 +622,12 @@ In this work we present the algorithm for a fully implicit crystal plasticity fi
   
   The linearization for $\tauCslslb$, $\tauCttsl$ and $\tauCctsl$ reads: 
   \begin{align}
-          \d\tauCslslb &= 
-          \begin{cases}  \displaystyle h_0 \ \d\Delta\gammaaccb & \qquad \qquad \text{(Basal)} 
-            \\ \displaystyle h_0 \ \sech^2\left(\frac{h_0 \gammaaccb}{\taus - \tauO}\right) \d\Delta\gammaaccb & \qquad \qquad \text{(Non basal)}
+          \rmd\tauCslslb &= 
+          \begin{cases}  \displaystyle h_0 \ \rmd\Delta\gammaaccb & \qquad \qquad \text{(Basal)} 
+            \\ \displaystyle h_0 \ \sech^2\left(\frac{h_0 \gammaaccb}{\taus - \tauO}\right) \rmd\Delta\gammaaccb & \qquad \qquad \text{(Non basal)}
           \end{cases}\\
-          \d\tauCttslb &= \hO \ \sech^2\left(\frac{\hO\gammaacctt}{\taus}\right) \d\gammab \\
-          \d\tauCctsl &= 0.5 \hO \left(\gammact\right)^{-0.5} \d\gammab
+          \rmd\tauCttslb &= \hO \ \sech^2\left(\frac{\hO\gammaacctt}{\taus}\right) \rmd\gammab \\
+          \rmd\tauCctsl &= 0.5 \hO \left(\gammact\right)^{-0.5} \rmd\gammab
   \end{align}
   
   The partial derivatives then read:
@@ -648,7 +648,7 @@ In this work we present the algorithm for a fully implicit crystal plasticity fi
     \derivative{\xibc}{\Delta\gammab} = 
     \begin{cases}
       \displaystyle A_0 \gammatt \hO \ \sech^2\left(\frac{\hO \gammaacctt}{\taus-\tauO}\right) + \derivative{A_0}{\Delta\gammab}  \gammatt (\taus-\tauO) \tanh{\frac{\hO \gammaacctt}{\taus-\tauO}} & \qquad \text{(TT)} \\[10pt]
-      \displaystyle \gammact \hO (\cb)^{b} + \derivative{A_0}{\Delta\gammab} \gammact \frac{\hO (\gammaaccct)^{b+1}}{(b+1){(\gammact})^b} & \qquad \text{(CT)} 
+      \displaystyle \gammact \hO (\cb)^{b} + \derivative{A_0}{\Delta\gammab} \gammact \frac{\hO (\gammaaccct)^{b+1}}{(b+1){(\gammact)}^b} & \qquad \text{(CT)} 
     \end{cases}
   \end{equation}
   
@@ -677,16 +677,16 @@ In this work we present the algorithm for a fully implicit crystal plasticity fi
   \subsubsection*{Algorithmic tangent}
   For the linearization of the weak form of the linear momentum balance 
   \begin{equation}
-    \int_{V_0} \ttau :\dd_\delta \d V - \int_{\partial V_{0t}} \ttbar \cdot \delta \uu \d A = 0,
+    \int_{V_0} \ttau :\dd_\delta \rmd V - \int_{\partial V_{0t}} \ttbar \cdot \delta \uu \rmd A = 0,
   \end{equation}
   with $\dd_\delta = \sym{(\ll_\delta)} = \sym{(\delta\FF\FFinv)}$ and the traction vector $\ttbar$ given on $\delta V_{0t}$, we consider the well-known result 
   \begin{equation}
-    \d(\ttau:\dd_\delta) = (\ll_\d \ttau \trans{\ll_\delta}):\II + \dd_\delta:\calgo:\dd_\d,
+    \rmd(\ttau:\dd_\delta) = (\ll_\rmd \ttau \trans{\ll_\delta}):\II + \dd_\delta:\calgo:\dd_\rmd,
   \end{equation}
-  where $\ll_\d=\d\FF\FFinv$ and $\calgo$ is given in \cref{eq:calgo}. \\
+  where $\ll_\rmd=\rmd\FF\FFinv$ and $\calgo$ is given in \cref{eq:calgo}. \\
   For the global iteration one has:
   \begin{equation}
-    \d\ru = \derivative{\ru}{\xu} \d\xu + \derivative{\ru}{\CCetr} : \d\CCetr = 0.
+    \rmd\ru = \derivative{\ru}{\xu} \rmd\xu + \derivative{\ru}{\CCetr} : \rmd\CCetr = 0.
   \end{equation}
   From that one finds the partial derivative
   \begin{equation}
@@ -710,7 +710,7 @@ In this work we present the algorithm for a fully implicit crystal plasticity fi
   
   It is calculated from the linearization of $\SSebar$ as follows:
   \begin{align}
-      \d \SSebar = \d \left( \ffpinv \SSe \ffpinvT \right) = \ffpinv \sBox \ffpinvT : \left( \d\SSe + 2 \,\sym{\big(\SSe\trans{(\ffp\d\ffpinv)}\big)} \right).
+      \rmd \SSebar = \rmd \left( \ffpinv \SSe \ffpinvT \right) = \ffpinv \sBox \ffpinvT : \left( \rmd\SSe + 2 \,\sym{\big(\SSe\trans{(\ffp\rmd\ffpinv)}\big)} \right).
   \end{align}
   
   In analogy to \cref{eq:dEEe,eq:ffpdffpinv,eq:dhhp,eq:dEEeDDeltagammaab,eq:dEEeDDeltagammab} one finds for the partial derivatives of $\SSebar$:
@@ -722,7 +722,7 @@ In this work we present the algorithm for a fully implicit crystal plasticity fi
   
   The linearization of $\CCetr$ is given by:
   \begin{equation}
-    \d\CCetr = 2 \FFetrT \sBox \FFetr : \ddd.
+    \rmd\CCetr = 2 \FFetrT \sBox \FFetr : \ddd.
   \end{equation}
 
  

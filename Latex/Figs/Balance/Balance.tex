@@ -41,23 +41,23 @@
     \draw [thick, use tangent=1, ->] (-0.3,0) -- (0.3,0) (0,0) -- (0,-0.8) node[black, below right]{$\NN$} coordinate[pos=0.25](co1);
 
     \draw [] (0,0) rectangle (0.1,0.1);
-    \draw (0.025,0.05) node[above]{$\d V$}; 
-    \draw[fill=black] (-1,0.5) circle (0.5pt) node[above]{$\omega^\z$};
+    \draw (0.025,0.05) node[above]{$\rmd V$}; 
+    \draw[fill=black] (-1,0.5) circle (0.5pt) node[above]{$\omega^\rmz$};
 
     \draw[use tangent, shift={(0.6,-0.05)},<-] (0,0) -- (0,0) (0,0) -- (0,-0.8);  
     \draw[use tangent, shift={(0.75,-0.05)},<-] (0,0) -- (0,0) (0,0) -- (0,-0.8);  
-    \draw[use tangent, shift={(0.9,-0.05)},<-] (0,0) -- (0,0) (0,0) -- (0,-0.8) node[pos=0.9,left]{$\JJ^\z$};  
+    \draw[use tangent, shift={(0.9,-0.05)},<-] (0,0) -- (0,0) (0,0) -- (0,-0.8) node[pos=0.9,left]{$\JJ^\rmz$};  
     \draw (-2,-1)--++(-0.3,-0.3) node[below left]{$\partial V_0$};
 
     \draw[thick] (4,-1.5) rectangle ++ (3,3);
-    \draw[|-|,gray] (4,1.7) --++ (3,0) node[pos=0.2,above,black]{$\d x_1$};
-    \draw[|-|,gray] (7.2,-1.5) --++ (0,3) node[pos=0.2,right,black]{$\d x_2$};
-    \draw[thick,->] (7,0) --++ (1,0) node[above]{$J^\z_1+\frac{\partial J^\z_1}{\partial x_1}$};
-    \draw[thick,<-] (4,0) --++ (-1,0) node[pos=0.5,above]{$J^\z_1$};
-    \draw[thick,->] (5.5,-2.5) --++ (0,1) node[pos=0.4,right]{$J^\z_2$};
-    \draw[thick,->] (5.5,1.5) --++ (0,1) node[pos=0.7,right]{$J^\z_2+\frac{\partial J^\z_2}{\partial x_2}$};
-    \draw[fill=black] (5.5,0) circle (0.5pt) node[above]{$\omega^\z$};
-    \draw(4.3,-1.5) --++ (-0.2,-0.3) node[below]{$\d V$};
+    \draw[|-|,gray] (4,1.7) --++ (3,0) node[pos=0.2,above,black]{$\rmd x_1$};
+    \draw[|-|,gray] (7.2,-1.5) --++ (0,3) node[pos=0.2,right,black]{$\rmd x_2$};
+    \draw[thick,->] (7,0) --++ (1,0) node[above]{$J^\rmz_1+\frac{\partial J^\rmz_1}{\partial x_1}\rmd x_1$};
+    \draw[thick,<-] (4,0) --++ (-1,0) node[pos=0.5,above]{$J^\rmz_1$};
+    \draw[thick,->] (5.5,-2.5) --++ (0,1) node[pos=0.4,right]{$J^\rmz_2$};
+    \draw[thick,->] (5.5,1.5) --++ (0,1) node[pos=0.7,right]{$J^\rmz_2+\frac{\partial J^\rmz_2}{\partial x_2}\rmd x_2$};
+    \draw[fill=black] (5.5,0) circle (0.5pt) node[above]{$\omega^\rmz$};
+    \draw(4.3,-1.5) --++ (-0.2,-0.3) node[below]{$\rmd V$};
     \draw[dashed] (0.1,0)--(4,-1.5);
     \draw[dashed] (0.1,0.1)--(4,1.5);
 

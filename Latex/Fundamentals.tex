@@ -1,6 +1,6 @@
 In this section some additional explanations and interpretations are given to support the model equations in the articles. In the following, a brief overview over the kinematic description, the fundamental equations ensuring thermodynamic consistency and the used material laws are given. 
 \subsection{Kinematic Description of Deformation}
-The deformation of a body can be described by the deformation gradient $\FF$.  
+The following is a brief summary of the relevant kinematic equations and definitions, which are standard and can be found in many continuum mechanics textbooks\supercite{haupt_continuum_2002,bonet_nonlinear_2008,altenbach_kontinuumsmechanik_2015}. The deformation of a body can be described by the deformation gradient $\FF$.  
 \begin{align}
   \FF(\XX,t) = \Grad{\xx} = \frac{\partial \xx}{\partial \XX} 
 \end{align}
@@ -12,22 +12,22 @@ where $\XX$ is a position vector of a material point in the (undeformed) referen
   \label{fig:DeformationGradient}
 \end{figure}
 
-With $\FF$ and \mbox{$J=\det{\FF}$} it is possible to map any infinitesimal vector $\d\XX$, area $\d\AA$, and volume $\dV$ from the reference configuration to the current configuration and vice versa:
+With $\FF$ and \mbox{$J=\det{\FF}$} it is possible to map any infinitesimal vector $\rmd\XX$, area $\rmd\AA$, and volume $\dV$ from the reference configuration to the current configuration and vice versa:
 \begin{align}
-  \d\xx = \FF\d\XX; \qquad \d\aa = J \FFinvT \d\AA; \qquad \d v = J\dV.
+  \rmd\xx = \FF\rmd\XX; \qquad \rmd\aa = J \FFinvT \rmd\AA; \qquad \rmd v = J\dV.
 \end{align}
 The deformation rate is given by the velocity gradient $\ll$ which is defined as:
 \begin{align}
   \ll = \grad{\dot{\uu}} = \dot\FF\FFinv.
 \end{align}
 where \mbox{$\uu(\XX,t)=\xx-\XX$} is the displacement. 
-Since deformation can have different origins and mechanisms, it often makes sense to decompose the deformation to be able to describe each deformation mechanism separately. For the deformation gradient the multiplicative decomposition\supercite{} is widely accepted. In scenarios involving chemistry the deformation is often decomposed into an elastic mechanical part and a chemical part, where the chemical part is assumed to be an concentration dependent isotropic swelling, similar to an isotropic thermal expansion.
+Since deformation can have different origins and mechanisms, it often makes sense to decompose the deformation to be able to describe each deformation mechanism separately. For the deformation gradient the multiplicative decomposition is widely accepted. In scenarios involving chemistry the deformation is often decomposed into an elastic mechanical part and a chemical part, where the chemical part is assumed to be an concentration dependent isotropic swelling, similar to an isotropic thermal expansion.
 \begin{align}
-  \FF=\FF^\e\FF^\c \qquad \text{with}\qquad \FF^\c = (J^\c)^{\third}\II.
+  \FF=\FF^\rme\FF^\rmc \qquad \text{with}\qquad \FF^\rmc = (J^\rmc)^{\third}\II.
 \end{align} 
-Here, $\II$ is the identity tensor and $J^\c(C)=\det{\FF^\c}$ is the concentration dependent determinant of the chemical deformation. In crystal plasticity on the other hand, the deformation is usually decomposed into an elastic part and an irreversible plastic part, where the plastic part is assumed to be a volume conserving shear deformation:
+Here, $\II$ is the identity tensor and $J^\rmc(C)=\det{\FF^\rmc}$ is the concentration dependent determinant of the chemical deformation. In crystal plasticity on the other hand, the deformation is usually decomposed into an elastic part and an irreversible plastic part, where the plastic part is assumed to be a volume conserving shear deformation:
 \begin{align}
-  \FF = \FF^\e\FF^\p \qquad \text{with}\qquad \det\FFp = 1
+  \FF = \FF^\rme\FF^\rmp \qquad \text{with}\qquad \det\FFp = 1
   \label{eq:FFeFFp}
 \end{align}
 The two decompositions open the possibility to define an intermediate configuration which can be interpreted as the configuration of a virtual elastic unloading i.e. the deformation that would be obtained if the stress was elastically released and a stress free state obtained. A graphical interpretation for the two decompositions and the intermediate configuration can be found in Figure~\ref{fig:DecompositionF}. 
@@ -45,17 +45,17 @@ The two decompositions open the possibility to define an intermediate configurat
 This enables to describe the plastic deformation in the intermediate configuration, which has the advantage that elastic distortions and rotations do not have to be considered and a given crystal lattice therefore has a well defined orientation.
 
 \subsection{Balances and Thermodynamic Consistency}
-To be consistent with fundamental principles from physics and thermodynamics, balance laws are used, which have always a similar structure. This is examplary shown for an arbitrary quantity $Z$. The rate of change of $Z$ depends on the external supply and internal sources. The corresponding balance equation can be given in integral form or equivalently in the local form as:
+In this section the relevant balance laws are summarized, which are explained in detail elsewhere\supercite{hertel_continuum_2012}. To be consistent with fundamental principles from physics and thermodynamics, balance laws are used, which have always a similar structure. This is examplary shown for an arbitrary quantity $Z$. The rate of change of $Z$ depends on the external supply and internal sources. The corresponding balance equation can be given in integral form or equivalently in the local form as:
 \begin{align}
-  \dot Z  \ = \ \underbrace{ \intVO \dot z \dV}_{\mathclap{\text{Rate of change}}} \ = \ \underbrace{\intdVO -\JJ^{\z} \cdot \NN\dA}_{\text{External supply}} + \underbrace{\intVO \omega^{\z} \dV}_{\mathclap{\text{Internal sources}}} 
-  \qquad \Leftrightarrow \qquad \dot z = -\Div(\JJ^{\z}) + \omega^{\z}
+  \dot Z  \ = \ \underbrace{ \intVO \dot z \dV}_{\mathclap{\text{Rate of change}}} \ = \ \underbrace{\intdVO -\JJ^{\rmz} \cdot \NN\dA}_{\text{External supply}} + \underbrace{\intVO \omega^{\rmz} \dV}_{\mathclap{\text{Internal sources}}} 
+  \qquad \Leftrightarrow \qquad \dot z = -\Div(\JJ^{\rmz}) + \omega^{\rmz}
   \label{eq:balanceZ}
 \end{align} 
-where, $z$ is the volume density, $\JJ^\z$ is the current density and $\omega^\z$ is the internal source density of $Z$ and $\NN$ is the surface normal of the surface increment $\d A$. Here and in the following, the Lagrangian formulation is used, corresponding to a description in the reference configuration, which means densities are given per unit reference volume or reference area. The transformation from the integral form to the local form uses the divergence theorem and the argument that the balance must hold for an arbitrary volume. A graphical interpretation of \cref{eq:balanceZ} is given in \cref{fig:Balance}.
+where, $z$ is the volume density, $\JJ^\rmz$ is the current density and $\omega^\rmz$ is the internal source density of $Z$ and $\NN$ is the surface normal of the surface increment $\rmd A$. Here and in the following, the Lagrangian formulation is used, corresponding to a description in the reference configuration, which means densities are given per unit reference volume or reference area. The transformation from the integral form to the local form uses the divergence theorem and the argument that the balance must hold for an arbitrary volume. A graphical interpretation of \cref{eq:balanceZ} is given in \cref{fig:Balance}.
 \begin{figure}[h!]
   \centering
   \includegraphics[width=\textwidth]{Figs/Balance/Balance.pdf}
-  \caption[]{Balance of an arbitrary quantity $Z$ can be given for a finite Volume $V$ or locally for an infinitesimal volume $\d V$.}
+  \caption[]{Balance of an arbitrary quantity $Z$ can be given for a finite Volume $V$ or locally for an infinitesimal volume $\rmd V$.}
   \label{fig:Balance}
 \end{figure}
 
@@ -72,14 +72,14 @@ where $\rho_0$ is the mass density per unit reference volume $V_0$. Note that th
   \end{aligned}
   \label{eq:balanceC}
 \end{align}  
-where $\C_i$ is the concentration $\JJ_i$ is the particle current density, $R_r$ is the reaction rate density for a chemical reaction and $\nu_{ir}$ are the stoichiometric coefficients. Similarly, the balance for charge $\Q^\e$, assuming there are no internal sources, is given by:
+where $C_i$ is the concentration $\JJ_i$ is the particle current density, $R_r$ is the reaction rate density for a chemical reaction and $\nu_{ir}$ are the stoichiometric coefficients. Similarly, the balance for charge $Q^\rme$, assuming there are no internal sources, is given by:
 \begin{align}
   \begin{aligned}
-  \dot Q^\e &= \intVO \dot \rho^\e_0 \dV = \intdVO \Big(\JJ^\e-\sum_i Fz_i\,\JJ_i\Big) \cdot \NN\dA \\
-            &\Leftrightarrow \qquad \dot \rho^{\e} = \Div(\JJ^\e - \sum_i Fz_i\, \JJ_i)
+  \dot Q^\rme &= \intVO \dot \rho^\rme_0 \dV = \intdVO \Big(\JJ^\rme-\sum_i Fz_i\,\JJ_i\Big) \cdot \NN\dA \\
+            &\Leftrightarrow \qquad \dot \rho^{\rme} = \Div(\JJ^\rme - \sum_i Fz_i\, \JJ_i)
   \end{aligned}
 \end{align}
-where $\rho^\e$ is the electric charge density, $\JJ^\e$ is the electric current due to electrons, $F$ is Faraday's constant and $z_i$ is the charge number of a species. The balance for linear momentum $\pp$, considering that the mass density of the reference configuration does not change (\cref{eq:balanceM}), is given by:
+where $\rho^\rme$ is the electric charge density, $\JJ^\rme$ is the electric current due to electrons, $F$ is Faraday's constant and $z_i$ is the charge number of a species. The balance for linear momentum $\pp$, considering that the mass density of the reference configuration does not change (\cref{eq:balanceM}), is given by:
 \begin{align}
   \begin{aligned}
     \dot \pp  & = \intVO \rho_0 \,\ddot\xx \dV = \intdVO \hat\tt \dA + \intVO \bb \dV \\
@@ -91,19 +91,19 @@ where $\hat\tt=\PP\NN$ are tractions on the surface, $\PP$ is the first Piola-Ki
 \begin{align}
   \begin{aligned}
     \dot \LL  &= \intVO \xx \times \rho_0 \,\ddot\xx \dV  = \intdVO \xx \times \hat\tt \dA + \intVO \xx \times \bb \dV\\
-              &\Rightarrow \qquad \SS = \SST
+              &\Rightarrow \qquad \vSS = \vSST
   \end{aligned}
 \end{align}
-where $\SS$ is the second Piola-Kirchhoff stress tensor and the linear momentum balance (\cref{eq:balancep}) has been used. The balance for  kinetic energy $E_{\rm kin}$ and internal energy $U$ reads: 
+where $\vSS$ is the second Piola-Kirchhoff stress tensor and the linear momentum balance (\cref{eq:balancep}) has been used. The balance for  kinetic energy $E_{\rm kin}$ and internal energy $U$ reads: 
 \begin{align}
   \begin{aligned}
   &\begin{aligned}
   \dot E_{\rm kin} + \dot U = \intVO \rho_0(\dot\xx\cdot\ddot\xx + \dot e) \dV &= \intdVO \Big(\hat\tt\cdot\dot\uu -\big(\sum_i e_i \JJ_i+\QQ\big) \cdot \NN \Big) \dA \\
-          & \ + \intVO \bb\cdot \dot\uu + \EE\cdot\big(\dot\DD+\JJ^\e-\sum_i Fz_i\,\JJ_i\big) \dV \\
+          & \ + \intVO \bb\cdot \dot\uu + \EE\cdot\big(\dot\DD+\JJ^\rme-\sum_i Fz_i\,\JJ_i\big) \dV \\
   \end{aligned} \\
   &\begin{aligned}
     \Leftrightarrow \qquad \rho_0(\dot\xx\cdot\ddot\xx+\dot e) &= \PP:\dot\FF + \bb \cdot \dot\uu - \Div\Big(\sum_i e_i \JJ_i+ \QQ \Big) \\
-    & \ + \EE\cdot\Big(\dot \DD+\JJ^\e-\sum_i Fz_i\JJ_i\Big) 
+    & \ + \EE\cdot\Big(\dot \DD+\JJ^\rme-\sum_i Fz_i\JJ_i\Big) 
   \end{aligned}
   \end{aligned}
 \end{align}
@@ -117,20 +117,20 @@ where $e$ is the specific internal energy, $e_i$ is the molar internal energy of
 where $s$ is the specific entropy, $T$ is the temperature and $\eta_i$ is the molar entropy for a species. In this thesis the processes are assumed to be quasi static ($\ddot\xx=0$) and isothermal ($T=\text{const.}$; $\Grad T = 0$). Further we neglect body forces ($\bb=\zzero$). Thus, the local form of the (im)balance equations used in this thesis therefore can be summarized by:
 \begin{align}
   \vphantom{\sum_i}& \dot\rho_0 = 0 \\
-  \vphantom{\sum_i}& \dot C_i = -\Div\JJ_i + \sum_r \nu_{ir} \R_r \\
-  \vphantom{\sum_i}& \dot \rho^{\e} = \Div(\JJ^\e - \sum_i Fz_i\, \JJ_i) \\
+  \vphantom{\sum_i}& \dot C_i = -\Div\JJ_i + \sum_r \nu_{ir} R_r \\
+  \vphantom{\sum_i}& \dot \rho^{\rme} = \Div(\JJ^\rme - \sum_i Fz_i\, \JJ_i) \\
   \vphantom{\sum_i}& \Div\PP = \zzero \\
-  \vphantom{\sum_i}& \SS = \SST \\
-  \vphantom{\sum_i}& \rho_0\,\dot e = \PP:\dot\FF - \Div\Big(\sum_i e_i \JJ_i+ \QQ \Big)+ \EE\cdot\Big(\dot \DD+\JJ^\e-\sum_i Fz_i\JJ_i\Big) \\
+  \vphantom{\sum_i}& \vSS = \vSST \\
+  \vphantom{\sum_i}& \rho_0\,\dot e = \PP:\dot\FF - \Div\Big(\sum_i e_i \JJ_i+ \QQ \Big)+ \EE\cdot\Big(\dot \DD+\JJ^\rme-\sum_i Fz_i\JJ_i\Big) \\
   \vphantom{\sum_i}& \rho_0\,\dot s \geq -\Div\Big(\frac{\QQ}{T}+\sum_i \eta_i \JJ_i \Big)
 \end{align}
 
-Using the definition for free energy densitiy $\psi=\rho_0(e-sT)$, for chemical potential $\mu_i=e_i-\eta_iT$, for the reaction chemical potential difference $(\Delta_R\mu)_r=\sum_i \mu_i\nu_{ir}$ and for the electrochemical potential gradient $\Grad{\mu^\e_i}=\Grad{\mu_i} + Fz_i\EE$, we can use the above given (im)balance equations to obtain the dissipation equation which we require to be satisfied. 
+Using the definition for free energy densitiy $\psi=\rho_0(e-sT)$, for chemical potential $\mu_i=e_i-\eta_iT$, for the reaction chemical potential difference $(\Delta_R\mu)_r=\sum_i \mu_i\nu_{ir}$ and for the electrochemical potential gradient $\Grad{\mu^\rme_i}=\Grad{\mu_i} + Fz_i\EE$, we can use the above given (im)balance equations to obtain the dissipation equation which we require to be satisfied. 
 
 \begin{align}
   \begin{aligned}
-    \mathcal{D} = &\PP:\dot\FF + \sum_i \mu_i\,\dot C_i - \sum_r (\Delta_R\mu)_r \,R_r - \Grad{\mu_i^\e}\cdot\JJ_i  \\
-                + &\EE\cdot\Big(\dot\DD+\JJ^\e-\sum_i Fz_i\,\JJ_i\Big)- \dot\psi\geq 0
+    \mathcal{D} = &\PP:\dot\FF + \sum_i \mu_i\,\dot C_i - \sum_r (\Delta_R\mu)_r \,R_r - \Grad{\mu_i^\rme}\cdot\JJ_i  \\
+                + &\EE\cdot\Big(\dot\DD+\JJ^\rme-\sum_i Fz_i\,\JJ_i\Big)- \dot\psi\geq 0
   \end{aligned}
   \label{eq:dissipation}
 \end{align}
@@ -159,7 +159,7 @@ Fick's second law is obtained:
 \begin{align}
   \dot c = D \frac{\partial^2 c}{\partial x^2}.
 \end{align}
-The solution of this partial differential equation is obtained by the finite element method (FEM) and given in detail in the article in \hl{Section 3}. Since it is not discussed in the article, it should be said here that of course Fickean diffusion also satisfies the dissipation equation (compare \cref{eq:dissipation}) which reads for one dimension considering only diffusion of one species.
+The solution of this partial differential equation is obtained by the finite element method (FEM) and given in detail in the article in \cref{sec:Article1}. Since it is not discussed in the article, it should be said here that of course Fickean diffusion also satisfies the dissipation equation (compare \cref{eq:dissipation}) which reads for one dimension considering only diffusion of one species.
 \begin{align}
   \mathcal{D} = \mu \dot c - \frac{\partial \mu}{\partial x} \, j - \dot \psi \geq 0
 \end{align} 
@@ -174,7 +174,7 @@ where, $\munord$ is the standard Gibb's free energy of formation, $R$ is the gas
 which is always true since $R$, $T$, $D$ and $c$ are always positive.
 
 \subsubsection{Crystal plasticity including twinning}
-The aim of the crystal plasticity model is to predict the deformation and stress of a metallic material under mechanical load correctly. A possible schematic stress-strain diagram for such a material exhibiting easily activated twinning modes and an anisotropic grain orientation is depicted in \cref{fig:MgPlas}.
+The equations of the crystal plasticity model follow the standard arguments of crystal plasticity\supercite{roters_crystal_2010} modelling. A possible schematic stress-strain diagram for a metal exhibiting easily activated twinning modes and an anisotropic grain orientation is depicted in \cref{fig:MgPlas}.
 \begin{figure}[h!]
   \centering
   \includegraphics*[width=0.93\textwidth]{Figs/MgPlas_schematic/MgPlas_schematic.pdf}
@@ -182,7 +182,7 @@ The aim of the crystal plasticity model is to predict the deformation and stress
   \label{fig:MgPlas}
 \end{figure}
 
-Initially, in the reversible elastic regime, a linear relation between stress and strain is observed. Upon reaching a certain threshold, irreversible plastic deformation starts. In case of twinning as the deformation mechanism, this plastic deformation can only continue until 100 \% of the material has twinned. At this point, again a reversible elastic regime is observed. Finally, upon reaching the threshold for slip deformation, again plastic flow occurs. Since twinning may significantly contribute to the deformation especially in hexagonal metals such as Magnesium, the model in this thesis considers both slip and twinning. Although the two mechanisms are profoundly different, mathematically they can be treated similar. Both can be described by a deformation direction $\dd$ and a plane with normal $\nn$ leading to a volume conserving shear deformation (see \cref{fig:CrystalPlasticity} a). 
+Initially, in the reversible elastic regime, a linear relation between stress and strain is observed. Upon reaching a certain threshold, irreversible plastic deformation starts. In case of twinning as the deformation mechanism, this plastic deformation can only continue until 100 \% of the material has twinned. At this point, again a reversible elastic regime is observed. Finally, upon reaching the threshold for slip deformation, again plastic flow occurs. Since twinning may significantly contribute to the deformation especially in hexagonal metals such as Magnesium, the model in this thesis considers both slip and twinning. Although the two mechanisms are profoundly different, mathematically they can be treated similar. Both can be described by a deformation direction $\dd$ and a plane with normal $\nn$ leading to a volume conserving shear deformation(see \cref{fig:CrystalPlasticity} a). 
 \begin{figure}[h!]
   \centering
   \includegraphics[width=0.75\textwidth]{Figs/CrystalPlasticity/CrystalPlasticity.pdf}
@@ -194,7 +194,7 @@ Thus the plastic deformation rate, given by the velocity gradient in the interme
 \begin{align}
   \LLp = \nu \, \dd\otimes\nn = \nu\MM
 \end{align}
-where $\MM=\dd\otimes\nn$ is the slip/twinning system and $\nu$ is the shear deformation rate. However, one key difference is that slip preserves the lattice orientation and can lead to arbitrary deformation angles while twinning results in a rotation of the lattice by a well defined angle. This means that inside a twinned region, the slip and twinning systems are also rotated by this angle (see \cref{fig:CrystalPlasticity} b). The overall deformation rate is obtained by a summation over all deformation velocity on all existing slip and twinning systems, where also slip in twins is accounted for by a volume fraction transfer scheme.  
+where $\MM=\dd\otimes\nn$ is the slip/twinning system and $\nu$ is the shear deformation rate. However, one key difference is that slip preserves the lattice orientation and can lead to arbitrary deformation angles while twinning results in a rotation of the lattice by a well defined angle. This means that inside a twinned region, the slip and twinning systems are also rotated by this angle (see \cref{fig:CrystalPlasticity} b). The overall deformation rate is obtained by a summation over all deformation velocity on all existing slip and twinning systems, where also slip in twins is accounted for by a volume fraction transfer scheme\supercite{kalidindi1998incorporation}:  
 \begin{equation}
   \LLp = \underbrace{\sumbO \cb \sumaI \nuab \MMab}_{\text{slip}} + \underbrace{\sumbI \nub \MMb}_{\text{twinning}}.
 \end{equation}
@@ -204,14 +204,14 @@ Here $\cb$ are the volume fraction for the twinning mode and $\beta=0$ denotes t
 \end{align}
 where $\SSe$ is the second Piola-Kirchhoff stress tensor in the intermediate configuration, \mbox{$\EEe=\half(\FFeT\FFe-\II)$} is the Green-Lagrange strain tensor of the intermediate configuration and $\CCCC$ is the material dependent fourth order stiffness tensor. For the shear rates a power law of the following form is assumed:
 \begin{align}
-    \nu = \nu_0 \, \sign{\tau} \left( \frac{\abs{\tau}}{\tau^\c} \right)^{p}
+    \nu = \nu_0 \, \sign{\tau} \left( \frac{\abs{\tau}}{\tau^\rmc} \right)^{p}
     \label{eq:powerlaw}
 \end{align}
 The dissipation equation for the purely mechanical case reads:
 \begin{align} 
   \mathcal{D} = \PP:\dot\FF - \dot\psi \geq 0
 \end{align}
-and is in detail discussed in the article in Section \hl{4}. 
+and is in detail discussed in the article in \cref{sec:Article2}. 
 
 
 \subsubsection{Electro-Chemo-Mechanical Degradation}
@@ -225,7 +225,7 @@ The processes considered for the degradation of a metallic material in a corrosi
 
 In the beginning the metal and medium are in contact and chemical reactions can take place at the interface. A corrosion layer forms which separates the medium and metal from each other. This corrosion layer is assumed to be a new phase with different properties. In general it does not have the same volume which may lead to mechanical stresses. Further it is assumed to be permeable for ions but in general can be non-conducting for electrons, which means that diffusion of ions through the membrane may lead to electric fields forming across the interface. Finally, the degradation of the implant can take place by the corrosion layer growing into the metal while dissolving into the medium. The driving force for the multi-component diffusion are given by the gradient in electro-chemical potential:
 \begin{align}
-  \jj_i = -\sum_j D_{ij} \, \grad{\mu_j^\e}
+  \jj_i = -\sum_j D_{ij} \, \grad{\mu_j^\rme}
 \end{align}
 where $D_ij$ are diffusion components consistent with the Maxwell Stefan diffusion. The chemical potential $\mu_i$ is assumed to be given by the law for an ideal mixture: 
 \begin{align}
@@ -233,20 +233,24 @@ where $D_ij$ are diffusion components consistent with the Maxwell Stefan diffusi
 \end{align}
 Chemical reactions are assumed to always have a forward and a backward reaction. 
 \begin{align}
-  R = k\sinh\bigg(\frac{\Delta_R \mu}{\RT}\bigg)
+  R = k\,\sinh\bigg(\frac{\Delta_R \mu}{\RT}\bigg)
 \end{align}
-The material is assumed to be isotropic, thus the mechanical stress $\ssigma^\m$ is given by the isotropic Neo-Hookean model: 
+The Cauchy stress $\ssigma=\ssigma^\rmm+\ssigma^\rme$ has a mechanical contribution and an electrical contribution. Since the material is assumed to be isotropic, the mechanical stress $\ssigma^\rmm$ is given by the isotropic Neo-Hookean model: 
 \begin{align}
-  \ssigma^\m = 
+  \ssigma^\rmm = \frac{1}{2J} \Big( \lambda^{\text{Lam\'e}}(\det\CCe-1)\II+2\mu^{\text{Lam\'e}}(\CCe-\II))
 \end{align}
-where
+where $\lambda^{\text{Lam\'e}}$ and $\mu^{\text{Lam\'e}}$ are the first and second Lam\'e constants.
+The electric part is given by the Maxwell-Stress tensor:
+\begin{align}
+  \ssigma^\rme = \epsilon \Big(\grad\varphi \otimes \grad\varphi + \half (\grad\varphi \cdot \grad\varphi) \II \Big)
+\end{align}
 The electric displacement field in the current configuration $\tilde \DD$ is assumed to take the commonly known form: 
 \begin{align}
   \tilde\DD = -\epsilon \, \grad \varphi
 \end{align}
-where $\epsilon$ is the material dependent permittivity and $\varphi$ is the electric potential. For electric currents due to electrons $\jj^\e$ Ohm's law is assumed:
+where $\epsilon$ is the material dependent permittivity and $\varphi$ is the electric potential. For electric currents due to electrons $\jj^\rme$ Ohm's law is assumed:
 \begin{align}
-  \jj^\e = -\sigma^\e \, \grad \varphi
+  \jj^\rme = -\sigma^\rme \, \grad \varphi
 \end{align}
-where $\sigma^\e$ is the material specific conductivity.
+where $\sigma^\rme$ is the material specific conductivity.
 The dissipation equation is ensured by using the potential based variational framework of generalized standard materials.  

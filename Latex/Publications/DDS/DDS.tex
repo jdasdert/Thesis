@@ -84,27 +84,27 @@ The model is based on the observation that the membrane is inverse to the initia
 \end{align}
 where $c$ denotes the concentration, $t$ the time, $D$ the diffusion coefficient and $x$ the position. The weak form of the differential equation \ref{eq:DDS_FicksLaw} is obtained by multiplication with a test function $v$ and integrating over the volume. In case of a network of interconnected microchannels the total volume of the network is given by the sum of volumes $V^{m}_{\rm ch}$ of each channel with index $m$:
 \begin{align}
-  \sum_{m=1}^{N_{\rm ch}} \int_{x=0}^{l^m} v \Big( \frac{\partial c}{\partial t} - D\frac{\partial^2 c}{\partial x^2} \Big) A^m \, \d x = 0
+  \sum_{m=1}^{N_{\rm ch}} \int_{x=0}^{l^m} v \Big( \frac{\partial c}{\partial t} - D\frac{\partial^2 c}{\partial x^2} \Big) A^m \, \rmd x = 0
 \end{align}
 Here, $A^m$ is the constant cross section and $l^m$ is the total length of channel $m$. The total number of channels is given by $N_{\rm ch}$. Note that the test function $v$ is zero at the Dirichlet boundaries and continuous in the network but otherwise arbitrary. Using partial integration, one obtains:
 \begin{align}
-  \sum_{m=1}^{N_{\rm ch}} \int_{x=0}^{l^m}  \Big( v\frac{\partial c}{\partial t} + \frac{\partial v}{\partial x}D\frac{\partial c}{\partial x} \Big) A^m \, \d x = - \sum_{m=1}^{N_{\rm ch}} \Big[ vjA^m\Big]_{x=0}^{l^m}
+  \sum_{m=1}^{N_{\rm ch}} \int_{x=0}^{l^m}  \Big( v\frac{\partial c}{\partial t} + \frac{\partial v}{\partial x}D\frac{\partial c}{\partial x} \Big) A^m \, \rmd x = - \sum_{m=1}^{N_{\rm ch}} \Big[ vjA^m\Big]_{x=0}^{l^m}
 \end{align}
-Due to particle conservation the sum of particle currents J=jA at each intersection in the network is zero, except at the boundaries. In case of the rDDS the network has a boundary to the inside reservoir and to an outside cavity. It is assumed that the concentration and test function are homogeneous (i.e. spatially constant) at both boundaries. The values are given by $c_{\R}$, $c_\C$ , $v_\R$ and $v_\C$, respectively. Thus, two particle currents $J_\R$ and $J_\C$ are defined:
+Due to particle conservation the sum of particle currents J=jA at each intersection in the network is zero, except at the boundaries. In case of the rDDS the network has a boundary to the inside reservoir and to an outside cavity. It is assumed that the concentration and test function are homogeneous (i.e. spatially constant) at both boundaries. The values are given by $c_{\rmR}$, $c_\rmC$ , $v_\rmR$ and $v_\rmC$, respectively. Thus, two particle currents $J_\rmR$ and $J_\rmC$ are defined:
 \begin{align}
-  \sum_{m=1}^{N_{\rm ch}} \int_{x=0}^{l^m}  \Big( v\frac{\partial c}{\partial t} + \frac{\partial v}{\partial x}D\frac{\partial c}{\partial x} \Big) A^m \, \d x = v_\R J_\R - v_\C J_\C
+  \sum_{m=1}^{N_{\rm ch}} \int_{x=0}^{l^m}  \Big( v\frac{\partial c}{\partial t} + \frac{\partial v}{\partial x}D\frac{\partial c}{\partial x} \Big) A^m \, \rmd x = v_\rmR J_\rmR - v_\rmC J_\rmC
 \end{align}
-The particle current from the reservoir into the network $J_\R$ is obtained by the rate of change of particles in the reservoir:
+The particle current from the reservoir into the network $J_\rmR$ is obtained by the rate of change of particles in the reservoir:
 \begin{align}
-  J_\R = -\frac{\partial c_\R}{\partial t} V_\R
+  J_\rmR = -\frac{\partial c_\rmR}{\partial t} V_\rmR
 \end{align}
-where $V_\R$ is the volume of the reservoir. For the cavity an additional particle current $J_{\rm ex}$, removing particles from the cavity due to liquid exchange with the surrounding body is considered. The concentration in the liquid entering the cavity is assumed to be zero. Thus, the particle current from the network into the cavity $J_\C$ is given by:
+where $V_\rmR$ is the volume of the reservoir. For the cavity an additional particle current $J_{\rm ex}$, removing particles from the cavity due to liquid exchange with the surrounding body is considered. The concentration in the liquid entering the cavity is assumed to be zero. Thus, the particle current from the network into the cavity $J_\rmC$ is given by:
 \begin{align}
-  J_\C = \frac{\partial c_\C}{\partial t} V_\C + J_{\rm ex} \qquad \text{with} \qquad J_{\rm ex} = c_\C Q
+  J_\rmC = \frac{\partial c_\rmC}{\partial t} V_\rmC + J_{\rm ex} \qquad \text{with} \qquad J_{\rm ex} = c_\rmC Q
 \end{align}
-where $V_\C$ is the volume of the cavity and $Q$ is the volume flow of exchanged liquid. Finally, one obtains:
+where $V_\rmC$ is the volume of the cavity and $Q$ is the volume flow of exchanged liquid. Finally, one obtains:
 \begin{align}
-  \sum_{m=1}^{N_{\rm ch}} \int_{x=0}^{l^m}  \Big( v\frac{\partial c}{\partial t} + \frac{\partial v}{\partial x}D\frac{\partial c}{\partial x} \Big) A^m \, \d x = -v_\R \frac{\partial c_\R}{\partial t} V_\R - v_\C \Big( \frac{\partial c_\C}{\partial t} + c_\C Q\Big)
+  \sum_{m=1}^{N_{\rm ch}} \int_{x=0}^{l^m}  \Big( v\frac{\partial c}{\partial t} + \frac{\partial v}{\partial x}D\frac{\partial c}{\partial x} \Big) A^m \, \rmd x = -v_\rmR \frac{\partial c_\rmR}{\partial t} V_\rmR - v_\rmC \Big( \frac{\partial c_\rmC}{\partial t} + c_\rmC Q\Big)
 \end{align}
 Additional information on discretization and the FEM implementation as well as a figure ( SI \cref{fig:MeshReproducibility}) showing the reproducibility of the meshing algorithm is given in the SI. The diffusion coefficient $D$ of methylene blue was chosen as $6.7\cdot10^{-6}$~${\rm cm^2/s}$ \supercite{selifonov2019determination}. The meshing was done using Fortran and the finite element model was implemented in Matlab (The MathWorks Inc., USA, version R2021a).
 
@@ -134,7 +134,7 @@ Further, the comparison to the simulation results validates the computational mo
 
 \subsubsection{Influence of parameters on release kinetics}
 
-The release kinetics can be customized by changing the membrane porosity $P$, membrane width $w$ and membrane height $h$, the sample diameter $d$, the initial drug concentration $c$ and the reservoir volume $V_\R$. For the characterization a standard simulation setup summarized in \cref{tab:SimulationSetup} was chosen and deviations by $\pm$20~\% of the six adjustable rDDS parameters were investigated. \\
+The release kinetics can be customized by changing the membrane porosity $P$, membrane width $w$ and membrane height $h$, the sample diameter $d$, the initial drug concentration $c$ and the reservoir volume $V_\rmR$. For the characterization a standard simulation setup summarized in \cref{tab:SimulationSetup} was chosen and deviations by $\pm$20~\% of the six adjustable rDDS parameters were investigated. \\
 \begin{table}[h!]
   \centering
   \caption{Standard simulation setup}
@@ -152,11 +152,11 @@ The release kinetics can be customized by changing the membrane porosity $P$, me
       \rowcolor{white}
       \small rDDS diameter & \multirow{2}{*}{$d$} & \multirow{2}{*}{3000 µm} \\
       \rowcolor{gray1}
-      \small Reservoir volume & \multirow{2}{*}{$V_\R$} & \multirow{2}{*}{3.5 µL} \\
+      \small Reservoir volume & \multirow{2}{*}{$V_\rmR$} & \multirow{2}{*}{3.5 µL} \\
       \rowcolor{white}
       \small Initial concentration & \multirow{2}{*}{$c$} & \multirow{2}{*}{100 mM} \\
       \rowcolor{gray1}
-      \small Cavity volume & \multirow{2}{*}{$V_\C$} & \multirow{2}{*}{3500 µL} \\ 
+      \small Cavity volume & \multirow{2}{*}{$V_\rmC$} & \multirow{2}{*}{3500 µL} \\ 
     \end{tabular} & &
     \begin{tabular}[t]{c}
       \rowcolor{gray2}
@@ -167,7 +167,7 @@ The release kinetics can be customized by changing the membrane porosity $P$, me
   \label{tab:SimulationSetup}
 \end{table}
 
-The cavity volume $V_\C$ was kept constant at 3.5 ml as for the experimental tests. Note that only one parameter was changed at a time while all the others were kept constant. The influences on the concentration curves are depicted in \mbox{\cref{fig:influence1}a-f}. Further the normalized release rate and the normalized release time are given in \mbox{\cref{fig:influence1}g,h}. Release time in this context means the amount of time until the concentration in the reservoir has decreased to 50~\% of the initial concentration. Rate, time and parameters are normalized to the values of the standard simulation setup. 
+The cavity volume $V_\rmC$ was kept constant at 3.5 ml as for the experimental tests. Note that only one parameter was changed at a time while all the others were kept constant. The influences on the concentration curves are depicted in \mbox{\cref{fig:influence1}a-f}. Further the normalized release rate and the normalized release time are given in \mbox{\cref{fig:influence1}g,h}. Release time in this context means the amount of time until the concentration in the reservoir has decreased to 50~\% of the initial concentration. Rate, time and parameters are normalized to the values of the standard simulation setup. 
 \begin{figure}[h!]
   \centering
   \includegraphics[width=0.95\textwidth]{Publications/DDS/influence1.pdf}
@@ -362,8 +362,8 @@ In this work, we presented the development and fabrication of a reservoir-based 
   \end{equation}
   Now it is possible to define the element damping matrix $\CCe$ and element stiffness matrix $\KKe$ as follows:
   \begin{alignat}{2}
-    \CCe &= \intXi A \NN \NNT \Je \,\d\xi&&\approx \sumip A \NN(\xi_p) \NNT(\xi_p) \Je(\xi_p) w_p; \label{eq:CCe}\\
-    \KKe &= \intXi D A \BB \BBT \Jeinv \,\d\xi&&\approx \sumip D A \BB(\xi_p) \BBT(\xi_p) \Jeinv(\xi_p) w_p. \label{eq:KKe}
+    \CCe &= \intXi A \NN \NNT \Je \,\rmd\xi&&\approx \sumip A \NN(\xi_p) \NNT(\xi_p) \Je(\xi_p) w_p; \label{eq:CCe}\\
+    \KKe &= \intXi D A \BB \BBT \Jeinv \,\rmd\xi&&\approx \sumip D A \BB(\xi_p) \BBT(\xi_p) \Jeinv(\xi_p) w_p. \label{eq:KKe}
   \end{alignat}
   Here, the integral is approximated by a summation over integration points with index $p$ and weight $w_p$. The position in the reference element is given by $\xi_p$ and the number of integration points is denoted by $\Nip$. Now, \cref{eq:weakForm} can be reformulated as follows:
   \begin{equation}

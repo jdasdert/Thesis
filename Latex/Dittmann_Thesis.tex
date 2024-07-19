@@ -46,6 +46,7 @@
 
 % bibliography and referencing and including
   \usepackage[autocite=superscript,style=numeric-comp,backend=biber,sorting=none,isbn=false,url=false,eprint=false,doi=false]{biblatex}
+  \usepackage[hidelinks]{hyperref}
   \usepackage[english,noabbrev,capitalize]{cleveref}
   \usepackage{pdfpages}
   \newcommand{\authorcite}[1]{\citeauthor{#1}\supercite{#1}}
@@ -55,8 +56,6 @@
   \newcommand{\fakesection}[1]{%
     \par\refstepcounter{section}% Increase section counter
     \sectionmark{#1}% Add section mark (header)
-    % \addcontentsline{toc}{section}{\protect\numberline{\thesection}#1}% Add section to ToC
-    % Add more content here, if needed.
   }
 
   \setcounter{secnumdepth}{4}
@@ -146,10 +145,10 @@
     \section{Fundamentals}
 		  \input{Fundamentals.tex}
 	    \newpage
-    \fakesection{Article 1}
+    \fakesection{Article 1} \label{sec:Article1}
       % \input{Publications/DDS/DDS.tex}
       \newpage
-    \fakesection{Article 2}
+    \fakesection{Article 2} \label{sec:Article2}
       % \input{Publications/MgPlas/MgPlas.tex}
       \newpage
     \fakesection{Article 3}
