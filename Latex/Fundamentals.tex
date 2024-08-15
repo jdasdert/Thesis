@@ -99,11 +99,11 @@ where $\vSS$ is the second Piola-Kirchhoff stress tensor and the linear momentum
   \begin{aligned}
   &\begin{aligned}
   \dot E_{\rm kin} + \dot U = \intVO \rho_0(\dot\xx\cdot\ddot\xx + \dot e) \dV &= \intdVO \Big(\hat\tt\cdot\dot\uu -\big(\sum_i e_i \JJ_i+\QQ\big) \cdot \NN \Big) \dA \\
-          & \ + \intVO \bb\cdot \dot\uu + \EE\cdot\big(\dot\DD+\JJ^\rme-\sum_i Fz_i\,\JJ_i\big) \dV \\
+          & \ + \intVO \bb\cdot \dot\uu + \EE\cdot\big(\dot\DD-\JJ^\rme+\sum_i Fz_i\,\JJ_i\big) \dV \\
   \end{aligned} \\
   &\begin{aligned}
     \Leftrightarrow \qquad \rho_0(\dot\xx\cdot\ddot\xx+\dot e) &= \PP:\dot\FF + \bb \cdot \dot\uu - \Div\Big(\sum_i e_i \JJ_i+ \QQ \Big) \\
-    & \ + \EE\cdot\Big(\dot \DD+\JJ^\rme-\sum_i Fz_i\JJ_i\Big) 
+    & \ + \EE\cdot\Big(\dot \DD-\JJ^\rme+\sum_i Fz_i\JJ_i\Big) 
   \end{aligned}
   \end{aligned}
 \end{align}
@@ -121,7 +121,7 @@ where $s$ is the specific entropy, $T$ is the temperature and $\eta_i$ is the mo
   \vphantom{\sum_i}& \dot \rho^{\rme} = \Div(\JJ^\rme - \sum_i Fz_i\, \JJ_i) \\
   \vphantom{\sum_i}& \Div\PP = \zzero \\
   \vphantom{\sum_i}& \vSS = \vSST \\
-  \vphantom{\sum_i}& \rho_0\,\dot e = \PP:\dot\FF - \Div\Big(\sum_i e_i \JJ_i+ \QQ \Big)+ \EE\cdot\Big(\dot \DD+\JJ^\rme-\sum_i Fz_i\JJ_i\Big) \\
+  \vphantom{\sum_i}& \rho_0\,\dot e = \PP:\dot\FF - \Div\Big(\sum_i e_i \JJ_i+ \QQ \Big)+ \EE\cdot\Big(\dot \DD-\JJ^\rme+\sum_i Fz_i\JJ_i\Big) \\
   \vphantom{\sum_i}& \rho_0\,\dot s \geq -\Div\Big(\frac{\QQ}{T}+\sum_i \eta_i \JJ_i \Big)
 \end{align}
 
@@ -129,8 +129,7 @@ Using the definition for free energy densitiy $\psi=\rho_0(e-sT)$, for chemical 
 
 \begin{align}
   \begin{aligned}
-    \mathcal{D} = &\PP:\dot\FF + \sum_i \mu_i\,\dot C_i - \sum_r (\Delta_R\mu)_r \,R_r - \Grad{\mu_i^\rme}\cdot\JJ_i  \\
-                + &\EE\cdot\Big(\dot\DD+\JJ^\rme-\sum_i Fz_i\,\JJ_i\Big)- \dot\psi\geq 0
+    \mathcal{D} = \PP:\dot\FF + \sum_i (\mu_i\,\dot C_i-\Grad{\mu_i^\rme}\cdot\JJ_i) - \sum_r (\Delta_R\mu)_r \,R_r + \EE\cdot\big(\dot\DD+\JJ^\rme\big)- \dot\psi\geq 0
   \end{aligned}
   \label{eq:dissipation}
 \end{align}
