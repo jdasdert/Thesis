@@ -33,6 +33,7 @@
   \usepackage[font=small,labelfont=bf]{caption}
   \captionsetup{width=.98\textwidth,skip=3pt}
   \usepackage[section]{placeins}
+  \usepackage{float}
 
 % tables and list styles
   \usepackage{tabularx}
@@ -146,13 +147,13 @@
 		  \input{Fundamentals.tex}
 	    \newpage
     \fakesection{Article 1} \label{sec:Article1}
-      % \input{Publications/DDS/DDS.tex}
+      \input{Publications/DDS/DDS.tex}
       \newpage
     \fakesection{Article 2} \label{sec:Article2}
         \input{Publications/MgPlas/MgPlas.tex}
       \newpage
-    \fakesection{Article 3}
-      % \input{Publications/Corrosion.tex}
+    \fakesection{Article 3} \label{sec:Article3}
+      \input{Publications/Corrosion/Corrosion.tex}
       \newpage
     \section{Outlook}
 		  \input{Outlook.tex}

@@ -1,3 +1,6 @@
+\usepackage[T1]{fontenc}
+\usepackage{relsize}
+
 \newcommand{\dA}{\,\rmd A}
 \newcommand{\dV}{\,\rmd V}
 
@@ -310,12 +313,12 @@
 % \newcommand \suma {\sum_{\alpha}}
 \newcommand \sumasl {\sum_{\alpha \in \Ssl}}
 \newcommand \sumatw {\sum_{\alpha \in \Stw}}
-\newcommand \sumaI {\sum_{\alpha=1}^{\Nsl}}
+\newcommand \sumaNsl {\sum_{\alpha=1}^{\Nsl}}
 \newcommand \sumaslb {\sum_{\alpha \in \Sslb}}
 \newcommand \sumb {\sum_{\beta}}
 \newcommand \sumbtw {\sum_{\beta \in \Stw}}
-\newcommand \sumbO {\sum_{\beta=0}^{\Ntw}}
-\newcommand \sumbI {\sum_{\beta=1}^{\Ntw}}
+\newcommand \sumbONtw {\sum_{\beta=0}^{\Ntw}}
+\newcommand \sumbNtw {\sum_{\beta=1}^{\Ntw}}
 % \newcommand \summ {\sum_{\alpha \in I^i}}
 
 \newcommand \tauD {\tau^{\rm D}}
@@ -442,7 +445,7 @@
 
 
 
-\usepackage[T1]{fontenc}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -467,17 +470,18 @@
 \newcommand{\BaO}{B_{\alpha0}}
 \newcommand{\Buu}{\underline{\underline{B}}}
 
+% \newcommand{\ca}{c^{\alpha}}
 \newcommand{\Ca}{C_{\alpha}}
 \newcommand{\Cai}{C_{\alpha i}}
+% \newcommand{\cadot}{\dot{c}_{\alpha}}
 \newcommand{\caO}{c_{\alpha}^{\circ}}
+%\newcommand{\cb}{c_\beta}
+%\newcommand{\CCe}{\CC^{\rme}}
 \newcommand{\CCea}{\CC^{\rme}_{\alpha}}
-%\newcommand{\CCm}{\CC^{\rmm}}
-%\newcommand{\CCma}{\CC^{\rmm}_{\alpha}}
-\newcommand{\CCminva}{\CC^{\rmm-1}_{\alpha}}
 \newcommand{\Ce}{C^\rme}
-\newcommand{\Cen}{C^\rme_\n}
+\newcommand{\Cen}{C^\rme_\rmn}
+\newcommand{\chiai}{\chi_{\alpha i}}
 \newcommand{\chii}{\chi_{i}}
-\newcommand{\chiia}{\chi_{i\alpha}}
 \newcommand{\chiul}{\underline{\chi}}
 \newcommand{\chiula}{\smash{\underline{\chi}}_{\alpha}}
 \newcommand{\chiull}{\underline{\underline{\chi}}}
@@ -498,7 +502,7 @@
 \newcommand{\ct}{c^{\rm t}}
 \newcommand{\Ct}{C^{\rm t}}
 \newcommand{\Cta}{C^{\rm t}_{\alpha}}
-\newcommand{\Ctul}{\Cul^\t}
+\newcommand{\Ctul}{\Cul^\rmt}
 \newcommand{\ctot}{c_{\rm t}}
 \newcommand{\Ctot}{C^{\rm tot}}
 \newcommand{\cuu}{\underline{\underline{c}}}
@@ -507,14 +511,17 @@
 \newcommand{\culaO}{\smash{\underline{c}}_{\alpha}^{0}}
 \newcommand{\culI}{\underline{c}_1}
 \newcommand{\Cull}{\underline{\underline{C}}}
-\newcommand{\culn}{\smash{\underline{c}}_{\n}}
-\newcommand{\Culn}{\smash{\underline{C}}_{\n}}
+\newcommand{\culn}{\smash{\underline{c}}_{\rmn}}
+\newcommand{\Culn}{\smash{\underline{C}}_{\rmn}}
 \newcommand{\culna}{{\culn}_{\alpha}}
 \newcommand{\culO}{\underline{c}_0}
+\newcommand{\Const}{\mathcal{C}}
 
+% \newcommand{\dA}{\ \rmd A}
 \newcommand{\Da}{D_{\alpha}}
 \newcommand{\Dai}{D_{\alpha i}}
 \newcommand{\Dab}{D_{\alpha\beta}}
+\newcommand{\Daij}{D_{\alpha ij}}
 \newcommand{\DDa}{\DD_{\alpha}}
 \newcommand{\DDc}{\DD_{\rmc}}
 \newcommand{\deltaab}{\delta_{\alpha\beta}}
@@ -525,30 +532,30 @@
 \newcommand{\Dijinv}{(D^{-1})_{ij}}
 \newcommand{\Diss}{\mathcal{D}}
 \newcommand{\Dula}{\smash{\Dul}_{\alpha}}
-\newcommand{\Duul}{\underline{\underline{D}}}
+\newcommand{\Dull}{\underline{\Dul}}
+\newcommand{\Dulla}{\smash{\underline{\Dul}}_{\alpha}}
 \newcommand{\Duulinv}{\underline{\underline{D}}^{-1}}
+% \newcommand{\dV}{\ \rmd V}
 
 \newcommand{\Fa}{F_{\alpha}}
 \newcommand{\Fatilde}{\tilde F_{\alpha}}
 \newcommand{\Fb}{F_{\beta}}
 \newcommand{\Fbtilde}{\tilde F_{\beta}}
 \newcommand{\FFa}{\FF_{\alpha}}
+% \newcommand{\FFb}{\FF_{\beta}}
 \newcommand{\FO}{F_0}
 \newcommand{\FOtilde}{\tilde F_0}
 
 % \renewcommand{\em}{{\rm e^{-}}}
 \newcommand{\etaa}{\eta_{\alpha}}
-\newcommand{\etaab}{\eta_{\alpha\beta}}
-\newcommand{\etaabtilde}{\tilde\eta_{\alpha\beta}}
+\newcommand{\etaatilde}{\tilde\eta_{\alpha}}
 
 \newcommand{\FFc}{\FF^{\rmc}}
 \newcommand{\FFca}{\FF^{\rmc}_{\alpha}}
+% \newcommand{\FFe}{\FF^{\rme}}
 \newcommand{\FFea}{\FF^{\rme}_{\alpha}}
 \newcommand{\FFeaT}{\FF^{\rme\top}_{\alpha}}
-%\newcommand{\FFm}{\FF^{\rmm}}
-%\newcommand{\FFma}{\FF^{\rmm}_{\alpha}}
-%\newcommand{\FFmaT}{\FF^{\rmm\top}_{\alpha}}
-%\newcommand{\FFmT}{\FF^{\rmm\top}}
+% \newcommand{\FFeT}{\FF^{\rme\top}}
 
 
 \newcommand{\gammai}{\gamma_{i}}
@@ -559,7 +566,7 @@
 \newcommand{\GGc}{\GG_{\gamma}}
 
 
-\newcommand{\Hp}{{\rm H^{\rmp}}}
+\newcommand{\Hp}{{\rm H^{\p}}}
 \newcommand{\Hchi}{H^{\chi}}
 
 \newcommand{\Jc}{J^\rmc}
@@ -567,6 +574,7 @@
 \newcommand{\Jcul}{\Jul^c}
 \newcommand{\JDelta}{\XDelta{J}}
 \newcommand{\JDeltai}{{J_{\sDelta i}}}
+\newcommand{\Je}{J^\rme}
 \newcommand{\JeDelta}{J^\rme_\sDelta}
 \newcommand{\Ji}{J_{i}}
 \newcommand{\JJa}{\JJ_{\alpha}}
@@ -590,6 +598,7 @@
 \newcommand{\JJula}{\JJul_{\alpha}}
 \newcommand{\JJulDelta}{\XDelta{\JJul}}
 \newcommand{\JJull}{\underline{\underline{\JJ}}}
+\newcommand{\JJullDelta}{\smash{\underline{\underline{\JJ}}}_{\sDelta}}
 \newcommand{\JJuuDelta}{\smash{\underline{\underline{\JJ}}}_{\sDelta}}
 \newcommand{\JJulDeltaa}{\smash{\JJulDelta}_{\alpha}}
 \newcommand{\JJulDeltai}{{\JJulDelta}_{i}}
@@ -597,6 +606,7 @@
 \newcommand{\JJulDeltaT}{\mathrlap{\trans{\phantom{\JJul}}}\JJulDelta}
 \newcommand{\JJV}{\JJ^{\v}}
 \newcommand{\JO}{J_{0}}
+\newcommand{\Jula}{\smash{\Jul}_{\alpha}}
 \newcommand{\JulDelta}{\underline{J}_{\sDelta}}
 \newcommand{\JulDeltaa}{{\JuDelta}_\alpha}
 \newcommand{\Julxia}{\Jul^{\xi}_{\alpha}}
@@ -604,6 +614,9 @@
 \newcommand{\Ka}{K_{\alpha}}
 \newcommand{\Kab}{K_{\alpha\beta}}
 \newcommand{\Kabtilde}{\tilde K_{\alpha\beta}}
+\newcommand{\kappaJ}{\kappa_\J}
+\newcommand{\kappau}{\kappa_\u}
+\newcommand{\kappaxi}{\kappa_\xi}
 \newcommand{\kr}{k_r}
 \newcommand{\Kuu}{\underline{\underline{K}}}
 
@@ -616,17 +629,23 @@
 \newcommand{\Mia}{M_{i\alpha}}
 \newcommand{\mma}{\mm_{\alpha}}
 \newcommand{\mmb}{\mm_{\beta}}
+\newcommand{\MMetilde}{\smash{\tilde\MM}^{\rme}}
 \newcommand{\mmi}{\mm_i}
 \newcommand{\mmj}{\mm_j}
 \newcommand{\mmule}{\mmul^\rme}
+\newcommand{\MMule}{\MMul^\rme}
+\newcommand{\MMuletilde}{\smash{\tilde\MMul}^\rme}
+\newcommand{\MMultilde}{\tilde\MMul}
+\newcommand{\muetilde}{\smash{\tilde\mu}^\rme}
 \newcommand{\mui}{\mu_i}
 \newcommand{\mule}{\mul^\rme}
+\newcommand{\Mule}{\Mul^\rme}
 \newcommand{\mulebar}{\smash{\bar{\mul}}^\rme}
 \newcommand{\Mula}{\smash{\Mul}_{\alpha}}
 \newcommand{\Multilde}{\tilde\Mul}
 \newcommand{\munord}{\mu^{\circ}}
+\newcommand{\munordai}{\mu_{\alpha i}^{\circ}}
 \newcommand{\munordi}{\mu_{i}^{\circ}}
-\newcommand{\munordia}{\mu_{i\alpha}^{\circ}}
 \newcommand{\munordO}{\mu_{0}^{\circ}}
 \newcommand{\mut}{\underset{\sim}{\mu}}
 \newcommand{\muula}{\muul_{\alpha}}
@@ -641,7 +660,7 @@
 \newcommand{\Nchi}{N_{\chi}}
 \newcommand{\Np}{N_{\rmp}}
 \newcommand{\Nphs}{N_{\rm phs}}
-\newcommand{\Ns}{N_{\s}}
+\newcommand{\Ns}{N_{\rms}}
 \newcommand{\nuir}{\nu_{ir}}
 \newcommand{\nuull}{\underline{\nuul}}
 \newcommand{\Nxi}{N_{\xi}}
@@ -654,19 +673,23 @@
 \newcommand{\phicRDelta}{\XDelta{\phi}^{\rmc R}}
 \newcommand{\phixi}{\phi^{\xi}}
 \newcommand{\phixiDelta}{\XDelta{\phi}^{\xi}}
+\newcommand{\Pow}{\mathcal{P}}
 \newcommand{\psic}{\psi^{\rmc}}
 \newcommand{\psica}{{\psi}^{\rmc}_{\alpha}}
 \newcommand{\psichia}{\psi^{\chi}_{\alpha}}
+% \newcommand{\psie}{\psi^{\rme}}
 \newcommand{\psiea}{\psi^{\rme}_{\alpha}}
 \newcommand{\psieas}{{\psi^{\rme}_{\alpha}}^{*}}
 \newcommand{\psiEE}{\psi^{\EE}}
 \newcommand{\psies}{\psi^{\rme*}}
 \newcommand{\psim}{\psi^{\rmm}}
 \newcommand{\psima}{\psi^{\rmm}_{\alpha}}
-\newcommand{\psip}{\psi^{\rmp}}
+\newcommand{\psip}{\psi^{\p}}
 \newcommand{\psixi}{\psi^{\xi}}
 
 \newcommand{\sigmae}{\sigma^\rme}
+\newcommand{\sigmaea}{\sigma^\rme_{\alpha}}
+\newcommand{\ssigmam}{\ssigma^\rmm}
 
 \newcommand{\zultilde}{\tilde\zul}
 
@@ -695,7 +718,7 @@
   \newcommand{\PhiJJDeltastari}{{\PhiJJDelta}_{i}^{\ast}}
   \newcommand{\PhiJJDeltastarI}{{\PhiJJDelta}_{1}^{\ast}}
   \newcommand{\PhiJJDeltastarO}{{\PhiJJDelta}_{0}^{\ast}}
-  \newcommand{\PhipDelta}{\Phi^{\rmp}_{\sDelta}}
+  \newcommand{\PhipDelta}{\Phi^{\p}_{\sDelta}}
   \newcommand{\PhixiDelta}{\Phi^{\xi}_{\sDelta}}
   \newcommand{\PhixiDeltaa}{\Phi^{\xi}_{\sDelta\alpha}}
 
@@ -726,14 +749,16 @@
   \newcommand{\phiJJDeltaas}{{\XDelta{\phi}^{\JJ}}_{\alpha}^{*}}
   \newcommand{\phiJJDeltas}{{\XDelta{\phi}^{\JJ*}}}
   \newcommand{\phiJJs}{\phi^{\JJ*}}
+  \newcommand{\phiJJsa}{\phi^{\JJ*}_{\alpha}}
   \newcommand{\phimmDelta}{\XDelta{\phi}^{\mm}}
   \newcommand{\phimmDeltaa}{{\phimmDelta}_{\alpha}}
-  \newcommand{\phiR}{\phi^{\rmz}}
-  \newcommand{\phiRa}{\phi^{\rmz}_{\alpha}}
+  \newcommand{\phiR}{\phi^{\rmR}}
+  \newcommand{\phiRa}{\phi^{\rmR}_{\alpha}}
   \newcommand{\phiRDelta}{\XDelta{\phi}^{\rmR}}
   \newcommand{\phiRDeltaa}{{\XDelta{\phi}^{\rmR}}_{\alpha}}
   \newcommand{\phiRDeltaas}{{\XDelta{\phi}^{\rmR}}_{\alpha}^{*}}
   \newcommand{\phiRs}{\phi^{\rmR*}}
+  \newcommand{\phiRsa}{\phi^{\rmR*}_{\alpha}}
   \newcommand{\phiRDeltas}{\XDelta{\phi}^{\rmR*}}
   \newcommand{\phiRRDelta}{\XDelta{\phi}^{\RR}}
   \newcommand{\phiRRDeltaa}{{\XDelta{\phi}^{\RR}}_{\alpha}}
@@ -774,8 +799,8 @@
 \newcommand{\ReDelta}{R^\rme_\sDelta}
 \newcommand{\rhoe}{\rho^\rme}
 \newcommand{\rhoeO}{\rho^\rme_\circ}
-\newcommand{\rhoeOn}{\rho^\rme_{\circ \n}}
-\newcommand{\rhomO}{\rho^\rmm_\circ}
+\newcommand{\rhoeOn}{\rho^\rme_{\circ \rmn}}
+\newcommand{\rhomO}{\rho^\m_\circ}
 \newcommand{\rhot}{\rho^{\rm tot}}
 \newcommand{\RT}{\bar{R}T}
 \newcommand{\RRa}{\RR_\alpha}
@@ -788,25 +813,32 @@
 \newcommand{\RulDelta}{\XDelta{\Rul}}
 \newcommand{\RulDeltaa}{\XDeltaa{\Rul}}
 \newcommand{\Rull}{\underline{\underline{R}}}
+\newcommand{\RullDelta}{\smash{\underline{\underline{R}}}_{\sDelta}}
 \newcommand{\rxi}{r^{\xi}}
 
-\newcommand{\Omeganord}{\Omega^{\circ}}
-\newcommand{\Omeganordi}{\Omega^{\circ}_i}
-\newcommand{\Omeganordula}{\smash{\underline{\Omega}}^{\circ}_{\alpha}}
+\newcommand{\Omeganord}{\Omega}
+\newcommand{\Omeganordi}{\Omega_i}
+\newcommand{\Omeganorditilde}{\smash{\tilde{\Omega}}_i}
+\newcommand{\Omeganordul}{\smash{\underline{\Omega}}}
+\newcommand{\Omeganordula}{\smash{\underline{\Omega}}_{\alpha}}
+\newcommand{\Omeganordultilde}{\smash{\tilde{\underline{\Omega}}}}
 
 
+% \newcommand{\xia}{\xi_{\alpha}}
 \newcommand{\xiab}{\tilde\xi_{\alpha\beta}}
 \newcommand{\xiadot}{\dot{\xi}_{\alpha}}
+% \newcommand{\xib}{\xi_{\beta}}
 \newcommand{\Xibu}{\underline{\bar{\Xi}}}
-\newcommand{\xichi}{{\xi^{\chi}}}
+\newcommand{\xichi}{\xi^{\chi}}
 \newcommand{\xichia}{\xi^{\chi}_{\alpha}}
 \newcommand{\xichiatilde}{\smash{\tilde\xi}^{\chi}_{\alpha}}
 \newcommand{\xichib}{\xi^{\chi}_{\beta}}
 \newcommand{\xichiO}{{\xi^{\chi}_{0}}}
 \newcommand{\xichiul}{\underline{\xi}^{\chi}}
-\newcommand{\xin}{\xi_{\n}}
+\newcommand{\xin}{\xi_{\rmn}}
 \newcommand{\xina}{{\xin}_{\alpha}}
 \newcommand{\xiO}{\xi_0}
+\newcommand{\Xiultilde}{\tilde\Xiul}
 
 %% DERIVATIVES, INTEGRALS, SUMS
 \newcommand{\dc}{\partial_{c}}
@@ -817,6 +849,8 @@
 \newcommand{\dCi}{\partial_{C_i}}
 \newcommand{\dCul}{\partial_{\Cul}}
 \newcommand{\dCula}{\partial_{\Cula}}
+% \newcommand{\ddd}{\dd_{\rmd}}
+% \newcommand{\dddelta}{\dd_{\delta}}
 \newcommand{\dci}{\partial_{\ci}}
 \newcommand{\dcj}{\partial_{\cj}}
 \newcommand{\dck}{\partial_{\ck}}
@@ -830,6 +864,7 @@
 \newcommand{\dcula}{\partial_{\cula}}
 \newcommand{\dEE}{\partial_{\EE}}
 \newcommand{\dGG}{\partial_{\GG}}
+\newcommand{\dGGa}{\partial_{\GGa}}
 \newcommand{\dGGul}{\partial_{\GGul}}
 \newcommand{\dJc}{\partial_{\Jc}}
 \newcommand{\dJJ}{\partial_{\JJulDelta}}
@@ -839,15 +874,16 @@
 \newcommand{\dmm}{\partial_{\mm}}
 \newcommand{\dmmul}{\partial_{\mmul}}
 \newcommand{\dmmule}{\partial_{\mmule}}
+\newcommand{\dMMule}{\partial_{\MMule}}
 \newcommand{\dmu}{\partial_{\mu}}
 \newcommand{\dmuul}{\partial_{\muul}}
 \newcommand{\dRul}{\partial_{\Rul}}
 \newcommand{\dRulDelta}{\partial_{\RulDelta}}
 \newcommand{\dRr}{\partial_{R_r}}
-\newcommand{\Dull}{\underline{\Dul}}
 \newcommand{\duu}{\partial_{\uu}}
 \newcommand{\dxi}{\partial_{\xi}}
 \newcommand{\dxichi}{\partial_{\xichi}}
+\newcommand{\dxichia}{\partial_{\xichia}}
 \newcommand{\dxichiul}{\partial_{\xichiul}}
 \newcommand{\dxia}{\partial_{\xia}}
 
@@ -855,6 +891,7 @@
 \newcommand{\ddJJkJJl}{\partial_{\JJDeltak\JJDeltal}}
 \newcommand{\ddJJlmmj}{\partial_{\JJDeltal\mmj}}
 
+\newcommand{\ddcaca}{\partial_{\ca\ca}}
 \newcommand{\ddCaiCai}{\partial_{\Cai\Cai}}
 \newcommand{\ddcc}{\partial_{cc}}
 \newcommand{\ddCCmaCCma}{\partial_{\CCma\CCma}}
@@ -916,14 +953,17 @@
 \newcommand{\intdVO}{\intclap{\partial V_0}}
 \newcommand{\intdVOe}{\intclap{\partial V_{0\rme}}}
 \newcommand{\intdVOJ}{\intclap{\partial V_{0J}}}
-\newcommand{\intdVOt}{\intclap{\partial V_{0\t}}}
+\newcommand{\intdVOt}{\intclap{\partial V_{0\rmt}}}
 \newcommand{\intdVOXi}{\intclap{\partial V_{0\Xi}}}
 \newcommand{\intdVOx}[1]{\intclap{\partial V_{0 \rm #1}}}
 
 \newcommand{\sumabO}{\sum_{\alpha,\beta=0}^{N}}
 \newcommand{\sumabI}{\sum_{\alpha,\beta=1}^{N}}
+\newcommand{\sumaI}{\sumalphato{N}}
 \newcommand{\sumaO}{\sumalphaOto{N}}
 \newcommand{\sumba}{\sum_{\beta=\alpha+1}^{N}}
+\newcommand{\sumbI}{\sumbetato{N}}
+\newcommand{\sumbO}{\sumbetaOto{N}}
 \newcommand{\sumcI}{\sumgammato{N}}
 \newcommand{\sumiI}{\sum_{i=1}^{\Ns}}
 \newcommand{\sumiO}{\sum_{i=0}^{\Ns}}
@@ -940,14 +980,23 @@
 \newcommand{\uT}[1]{\underline{#1}^{\top}}
 \newcommand{\uprime}[1]{\underline{#1}^{\prime}}
 \newcommand{\uTprime}[1]{\underline{#1}^{\prime \top}}
+% \renewcommand{\sin}[1]{\ {\rm sin}\left( {#1} \right)}
+% \renewcommand{\sinh}[1]{\ {\rm sinh}\left( {#1} \right)}
+% \renewcommand{\cos}[1]{\ {\rm cos}\left( {#1} \right)}
+% \renewcommand{\cosh}[1]{\ {\rm cosh}\left( {#1} \right)}
 
 \newcommand{\Am}{A^m}
 
+% \newcommand{\BB}{\vect{B}}
+% \newcommand{\BBT}{\transpose{\vect{B}}}
 \newcommand{\BBe}{\vect{B}^e}
 \newcommand{\BBeT}{\eT{\vect{B}}}
 
+% \newcommand{\cc}{\vect{c}}
 \newcommand{\cC}{c_{\rm C}}
+% \newcommand{\CC}{\vect{C}}
 \newcommand{\cce}{\vect{c}^e}
+% \newcommand{\CCe}{\vect{C}^e}
 \newcommand{\CCei}{\vect{C}^e_i}
 \newcommand{\ccek}{\vect{c}^e_{\rm k}}
 \newcommand{\ccen}{\vect{c}^e_{\rm n}}
@@ -969,19 +1018,25 @@
 \newcommand{\cprime}{c^{\prime}}
 \newcommand{\cpprime}{c^{\prime \prime}}
 \newcommand{\cR}{c_{\rm R}}
+% \newcommand{\cu}{\underline{c}}
 \newcommand{\cue}{\ue{c}}
 \newcommand{\cceT}{\eT{c}}
+\renewcommand{\rmd}{{\rm d}}
 
+% \newcommand{\FF}{\vect{F}}
+% \newcommand{\FFe}{\vect{F}^e}
 \newcommand{\FFext}{\ext{\FF}}
 \newcommand{\FFred}{\red{\FF}}
 
 \newcommand{\JC}{J_{\rm C}}
-\newcommand{\Je}{J^{e}}
+% \newcommand{\jje}{\vect{j}^e}
+% \newcommand{\Je}{J^{e}}
 \newcommand{\Jex}{J_{\rm ex}}
 \newcommand{\Jeinv}{\inve{J}}
 \newcommand{\jprime}{j^{\prime}}
 \newcommand{\JR}{J_{\rm R}}
 
+%\newcommand{\KK}{\vect{K}}
 \newcommand{\KKe}{\vect{K}^e}
 \newcommand{\KKei}{\vect{K}^e_i}
 \newcommand{\KKred}{\red{\KK}}
@@ -989,6 +1044,7 @@
 
 \newcommand{\LLC}{\vect{L}^{\rm C}}
 \newcommand{\LLCT}{\vect{L}^{\rm C \top}}
+%\newcommand{\LLe}{\vect{L}^{e}}
 \newcommand{\LLeT}{\eT{\vect{L}}}
 \newcommand{\LLR}{\vect{L}^{\rm R}}
 \newcommand{\LLRT}{\vect{L}^{\rm R \top}}
@@ -999,11 +1055,14 @@
 \newcommand{\Nen}{N_{\rm en}}
 \newcommand{\Nie}{N_i^e}
 \newcommand{\Nip}{N_{\rm ip}}
+%\newcommand{\NN}{\vect{N}}
 \newcommand{\NNe}{\vect{N}^e}
 \newcommand{\NNeT}{\eT{\vect{N}}}
+%\newcommand{\NNT}{\transpose{\vect{N}}}
 
+%\newcommand{\Omegae}{\Omega^{e}}
 
-% \newcommand{\Omegae}{\Omega^{e}}
+%\newcommand{\tn}{t_{\rm n}}
 
 \newcommand{\vC}{v_{\rm C}}
 \newcommand{\VC}{V_{\rm C}}
@@ -1014,14 +1073,20 @@
 \newcommand{\Vnet}{V_{\rm net}}
 \newcommand{\vR}{v_{\rm R}}
 \newcommand{\VR}{V_{\rm R}}
+%\newcommand{\vv}{\vect{v}}
+%\newcommand{\vvT}{\transpose{\vect{v}}}
 
 
 \newcommand{\xxe}{\vect{x}^e}
 
+%\newcommand{\zzero}{\vect{0}}
+
 
 \newcommand{\dx}{\rmd x}
+%\newcommand{\dxi}{\rmd \xi}
 \newcommand{\dxDxi}{\derivative{x}{\xi}}
 \newcommand{\dDt}{\frac{\partial}{\partial t}}
+%\newcommand{\Dt}{\Delta t}
 \newcommand{\dcDx}{\derivative{c}{x}}
 \newcommand{\dcDxi}{\derivative{c}{\xi}}
 \newcommand{\dcDt}{\derivative{c}{t}}
@@ -1038,8 +1103,8 @@
 \newcommand{\dvDt}{\derivative{v}{t}}
 
 \newcommand{\intlm}{\int\displaylimits_{x=0}^{\lm}}
-\newcommand{\intOmega}{\int\displaylimits_{\Omega}}
-\newcommand{\intOmegae}{\int\displaylimits_{\Omegae}}
+%\newcommand{\intOmega}{\int\displaylimits_{\Omega}}
+%\newcommand{\intOmegae}{\int\displaylimits_{\Omegae}}
 \newcommand{\intXi}{\int\displaylimits_{\xi=-1}^{1}}
 \newcommand{\sumch}{\sum_{m=1}^{\Nch}}
 \newcommand{\sumel}{\sum_{e=1}^{\Nel}}

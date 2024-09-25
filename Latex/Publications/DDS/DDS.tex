@@ -327,7 +327,7 @@ In this work, we presented the development and fabrication of a reservoir-based 
  
   The weak form of the 1D diffusion equation derived in the manuscript is given by:
   \begin{equation}
-    \sumch \ \intlm \left( v \dcDt + \dvDx D \dcDx \right) \Am \ \dx= - \vR \frac{\partial \cR}{\partial t} \VR - \vC \left( \frac{\partial \cC}{\partial t} \VC + \cC Q\right), 
+    \sumch \ \intlm \left( v \dcDt + \dvDx D \dcDx \right) \Am \ \rmd x= - v_\rmR \frac{\partial c_\rmR}{\partial t} V_\rmR - v_\rmC \left( \frac{\partial c_\rmC}{\partial t} V_\rmC + c_\rmC Q\right), 
     \label{eq:weakForm}
   \end{equation}  
   Introducing finite elements with shape functions $N$ that interpolate between the nodes $i$ the concentration in one element $e$ can be given by:
@@ -360,24 +360,24 @@ In this work, we presented the development and fabrication of a reservoir-based 
   \begin{equation}
     x(\xi) = \NNT\xxe ; \qquad \dxDxi = \BBT \xxe = \Je.
   \end{equation}
-  Now it is possible to define the element damping matrix $\CCe$ and element stiffness matrix $\KKe$ as follows:
+  Now it is possible to define the element damping matrix $\CC^e$ and element stiffness matrix $\KKe$ as follows:
   \begin{alignat}{2}
-    \CCe &= \intXi A \NN \NNT \Je \,\rmd\xi&&\approx \sumip A \NN(\xi_p) \NNT(\xi_p) \Je(\xi_p) w_p; \label{eq:CCe}\\
+    \CC^e &= \intXi A \NN \NNT \Je \,\rmd\xi&&\approx \sumip A \NN(\xi_p) \NNT(\xi_p) \Je(\xi_p) w_p; \label{eq:CCe}\\
     \KKe &= \intXi D A \BB \BBT \Jeinv \,\rmd\xi&&\approx \sumip D A \BB(\xi_p) \BBT(\xi_p) \Jeinv(\xi_p) w_p. \label{eq:KKe}
   \end{alignat}
   Here, the integral is approximated by a summation over integration points with index $p$ and weight $w_p$. The position in the reference element is given by $\xi_p$ and the number of integration points is denoted by $\Nip$. Now, \cref{eq:weakForm} can be reformulated as follows:
   \begin{equation}
-     \sumel \vveT \CCe \dcceDt + \sumel \vveT \KKe \cce = - \vR \frac{\partial \cR}{\partial t} \VR - \vC \left( \frac{\partial \cC}{\partial t} \VC + \cC Q\right)
+     \sumel \vveT \CC^e \dcceDt + \sumel \vveT \KKe \cce = - v_\rmR \frac{\partial c_\rmR}{\partial t} V_\rmR - v_\rmC \left( \frac{\partial c_\rmC}{\partial t} V_\rmC + c_\rmC Q\right)
      \label{eq:FEMe}
   \end{equation}
   Introducing a connectivity matrix $\LLe$ that maps the local nodes of the element to the global nodes and two line vectors $\LLR$ and $\LLC$ it is possible to write:
   \begin{alignat}{3}
-    \vve &= \LLe \vv; \qquad \vR &&= \LLR \vv; \qquad \vC &&= \LLC \vv; \\
-    \cce &= \LLe \cc; \qquad \cR &&= \LLR \cc; \qquad \cC &&= \LLC \cc;
+    \vve &= \LLe \vv; \qquad v_\rmR &&= \LLR \vv; \qquad v_\rmC &&= \LLC \vv; \\
+    \cce &= \LLe \cc; \qquad c_\rmR &&= \LLR \cc; \qquad c_\rmC &&= \LLC \cc;
   \end{alignat}
   where $\cc$ and $\vv$ contain the concentration and test function values at the global nodes and
   \begin{align}
-    \CC &= \left(\sumel \LLeT \CCe \LLe\right) + \LLRT\LLR\VR + \LLCT\LLC\VC; \\
+    \CC &= \left(\sumel \LLeT \CC^e \LLe\right) + \LLRT\LLR V_\rmR + \LLCT\LLC V_\rmC; \\
     \KK &= \left(\sumel \LLeT \KKe \LLe\right) + \LLCT\LLC Q.
   \end{align}
   Note that all element nodes on the same boundary are mapped to the same global node. With that one can reformulate \cref{eq:FEMe} as follows:

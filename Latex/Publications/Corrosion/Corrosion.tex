@@ -1,0 +1,1178 @@
+\ \vspace{1cm} \\
+{\Large \bf Article 3}
+\normalsize
+\vspace{0.3cm}
+\hrule
+\section*{\Large \centering Framework for an Electro-Chemo-Mechanical Multi-Component Multi-Phase-Field Model}
+\addcontentsline{toc}{section}{\protect5 \hspace{0.15cm} Article 3 - Framework for an Electro-Chemo-Mechanical Multi-Component Multi-Phase-Field Model}
+\hrule
+\vspace{1.5cm}
+
+This Chapter presents the framework for an electro-chemo-mechanical model coupled with a multi-phase-field approach which sets the basis for modelling the formation and dissolution of a corrosion layer in metallic implant materials. The framework ensures conservation of mass, balance of particles, charge and momentum and consistency with the second law of thermodynamics and couples mechanical deformation, chemical swelling, multi-component diffusion, chemical reactions, electric fields, electric currents and phase transformations with a potential based variational approach. The potential approach easily enables the adaption of the model since the individual potentials can be easily expanded, reduced or tailored for the specific problem. The behavior for an exemplary choice of potentials is qualitatively tested with in various 3D finite element simulations.  \\
+
+The manuscript is ready for submission \\
+
+\textbf{Own contribution to the presented article:}
+\begin{itemize}
+\item Conception of the study
+\item Development of the continuum model
+\item Implementation of the continuum model
+\item Simulations and data analysis
+\item Figure creation 
+\item Manuscript writing and editing
+\end{itemize}
+
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection*{Abstract}
+In this work we present the framework for a fully coupled electro-chemo-mechanical multi-component multi-phase continuum model. It is based on the variational framework for generalized standard materials and couples finite mechanical deformations and stresses, chemical volume changes, Maxwell-Stefan type multi-component diffusion, chemical reactions, electric fields, electric currents and phase transformations of multiple phases. The presented framework fulfills the balance laws for mass, charge, particles, momentum and is consistent with the second law of thermodynamics. The model is implemented and tested with the finite elements method. Examples including mechanically induced diffusion, reaction driven phase transformation, chemical and phase dependent stress development and ionic diffusion driven electric field formation show some of the coupled multi-physical effects that the framework is capable to represent. 
+
+\textbf{Keywords: }~electro-chemo-mechanical, multi-component, multi-phase-field, FEM
+
+\subsection{Introduction}
+In recent years, many research topics involve complex multi-physical processes and thus a variety of different approaches for modelling the coupled highly nonlinear interactions between different fields has evolved. One topic of interest is understanding and predicting the electro-chemical processes for instance in batteries or corrosion, where diffusion, chemical reactions, electric fields, electric currents, phase transformations as well as mechanical stresses need to be considered \supercite{grazioli_review_2016,zhao_review_2019,abdalla_review_2020,brosa_planella_review_2022}. In this work we present a time incremental potential based variational framework for coupling mechanical, chemical and electrical interactions for multiple phases. It is based on the framework of generalized standard materials \supercite{halphen_sur_1975,miehe_multi-field_2011}. The advantage of this approach is that the solution is obtained by a straight forward optimization problem and due to the potential formulation the problem always yields a symmetric material tangent matrix. These variational formulations have been successfully employed in many different multi-physical models\supercite{garcia_thermodynamically_2004,bargmann_incremental_2008,stainier_study_2010,miehe_variational_2011,mielke_formulation_2011,bartels_thermomechanical_2015}. In the presented approach a rate potential is defined which is additively decomposed into energy conserving free energy parts and dissipation potentials. The potentials are chosen such that the optimality conditions are consistent with well known constitutive laws. The effects considered in this work are deformations, diffusion, chemical reactions, electric fields, electric currents and transformations of multiple phases. The model is formulated for finite deformations and employs a multiplicative decomposition of the deformation gradient into elastic and chemical parts where the chemical deformation is assumed as an isotropic volume change as is standard in many other works\supercite{bower_simple_2012,dal_computational_2015,weinberg_chemo-mechanical_2018,bistri_modeling_2021,hu_three-dimensional_2023}. Anisotropy and plastic deformation are  currently not considered but could easily be included by some straight forward modifications of the swelling behavior and an additional split of the deformation gradient \supercite{bower_simple_2012,zhang_electro-chemo-thermo-mechanical_2020,shanthraj_multi-component_2020,bistri_modeling_2021}. For diffusion in a multi-component system the entropy production is in accordance with the Maxwell-Stephan type diffusion (summarized in e.g. \authorcite{krishna_maxwell-stefan_1997,bothe_progress_2011} and used by e.g. \authorcite{soucek_continuum_2019}). The diffusion currents are driven by the gradient in electro-chemical potential and are defined with respect to the average mass velocity, which is a standard definition\supercite{curtiss_multicomponent_1999,svendsen_finite-deformation_2018}. This definition has the advantage that a unique distinction between diffusion and displacements, which conserves the momentum is automatically obtained. Chemical reactions are included and yield the Butler-Volmer kinetics which are consistent with the Arrhenius law \supercite{bazant_theory_2013}. Further, electric fields cause polarization of the material and induce ion and electron currents where the latter is assumed to follow Ohm's law. Important fundamental relations, like conservation of mass and the balance of particles and charge, are ensured by Lagrange multipliers, which yield the physical interpretation of chemical potentials and the electric potential. A similar approach can be found e.g. in \authorcite{guyer_phase_2004}. The single-phase model is extended to multiple phases by a multi-phase-field approach in which the single phase potentials are interpolated by volume fractions and complimented by an additional interface potential as in \authorcite{steinbach_multi_2006}. For the interface potential we use a double obstacle potential \supercite{steinbach_multi_2006} instead of a standard double well potential. The idea is, that the double obstacle potential has a non-zero driving force for the cases of the volume fractions being 0 or 1. Here, the necessary constraint for the volume fractions $\xi\in[0,1]$ is treated by a micromorphic approach \supercite{forest_micromorphic_2009} which shifts the constraint in the FEM discretization from the nodes into the integration points. 
+
+In the following we give the balance equations and potential approach of the framework, followed by an exemplary and adaptable choice of potentials, constraints, and external powers. We present the equations following from the optimality conditions of the potential and explain how we solve the equations with the finite element method. To reduce the complexity, we initially derive the model for a single phase and then extend the equations to multiple phases using a phase-field approach. Finally, we prove the qualitatively meaningful behavior of the model with various finite element simulations and give a glimpse into possible fields of application for the framework.
+
+
+\subsection{Balances and Thermodynamic Consistency} \label{sec:balances}%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+To be consistent with the balances for mass, particles, charge, momentum as well as the second law, we require the following relations to be satisfied. The following balance laws are given in the Lagrangian formulation i.e. with respect to the reference configuration. The balance of particles considering diffusion and chemical reactions is given by: 
+\begin{align}
+  \dot C_i + \Div\JJ_i - \sumrIto{N_r} \nuir R_r = 0,
+\end{align} 
+where $C_i$ are the molar concentrations, $\JJ_i$ are the molar diffusion current densities, $R_i$ are the molar reaction rate densities, $\nuir$ are the stoichiometric coefficients, $i$ is the species index, $r$ is the reaction equation index and $N_r$ is the total number of reaction equations. Since chemical reactions preserve mass we require:
+\begin{align}
+  \sumiOto{\Nchi} M_i \, \nuir = 0,
+  \label{eq:ChemReacMassBalance}
+\end{align}
+where $M_i$ is the molar mass of a species and $\Nchi=\text{Number of species}-1$ is the number of independent molar fractions. Furthermore, we assume that the net mass transport due to diffusion is zero, i.e. diffusion does not shift the center of mass 
+\begin{align}
+  \sumiOto{\Nchi} M_i \, \JJ_i = \zzero.
+  \label{eq:DiffMassBalance}
+\end{align}
+The balance of mass in this case can be written as:
+\begin{align}
+  \sumiOto{\Nchi}  M_i (\dot C_i + \Div\JJ_i + \sumrIto{N_r} \nuir R_r) = 0 \qquad \stackrel{(\ref{eq:ChemReacMassBalance}),(\ref{eq:DiffMassBalance})}{\Rightarrow} \qquad \sumiOto{\Nchi} M_i \dot C_i = \dot\rho_\circ = 0
+\end{align}
+where $\rho_\circ=\sum_i M_i C_i$ is the mass density. The balance of charge including Gauss's law $\rhoe_\circ = \Div\DD$ is given by:
+\begin{align}
+  \Div\Big( \dot\DD - \JJe  + \sumiOto{\Nchi} Fz_i\JJ_i \Big) = 0,
+\end{align}
+where $\rhoe_\circ$ is the electric charge density, $\DD$ is the electric displacement, $\JJe$ is the electric current due to electrons, $F$ is Faraday's constant and $z_i$ are the electric charge  numbers. The balances of linear and angular momentum are given by
+\begin{align}
+  \Div \PP = \zzero; \qquad \SSv = \SST,
+\end{align}
+where $\PP$ is the first Piola-Kirchhoff stress tensor, $\SSv=\FFinv\PP$ represents the second Piola-Kirchhoff stress tensor and $\FF=\Grad\xx$ is the deformation gradient. Consistency with the second law will be ensured by the generalized standard materials approach. 
+
+% XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+\subsection{Electro-Chemo-Mechanical Potential (Single Phase)} \label{sec:singlePhase} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+In this section we present a potential for a single phase isotropic multi-component system undergoing elastic deformations, chemical swelling, diffusion, chemical reactions, electric polarization and electric currents. It is of course possible to tailor the material behavior by an adjustment, expansion or reduction of the presented choice of potentials.
+\begin{align}
+  \Pi = \dot\Psi + \Phi + \Const - \Pow
+\end{align}
+The rate potential consists of a free energy rate $\dot\Psi$ a dissipation potential $\Phi$, constraints $\Const$ and external powers~$\Pow$, which are further explained below.  
+
+% XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+\subsubsection{Free Energy and Dissipation Potential (Single Phase)} \label{sec:singlePhase_psiphi}%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+We decompose the free energy and dissipation potential additively into mechanical, chemical and electrical contributions: 
+\begin{align}
+  \dot\Psi + \Phi = \intVO \Big( \underbrace{\dot\psim}_{\text{mech.}} + \underbrace{\dot\psic + \phiJJ + \phiR}_{\text{chem.}} + \underbrace{\psie + \phie}_{\text{elec.}} \Big) \dV,
+\end{align}
+where 
+\begin{align}
+  \begin{alignedat}{3}
+    \psim&=\psim(\CC,\Ct,\chiul); &\qquad \psic&=\psic(\Ct,\chiul); &\qquad \phiJJ&=\phiJJ(\CC,\JJul,\Cul); \\[3pt]
+    \phiR&=\phiR(\Rul); &\qquad \psie&=\psie(\CC,\DD); & \qquad \phie&=\phie(\CC,\JJe).
+  \end{alignedat}
+\end{align}
+In the following, we present and explain our choice of potentials and explain the involved variables.
+
+\paragraph{Mechanical Contributions} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  The mechanical deformation is given by the deformation gradient $\FF$ which is multiplicatively decomposed into a chemical part $\FFc$ and an elastic part $\FFe$. The chemical part is assumed to be isotropic. We define:
+  \begin{alignat}{3}
+    \FF &= \FFe\FFc;& \qquad J&=\det\FF; & \qquad\CC&=\FFT\FF;\\
+    \FFc &= (\Jc)^{\third} \II;& \qquad  \Jc &= \sumiOto{\Nchi} C_i\Omeganordi; &  \\
+    \CCe &= (\Jc)^{-\twothirds} \CC;& \qquad \Je &= \frac{J}{\Jc}, & 
+  \end{alignat} 
+  where $\CC$ is the right Cauchy-Green tensor and $\Omeganord_i$ denotes the standard partial volume per mol. The mechanical energy is assumed to be purely elastic and uses the isotropic Neo-Hookean model:
+  \begin{align}
+    \psim = \frac{\lambda^{\text{Lam\'e}}}{4}\Big(\det\CCe-1-\ln(\det\CCe)\Big) + \frac{\mu^{\text{Lam\'e}}}{2}\Big(\trace\CCe-3-\ln(\det\CCe)\Big),
+  \end{align}
+  where $\lambda^{\text{Lam\'e}}$ and $\mu^{\text{Lam\'e}}$ are the first and second Lam\'e constant, respectively. Additionally we define the mechanical Cauchy-stress $\ssigmam$:
+  \begin{align}
+    \ssigma^\rmm := \frac{1}{J}\FF\ 2\dCC\psim\ \FFT = \frac{1}{2J}\Big(\lambda^{\text{Lam\'e}}(\det\CCe-1)\II + 2\mu^{\text{Lam\'e}}(\CCe-\II)\Big)
+  \end{align}
+  and the mechanical pressure $p$:
+  \begin{align}
+    p := -\third\trace\ssigma^\rmm = -\frac{1}{J}\Big(\frac{\lambda^{\text{Lam\'e}}}{2}(\det\CCe-1)+\frac{\mu^{\text{Lam\'e}}}{3}(\trace\CCe-3)\Big)
+  \end{align}
+
+
+\paragraph{Chemical Contributions} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  The chemical contributions consist of three parts. The free energy $\psic$ is given by the energy for an ideal mixture
+    \begin{align}
+      &\psic =  \sumiOto{\Nchi} C_i \big(\munord_i + \RT\ln\chii \big), \label{eq:psic}
+    \end{align}
+    where $\Ct=\sum_i C_i$ is the total concentration, $\chii=C_i/\Ct$ are the molar fractions, $\munord_i$ are the standard Gibbs free energy of formation per mol, $\bar R$ is the ideal gas constant and $T$ is the temperature (which is assumed constant for this model). Additionally, we define
+    \begin{align}
+      \mu_i := \munord_i + \RT \ln\chi_i.
+    \end{align}
+    For diffusion we use a dissipation potential consistent with the multi-component Maxwell-Stefan type diffusion: 
+    \begin{align}
+      \begin{aligned}
+      \phiJJ = \ \quarter\Ct\RT\sumiOto{\Nchi}\sumjOto{\Nchi} \frac{\chi_i\chi_j}{\DiffMS_{ij}} \norm{\vv_i-\vv_j}^2 \ = \  \half \sumito{\Nchi}\sumjto{\Nchi} \Dijinv \ \JJ_i \cdot (\CC \, \JJ_j)
+      \end{aligned}
+    \end{align}
+    where $\vv_i$ are the species velocities and the components of the inverse diffusion coefficient matrix $\Dijinv$ are given by
+    \begin{align}
+      \begin{aligned}
+      \Dijinv = \frac{\RT}{\Ct} 
+      \bigg(  
+        &- \frac{1}{\DiffMS_{ij}} 
+        + \frac{M_i}{M_0}\frac{1}{\DiffMS_{0j}} 
+        + \frac{M_j}{M_0}\frac{1}{\DiffMS_{i0}}  
+        + \delta_{ij}\frac{\chi_0}{\chi_i}\frac{1}{\DiffMS_{i0}} \\
+        &+ \sumkto{\Nchi} \Big( \delta_{ij} \frac{\chi_k}{\chi_i}\frac{1}{\DiffMS_{ik}} + \frac{\chi_k}{\chi_0}\frac{M_i M_j}{M_0 M_0} \frac{1}{\DiffMS_{0k}} \Big) 
+      \bigg)
+      \end{aligned}
+    \end{align}
+    
+    Here, $\DiffMS_{ij}=\DiffMS_{ij}$ are the binary Maxwell-Stefan diffusion coefficients. A detailed derivation is given in appendix~\ref{app:MS}. For chemical reactions we use a dissipation potential consistent with the Butler-Volmer law
+    \begin{align}
+      &\phi^\rmR = \RT \sumrIto{N_r} \Bigg( R_r \, \sinh^{-1}\bigg(\frac{R_r}{\kr}\bigg) - k_r\sqrt{\bigg(\frac{R_r}{k_r}\bigg)^2+1}\Bigg),
+    \end{align}
+  
+\paragraph{Electric Contributions}%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  The electric contributions consist of two parts. The electric energy depends on the electric displacement of the material:
+  \begin{align}
+    \psie &= \frac{1}{2\epsilon} \ \DD\cdot(\inv{J}\CC) \DD,
+  \end{align}
+  where $\epsilon$ is the permittivity. For electron currents we choose the dissipation potential to be consistent with Ohm's law: 
+  \begin{align}
+    \phi^\rme &= \frac{1}{2\sigmae} \ \JJe \cdot (\inv{J}\CC) \JJe,
+  \end{align}
+  where $\sigmae$ denotes the conductivity. Note that electric currents due to ions is implicitly treated by diffusion and the constraint for charge balance (see below). 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Vector/Matrix Notation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+For a concise notation we introduce a vector/matrix notation marked by an underline:
+\begin{align}
+  \begin{split}
+    &\Cul = \underbrace{\pmat{C_1 \\ \text{\rotatebox{90}{...}} \\ C_{\Nchi}}}_{\Nchi}; \quad 
+    \chiul = \underbrace{\pmat{\chi_1 \\ \text{\rotatebox{90}{...}} \\ \chi_{\Nchi}}}_{\Nchi}; \quad 
+    \JJul = \underbrace{\pmat{\JJ_1 \\ \text{\rotatebox{90}{...}} \\ \JJ_{\Nchi}}}_{\Nchi \times 3}; \quad
+    \Jul = \underbrace{\pmat{J_1 \\ \text{\rotatebox{90}{...}} \\ J_{\Nchi}}}_{\Nchi}; 
+    \\[5pt]
+    &\Rul = \underbrace{\pmat{R_1 \\ \text{\rotatebox{90}{...}} \\ R_{N_r} }}_{N_r}; \quad 
+    \muultilde = \underbrace{\pmat{\tilde\mu_1 \\ \text{\rotatebox{90}{...}} \\ \tilde\mu_{\Nchi}}  }_{\Nchi}; \quad 
+    \zultilde=\underbrace{\pmat{z_1-M_1/M_0\, z_0 \\ \text{\rotatebox{90}{...}} \\ z_{\Nchi}-M_{\Nchi}/M_0\, z_0}}_{\Nchi}; 
+    \\[5pt] 
+    &\nuull = \underbrace{\pmat{\nu_{11} & \text{...} & \nu_{1 N_r} \\ 
+    \text{\rotatebox{90}{...}} & \text{\rotatebox{135}{...}} & \\
+    \nu_{\Nchi 1} & & \nu_{\Nchi N_r}}}_{\Nchi \times N_r}; \qquad 
+    \Dull = \underbrace{\pmat{D_{11} & \text{...} & D_{1 \Nchi} \\ 
+                              \text{\rotatebox{90}{...}} & \text{\rotatebox{135}{...}} & \\
+                              D_{\Nchi \Nchi} & & D_{\Nchi \Nchi}}}_{\Nchi \times \Nchi};
+  \end{split}
+  \label{eq:vecSinglePhase}
+\end{align}
+where, $J_i=\JJ_i\NN$, is the diffusion flux density through a surface with normal $\NN$ and $\tilde\mu_i$ are Lagrange multipliers introduced below. Note that the notation eliminates dependent quantities, e.g. the vector $\Cul$ does not contain the dependent entry $C_0$.
+
+% XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+\subsubsection{Constraints and External Power} \label{sec:singlePhaseConstPow}%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+The balances for particles, mass and charge are enforced by the Lagrange multipliers $\tilde\mu$, $\lambda$ and $\varphi$. It is sufficient to enforce the particle balance for all but one species since the last balance equation is automatically included by the mass balance (see appendix~\ref{app:constraints}). The constraints are incorporated by: 
+\begin{align}
+  \begin{split}
+  \Const = &-\inf_{\muultilde} \inf_{\varphi} \inf_{\lambda} \intVO \Big(\ \muultilde\cdot(\dot\Cul+\Div\JJul-\nuull\,\Rul) + \varphi\, \Div(\dot\DD - \JJe + F\zultilde\cdot\JJul) + \lambda \dot\rho_\circ \Big) \dV  \\
+  &- \inf_{\hat\muultilde} \inf_{\hat\varphi} \phantom{\inf_{\lambda}}\ \intdVOx{I} \Big(\ \hat\muultilde \cdot (\bar\Jul - \JJul\NN) +  \hat\varphi \big(\bar I  - (\dot\DD-\JJe+F\zultilde\cdot\JJul)\cdot\NN\big) \Big) \dA
+  \end{split}
+\end{align}
+
+where $\bar J$ is an applied particle current density and $\bar I$ is an applied electric current density and $\NN$ denotes the surface normal. Note that here and in the following the mass density ${\rho_\circ(\Cul)=\sumiOto{\Nchi} M_i C_i}$ is to be interpreted as a function of the concentrations as introduced in \cref{sec:balances}. Finally, the external powers are given by:
+\begin{align}
+  \Pow = \intdVOx{t} \bar\tt \cdot \dot\uu \dA - \intdVOx{\mu} \Big(\bar\muul\cdot(\JJul\NN) + \bar\varphi(\dot\DD-\JJe+\FF\tilde\zul\cdot\JJul)\cdot\NN \Big) \dA  
+\end{align}
+where $\bar\tt$ is a prescribed traction on the boundary $\partial V_{0t}$ and $\bar\muul$ and $\bar \varphi$ are prescribed chemical potentials and electric potential on the boundary $\partial V_{0\mu}$. 
+
+% XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+\subsubsection{Time Discretization and Optimization of Incremental Potential} \label{sec:singlePhaseTime} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+For the time integration we introduce the short notations
+\begin{align}
+  \Delta(\cdot) := (\cdot)_{n+1}-(\cdot)_n; \qquad (\cdot)_{\sDelta} := (\cdot)_{n+1}\Delta t
+\end{align}
+where the index $n$ denotes quantities from at the previous time $t_n$ and $n+1$ denotes quantities for the current time $t_{n+1}$. In the following we neglect the index $n+1$ for conciseness. Rates are approximated by finite differences:
+\begin{align}
+  \dot{(\cdot)} \approx \frac{\Delta(\cdot)}{\Delta t}
+\end{align} 
+Now we can define a time incremental potential $\PiDelta$ which is consistent with the time continuous version $\Pi$ for $\Delta t \rightarrow 0$.
+\begin{align}
+  \PiDelta = \Delta \Psi + \PhiDelta - \ConstDelta - \Pow_{\sDelta}; \qquad \Pi = \lim_{\Delta t \rightarrow0} \frac{\PiDelta}{\Delta t}
+\end{align}
+The single phase incremental potential in our case then reads:
+\begin{align}
+  \begin{aligned}
+  \PiDelta =& \sup_{\muultilde} \sup_{\hat\muultilde} \sup_{\varphi} \sup_{\hat\varphi} \sup_{\lambda} \Bigg[ \quad \intVO \big(\psim + \psic + \phiJJDelta + \phiRDelta + \psie + \phieDelta \big) \dV \\
+            &- \intVO \Big(\muultilde\cdot(\Delta\Cul+\Div\JJulDelta-\nuull\,\RulDelta) + \varphi\ \Div(\Delta\DD - \JJeDelta + F\zultilde\cdot\JJulDelta) + \lambda \Delta\rho_\circ\Big) \dV \\
+            &- \intdVOx{I} \Big(\hat\muultilde \cdot (\bar\JulDelta - \JJulDelta\NN) + \hat\varphi \big(\bar I_{\sDelta}  - (\Delta\DD-\JJeDelta+F\zultilde\cdot\JJulDelta)\cdot\NN\big) \Big) \dA \\
+            &- \intdVOx{t} \bar\tt \cdot \Delta\uu \dA + \intdVOx{\mu} \Big(\bar\muul\cdot(\JJulDelta\NN) + \bar\varphi(\Delta\DD-\JJeDelta+F\tilde\zul\cdot\JJulDelta)\cdot\NN \Big) \dA \quad 
+            \Bigg] - \Psi_n,
+  \end{aligned}                                      
+\end{align}
+where $\Delta\rho_\circ=\sumiOto{\Nchi}M_i \Delta C_i$ (compare \cref{sec:balances}). 
+
+% XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+\subsubsection{Dual Potentials and Optimality Conditions (Single Phase)} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+For each time (step) we find the unknowns displacement $\uu$, total concentration $\Ct$, independent molar fractions $\chiul$, diffusion current densities $\JJul$, chemical reaction rate densities $\Rul$, electric displacement $\DD$ and electron current $\JJe$ by an optimization of the incremental potential:
+\begin{align}
+  \PiDeltaO = \inf_{\uu} \inf_{\Ct} \inf_{\chiul} \inf_{\JJul} \inf_{\Rul} \inf_{\DD} \inf_{\JJe} \PiDelta. \label{eq:SinglePhaseOpt}
+\end{align}
+Note, that for a single phase it is possible to replace the optimizations with respect to $\Ct$ and $\chiul$ by an optimization with respect to $\Cul=\Ct\chiul$. However, this is not possible for the multi-phase model explained below. Therefore, we have chosen to be consistent with the multi-phase model here. Introducing the short notations:
+\begin{align}
+  \begin{aligned}
+    &\muuletilde = \muultilde+F\zultilde\varphi; \qquad \MMultilde=-\Grad\muultilde; \qquad  \MMuletilde=-\Grad\muuletilde; \\[3pt]
+    &\EE=-\Grad\varphi; \quad \Delta_R\muultilde = -\trans{\nuull}\muultilde
+  \end{aligned}
+\end{align}
+and dual potentials:
+% \begin{align}
+  \begin{alignat}{3}
+    &\phiJJs(\CC,\MMuletilde,\Cul) \ &=& \ \sup_{\JJ}\big[\MMuletilde:\JJul - \phiJJ \big] \ &=& \ \frac{1}{2}\Dull:\MMuletilde (J\CCinv)\trans{(\MMuletilde)}; \\
+    &\phiRs(\muultilde) \ &=& \ \sup_{\Rul}\big[\Delta_R \muultilde \cdot \Rul-\phiR\big] \ &=& \ \sumrIto{N_r} \RT \,k_r\cosh\bigg(\frac{(\Delta_R\tilde\mu)_r}{\RT}\bigg);\\
+    &\psies(\CC,\EE) \ &=& \ \sup_{\DD} \big[ \EE\cdot\DD - \psie \big] \ &=& \ \frac{1}{2}\epsilon \ \EE \cdot (J\CCinv)\EE; \\
+    &\phies(\CC,\EE) \ &=& \ \sup_{\JJe} \big[ -\EE\cdot\JJe - \phie \big] \ &=& \ \frac{1}{2} \sigmae \ \EE \cdot (J\CCinv)\EE,
+  \end{alignat}
+% \end{align}
+we can define
+\begin{align}
+  \piDeltas(\CC,\muultilde,\MMultilde,\EE,\lambda) = -\sup_{\Ct}\sup_{\chiul} \big[ \muultilde\cdot\Cul + \lambda \rho_\circ - \psim - \psic + \phiJJDeltas \big] - \phiRDeltas - \psies - \phieDeltas
+\end{align}
+and
+\begin{align}
+  \begin{aligned}
+    \PiDeltas &= \intVO \Big( \ \sup_{\lambda} \big[ \piDeltas + \lambda \rho_{\circ n} \big] + \muultilde\cdot\Culn + \EE\cdot\DD_\rmn \ \Big) \dV \\
+              &- \intdVOt \bar\tt\cdot\Delta\uu \dA - \intdVOx{I} \Big( \ \muuletilde \cdot \bar\JulDelta + \varphi \bar I_{\sDelta} \ \Big) \dA - \Psi_n
+  \end{aligned}
+\end{align}
+and finally we can reformulate Eq.~(\ref{eq:SinglePhaseOpt}) to find:
+\begin{align}
+  \PiDeltaO =  \inf_{\uu} \sup_{\muultilde} \sup_{\varphi} \PiDeltas.
+\end{align}
+The equations obtained by the optimality conditions are summarized in Tab.~{\ref{tab:optCond1}}. To express some of the equations in a more familiar form, we introduce the diffusion current densities in the current configuration $\jj_i$, the electric displacement in the current configuration $\dd$ and the electron current density in the current configuration $\jje$. An explicit derivation of the optimality conditions and dual potentials is given in appendix \ref{app:Opt}. 
+
+\begin{table}[H]
+  \centering
+  \caption{Summary of equations of the single phase model}
+  \begin{tabular}{| l l |}
+    \hline
+    \bf Balances: & \\
+    Mass balance: & $\dot\rho_\circ=\sumiOto{\Nchi} M_i \dot C_i = 0$ \\
+    Particle balance: & $ \dot C_i + \Div\JJ_i - \sum_r \nuir R_r = 0$  \\
+    Charge balance: & $\Div\big(\dot\DD-\JJe+\sum_i Fz_i\JJ_i\big) = 0$ \\
+    Lin. mom. balance & $\Div\PP=0$ \\
+    Ang. mom. balance & $\SSv=\SST$ \\
+    \hline
+    \bf Mechanics: & \\
+    Free energy: & $\psim = \frac{\lambda^{\text{Lam\'e}}}{4}\Big(\det\CCe-1-\ln(\det\CCe)\Big)$  \\
+    & $ \qquad + \frac{\mu^{\text{Lam\'e}}}{2}\Big(\trace\CCe-3-\ln(\det\CCe)\Big)$ \\
+    Stress:  & $\SSv = 2\dCC(\psim+\psie)$ \quad in $V_0$ \\
+    & $\PP\NN=\bar\tt$ \quad on $\partial V_{0t}$ \\
+    Short notations:  & $\ssigmam = \FF\,2\dCC\psim\FFT$ \qquad $p = -\frac{1}{3}\tr{\ssigmam}$ \\
+    \hline
+    \bf Chemistry: & \\
+    Free energy: & $\psic =  \sumiOto{\Nchi} C_i \big(\munord_i + \RT\ln\chii \big)$ \\
+    Diss. pot. (diffusion): & $\phiJJs= \frac{1}{2} \sumito{\Nchi}\sumjto{\Nchi} \Dij \ \MMetilde_i \cdot J\CCinv \MMetilde_j$\\
+    Diss. pot. (reactions): & $ \phiRs= \sumrIto{N_r} \RT \,k_r\cosh\big(\frac{(\Delta_R\tilde\mu)_r}{\RT}\big) $  \\
+    Chemical potential: & $\tilde\mu_i = \dCi(\psic+\psim)$ \\
+    Diffusion current: & $\jj_i = \sumjto{\Nchi} -\Dij\grad\muetilde_j $ \quad in $V_0$ \\
+    & $\JJ_i\cdot\NN = J_i$ \quad on $\partial V_{0I}$ \\
+    Reaction rates: & $R_r = k_r \sinh\big((\Delta_R\mu)_r/\RT \big)$ \\
+    Short notations: & $\mu_i = \munord_i + \RT\ln\chii$ \qquad $\muetilde_i = \tilde\mu_i + F\tilde z_i \varphi$ \\
+    & $\tilde\MM_i = -\Grad\tilde\mu_i$ $\MMetilde_i = -\Grad\muetilde_i$ \\
+    & $(\Delta_R\tilde\mu)_r=\sumito{\Nchi}\nuir\,\tilde\mu_i $  \\
+    \hline
+    \bf Electrics: & \\
+    Free energy: & $\psies = \frac{1}{2}\epsilon \ \EE \cdot (J\CCinv)\EE$ \\
+    Diss. pot. (electrons): & $\phies = \frac{1}{2} \sigmae \ \EE \cdot (J\CCinv)\EE$ \\
+    Electric displacement: & $\dd = - \epsilon \, \grad\varphi$ \quad in $V_0$\\
+    Electric current: & $\jje = \sigmae \, \grad\varphi$ \quad in $V_0$ \\
+    & $(\dot\DD-\JJe+\sumiOto{\Nchi}Fz_i\JJ_i)\cdot\NN = \bar I$ \quad on $\partial V_{0I}$\\
+    Short notations: & $\EE = -\Grad \varphi$ \\
+    \hline
+  \end{tabular}
+  \label{tab:optCond1}
+\end{table}
+
+\newpage
+
+% XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+\subsection{Extension to Multi-Phase Potential} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+\subsubsection{Free Energy and Dissipation Potential} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+We assume that the free energy and dissipation potentials can be defined separately in each phase and interpolated by the order parameters $\xia$ ($\alpha=0,1,...,\Nxi)$, which may be interpreted as volume fractions. Here, $\Nxi$ denotes the number of independent volume fractions. For the interface regions we add additional interface terms which are zero whenever only one phase is present:
+  \begin{align}
+    \begin{split}
+      \Psi+\Phi = \intVO \Big(\underbrace{\dot\psixi+\phixi \vphantom{\sumalphaOto{\Nxi}}}_{\text{interface}} 
+          + \underbrace{ \sumalphaOto{\Nxi} \xia\big( \dot\psima + \dot\psica+\phiJJa+\phiRa+\dot\psiea+\phiea \big)
+          }_{\text{linear interpolation by volume fraction}} \Big) \dV.
+    \end{split}  
+  \end{align}
+  The potentials in each phase $\alpha$ are now defined as functions of the respective unknowns in each phase:
+  \begin{align}
+    \begin{alignedat}{3}
+      \psima &= \psima(\CC,\Cta,\chiula);& \qquad \psica &=\psica(\Cta,\chiula); &\qquad \phiJJa &= \phiJJa(\CC,\JJula); \\[3pt]
+      \phiRa &= \phiRa(\Rula);& \qquad \psiea&=\psiea(\CC,\DDa); &\qquad \phiea&=\phiea(\CC,\JJea)
+    \end{alignedat}
+  \end{align}
+  Note that this approach also allows the choice of completely different types of potentials in different phases. In this case we choose the same type of potentials, given in section~\ref{sec:singlePhase_psiphi}, for all phases with phase dependent material parameters. In addition to that we now have for the phase field: 
+  \begin{align}
+    \psixi=\psixi(\xichiul,\GGul,\xiul); \qquad \phixi=\phixi(\dot\xiul),
+  \end{align}
+  which is further explained below
+
+  \paragraph{Phase Field Contributions}
+  The phase field potential consists of a free energy $\psixi$ and a dissipation potential $\phixi$. The free energy depends on the phase field order parameters $\xia\in[0,1]$ and its micromorphic counterpart $\xichia$ and the gradient ${\GGa=\Grad\xichia}$. It has three parts: The first part is given by a double obstacle potential (\cite{steinbach_multi_2006}) and depends on the constrained order parameters $\xia$. The second part is the gradient term, which depends on the gradient of the unconstrained phase field parameters $\GGa$. The third part couples the two types of order parameters similar to the micromorphic approach by \authorcite{forest_micromorphic_2009}: 
+  \begin{align}
+    \begin{aligned}
+    \psixi &= \sumalphaOto{\Nxi} \sumbetaOto{\Nxi} \Big(2\Bab\xia\xib - \quarter \Kab \GGa\cdot\GGb \Big) 
+           + \quarter\Hchi \sumalphaOto{\Nxi}\big(\xichia-\xia\big)^2, \label{eq:psixi_multiphase} \\
+    \end{aligned}
+  \end{align}
+  where $\Bab=B_{\beta\alpha}$ and $\Kab=K_{\beta\alpha}$ and $B_{\alpha\alpha}=0$ and $K_{\alpha\alpha}=0$. The motivation for introducing the two different phase field parameters is that for use with the finite element method, the constraints on $\xia$ are shifted from the nodes to the integration points. The coupling modulus $\Hchi$ is therefore always chosen as high as numerically possible. The dissipation potential is given by: 
+  \begin{align}
+    \phixi = \sumalphaOto{\Nxi}\frac{1}{2}\etaa\dot\xia^2
+  \end{align}
+  where $\etaa$ acts as the viscosity of the phase transformation and therefore determines the mobility of the interface.
+
+% XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+\subsubsection{Vector/Matrix Notation} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+We introduce the notations $\Cula$, $\chiula$, $\JJula$, $\Jula$, $\Rula$ and $\Dulla$ which are defined according to \cref{eq:vecSinglePhase} and contain the respective quantities of the phase with index $\alpha$. In addition we introduce the following vector/matrix notation assembling the quantities for all phases. Note that the phase index $\alpha=0$ is only eliminated for the vectors of the phase order parameters:
+\begin{align}
+  \begin{aligned}
+  &\Ctul = \underbrace{\pmat{\Ct_0 \\ \text{\rotatebox{90}{...}} \\ \Ct_{\Nxi}}}_{\Nxi+1}; \quad 
+  \chiull = \underbrace{\pmat{\chiul_0 \\ \text{\rotatebox{90}{...}} \\ \chiul_{\Nxi}}}_{\mathclap{(\Nxi+1)\times\Nchi}}; \quad
+  \JJull = \underbrace{\pmat{\JJul_0 \\ \text{\rotatebox{90}{...}} \\ \JJul_{\Nxi}}}_{\mathclap{(\Nxi+1)\times\Nchi\times 3}}; \quad
+  \Rull = \underbrace{\pmat{\Rul_0 \\ \text{\rotatebox{90}{...}} \\ \Rul_{\Nxi}}}_{\mathclap{(\Nxi+1)\times N_r}}; \quad 
+  \DDul = \underbrace{\pmat{\DD_0 \\ \text{\rotatebox{90}{...}} \\ \DD_{\Nxi}}}_{\mathclap{(\Nxi+1)\times 3}};
+  \\ 
+  & \JJul^\rme = \underbrace{\pmat{\JJe_0 \\ \text{\rotatebox{90}{...}} \\ \JJe_{\Nxi}}}_{\mathclap{(\Nxi+1)\times 3}}; \quad 
+  \xichiul = \underbrace{\pmat{\xichi_1 \\ \text{\rotatebox{90}{...}} \\ \xichi_{\Nxi}}}_{\Nxi}; \quad
+  \xiul = \underbrace{\pmat{\xi_1 \\ \text{\rotatebox{90}{...}} \\ \xi_{\Nxi}}}_{\Nxi}; \quad
+  \Xiultilde = \underbrace{\pmat{\Xi_1-\Xi_0 \\ \text{\rotatebox{90}{...}} \\ \Xi_{\Nxi}-\Xi_0}}_{\Nxi}; 
+  \end{aligned}
+\end{align}
+where $\Xi_\alpha$ are the power conjugates to $\dot\xichia$, which are introduced below. 
+
+% XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+\subsubsection{Constraints and External Power} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+The constraints are identical to the single phase discussed in section~\ref{sec:singlePhaseConstPow}. The relations between the quantities of each phase and the volume averaged quantities are given by:
+\begin{align}
+  \begin{aligned}
+  &\Cul = \sumalphaOto{\Nxi} \xia \Cula; \qquad 
+  \JJul = \sumalphaOto{\Nxi}\xia\JJula; \qquad   
+  \Rul=\sumalphaOto{\Nxi}\xia\Rula;
+  \\[3pt]
+  &\DD=\sumalphaOto{\Nxi}\xia\DDa; \qquad
+  \FF=\FFea\FFca,
+  \end{aligned}
+\end{align}
+where it is possible to eliminate the phase-field order parameters $\xi_0$ and $\xichi_0$ due to the constraints: 
+\begin{align}
+  \sumalphaOto{\Nxi} \xia = 1; \qquad \sumalphaOto{\Nxi} \xichia = 1.
+\end{align}
+We will additionally assume that the net mass transport due to diffusion is zero in each phase individually which is a stricter formulation of \cref{eq:DiffMassBalance}:
+\begin{align}
+  \sumiOto{\Nchi}M_i \JJ_{\alpha i} = \zzero.
+\end{align}
+The external power is the same as before but extended by a power term depending on $\dot\xichiul$:
+\begin{align}
+  \Pow = \intdVOx{t} \bar\tt \cdot \dot\uu \dA - \intdVOx{\mu} \Big(\bar\muul\cdot(\JJul\NN) + \bar\varphi(\dot\DD-\JJe+\FF\tilde\zul\cdot\JJul)\cdot\NN \Big) \dA  + \intdVOx{\xi} \bar{\Xiultilde} \cdot \dot \xichiul \dA.
+\end{align}
+
+% XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+\subsubsection{Time Discretization and Incremental Potential} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+The time discretization is the same as for the single phase potential given in section~\ref{sec:singlePhaseTime}. The decompositions of the increments for concentrations, electric displacements and mass density are given by:
+\begin{align}
+  \Delta\Cul = \Big(\sumalphaOto{\Nxi}\xia\Cula\Big) - \Culn; \qquad \Delta\DD = \Big(\sumalphaOto{\Nxi}\xia\DDa\Big) - \DD_\rmn; \qquad \Delta\rho_\circ = \sumiOto{\Nchi} M_i \Delta C_i
+\end{align} 
+The time incremental potential for multiple phases then reads:
+\begin{align}
+  \begin{aligned}
+    \PiDelta = & \sup_{\muultilde} \sup_{\hat\muultilde} \sup_{\varphi} \sup_{\hat\varphi} \sup_{\lambda}\Bigg[ \quad \\
+            &\intVO \Big(\psixi+\phixiDelta + \sumalphaOto{\Nxi} \xia\big(\psima + \psica + \phiJJDeltaa + \phiRDeltaa + \psiea + \phieDeltaa \big) \Big)\dV \\
+            -&\intVO \Big(\muultilde\cdot(\Delta\Cul+\Div\JJulDelta-\nuull\,\RulDelta) + \varphi\ \Div(\Delta\DD - \JJeDelta + F\zultilde\cdot\JJulDelta) + \lambda \Delta\rho_\circ \Big) \dV \\
+            -&\intdVOx{I} \Big(\hat\muultilde \cdot (\bar\JulDelta - \JJulDelta\NN) + \hat\varphi \big(\bar I_{\sDelta}  - (\Delta\DD-\JJeDelta+F\zultilde\cdot\JJulDelta)\cdot\NN\big) \Big) \dA \\
+            -& \intdVOx{t} \bar\tt \cdot \Delta\uu \dA + \intdVOx{\mu} \Big(\bar\muul\cdot(\JJulDelta\NN) + \bar\varphi(\Delta\DD-\JJeDelta+F\tilde\zul\cdot\JJulDelta)\cdot\NN \Big) \dA \\ 
+            -&\intdVOx{\xi} \bar\Xiultilde\cdot\Delta\xichiul\dA  
+            \Bigg] - \Psi_n
+  \end{aligned}                                      
+\end{align}
+
+% XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+\subsubsection{Optimization and Dual Potentials} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+  The optimization for the multi-phase electro-chemo-mechanical potential reads:
+  \begin{align}
+    \PiDeltaO = \inf_{\xichiul} \inf_{\xiul} \inf_{\uu} \inf_{\Ctul} \inf_{\chiull} \inf_{\JJull} \inf_{\Rull} \inf_{\DDul} \inf_{\JJeul}\PiDelta.
+  \end{align}
+  The difference to the single case is now, that the minimization is done for the unknowns in each phase and for the additional phase-field parameters. Defining the dual potentials
+  \begin{alignat}{3}
+    &\phiJJs_\alpha(\CC,\MMuletilde,\Cula) \ &=& \ \sup_{\JJula}\big[\MMuletilde:\JJula - \phiJJa \big] \ &=& \ \frac{1}{2}\smash{\Dull}_{\alpha}:\MMuletilde (J\CCinv)\trans{(\MMuletilde)}; \\
+    &\phiRs_\alpha(\muultilde) \ &=& \ \sup_{\Rula}\big[\Delta_R \muultilde \cdot \Rula-\phiRa\big] \ &=& \ \sumrIto{N_r} \RT \,k_{\alpha r}\cosh\bigg(\frac{(\Delta_R\tilde\mu)_r}{\RT}\bigg); \\
+    &\psies_\alpha(\CC,\EE) \ &=& \ \sup_{\DDa} \big[ \EE\cdot\DDa - \psiea \big] \ &=& \ \frac{1}{2}\epsilon_\alpha \ \EE \cdot (J\CCinv)\EE; \\
+    &\phies_\alpha(\CC,\EE) \ &=& \ \sup_{\JJe_\alpha} \big[ \EE\cdot(-\JJe_\alpha) - \phiea \big] \ &=& \ \frac{1}{2} \sigmae_\alpha \ \EE \cdot (J\CCinv)\EE;
+  \end{alignat}
+  we can define
+  \begin{align}
+    \begin{split}
+    \piDeltaas(\CC,\muultilde,\MMultilde,\EE,\lambda) = &- \sup_{\Cta} \sup_{\chiula} \big[ \muultilde\cdot\Cula+\lambda\rho_{\circ\alpha} - \psima - \psica + \phiJJDeltaas \big] \\
+    &- \phiRDeltaas - \psieas - \phieDeltaas 
+    \end{split}
+  \end{align}
+  and
+  \begin{align}
+    \begin{split}
+      \PiDeltas &= \intVO \bigg( \ \sup_{\lambda} \bigg[ \inf_{\xiul} \Big[ \psixi + \phixiDelta + \sumalphaOto{\Nxi} \xia \piDeltaas \Big] + \lambda \rho_{\circ n} \bigg] + \muultilde\cdot\Culn + \EE\cdot\DD_\rmn \ \bigg) \dV  \\ 
+      &- \intdVOt \bar\tt\cdot\Delta\uu \dA - \intdVOx{I} \Big( \ \muuletilde \cdot \bar\JulDelta + \varphi \bar I_{\sDelta} \ \Big) \dA - \intdVOx{\xi} \bar\Xiultilde \cdot \Delta \xichiul \dA - \Psi_n
+    \end{split}
+  \end{align}
+  and finally obtain:
+  \begin{align}
+    \PiDeltaO =  \inf_{\xichiul} \inf_{\uu} \sup_{\muultilde} \sup_{\varphi} \PiDeltas.
+  \end{align}
+
+The equations obtained by the optimality conditions are summarized in Tab.~{\ref{tab:optCond2}}. An explicit derivation of the optimality conditions and dual potentials is given in appendix~\ref{app:Opt2}. 
+
+\begin{table}[H]
+  \small
+  \centering
+  \caption{Summary of equations of the multi-phase model}
+  \begin{tabular}{| l l |}
+    \hline
+    \bf Balances: & \\
+    Mass balance: & $\dot\rho=\sumiOto{\Nchi} M_i \dot C_i = 0$ \\
+    Particle balance: & $ \dot C_i + \Div\JJ_i - \sum_r \nuir R_r = 0$  \\
+    Charge balance: & $\Div\big(\dot\DD-\JJe+\sum_i Fz_i\JJ_i\big) = 0$ \\
+    Lin. mom. balance & $\Div\PP=0$ \\
+    Ang. mom. balance & $\SSv=\SST$ \\
+    \hline
+    \bf Mechanics: & \\
+    Free energy: & $\psima = \frac{\lambda^{\text{Lam\'e}}_{\alpha}}{4}\Big(\det\CCe_{\alpha}-1-\ln(\det\CCe_{\alpha})\Big)$ \\
+    & \qquad $+ \frac{\mu^{\text{Lam\'e}}_{\alpha}}{2}\Big(\trace\CCe_{\alpha}-3-\ln(\det\CCe_{\alpha})\Big)$ \\
+    Stress:  & $\SSv = 2\dCC(\psim+\psie)$ \quad in $V_0$ \\
+    & $\PP\NN=\bar\tt$ \quad on $\partial V_{0t}$ \\
+    Short notations:  & $\ssigmam = \FF\,2\dCC\psim\FFT$ \qquad $p = -\frac{1}{3}\tr{\ssigmam}$ \\
+    \hline
+    \bf Chemistry: & \\
+    Free energy: & $\psica =  \sumiOto{\Nchi} \Cai \big(\munordai + \RT\ln\chiai \big)$ \\
+    Diss. pot. (diffusion): & $\phiJJsa= \frac{1}{2} \sumito{\Nchi}\sumjto{\Nchi} \Daij \ \MMetilde_i \cdot J\CCinv \MMetilde_j$\\
+    Diss. pot. (reactions): & $ \phiRsa= \sumrIto{N_r} \RT \,k_{\alpha r}\cosh\big(\frac{(\Delta_R\tilde\mu)_r}{\RT}\big) $  \\
+    Chemical potential: & $\tilde\mu_i = \dCi(\sumalphaOto{\Nxi}\xia (\psica+\psima))$ \\
+    Diffusion current: & $\jj_i = \sumalphaOto{\Nxi}\xia \sumjto{\Nchi} -\Daij\,\grad\muetilde_j $ \quad in $V_0$ \\
+    &  $\JJ_i\cdot\NN = \bar J_i$ \quad on $\partial V_{0I}$ \\
+    Reaction rates: & $R_r = \sumalphaOto{\Nxi}\xia k_{\alpha r} \sinh\big((\Delta_R\mu)_r/\RT \big)$ \\
+    Short notations: & $\mu_i = \munord_i + \RT\ln\chii$ \qquad $\muetilde_i = \tilde\mu_i + F\tilde z_i \varphi$ \qquad $\tilde\MM_i = -\Grad\tilde\mu_i$ \\
+    &   $\MMetilde_i = -\Grad\muetilde_i$ \qquad $(\Delta_R\tilde\mu)_r=\sumito{\Nchi}\nuir\,\tilde\mu_i $  \\
+    \hline
+    \bf Electrics: & \\
+    Free energy: & $\psieas = \frac{1}{2}\epsilon_{\alpha} \ \EE \cdot (J\CCinv)\EE$ \\
+    Diss. pot. (electrons): & $\phies_{\alpha} = \frac{1}{2} \sigmaea \ \EE \cdot (J\CCinv)\EE$ \\
+    Electric displacement: & $\dd = - \sumalphaOto{\Nxi}\xia\epsilon_\alpha \, \grad\varphi$ \quad in $V_0$\\
+    Electric current: & $\jje = \sumalphaOto{\Nxi}\xia\sigmaea \, \grad\varphi$ \quad in $V_0$ \\
+    & $(\dot\DD-\JJe+\sumiOto{\Nchi}Fz_i\JJ_i)\cdot\NN = \bar I$ \quad on $\partial V_{0I}$\\
+    Short notations: & $\EE = -\Grad \varphi$ \\
+    \hline
+    \bf Phases: & \\
+    Free energy: & $\psixi = \sumalphaOto{\Nxi} \sumbetaOto{\Nxi} \Big(2\Bab\xia\xib - \quarter \Kab \GGa\cdot\GGb \Big)$ \\
+           & \qquad $+ \sumalphaOto{\Nxi}\quarter\Hchi\big(\xichia-\xia\big)^2$ \\
+    Diss. pot: & $\phixi = \sumalphaOto{\Nxi}\frac{1}{2}\etaa\smash{(\dot\xia)}^2$ \\
+    Transformation rate: & $\dot \xia = \frac{1}{\etaatilde} \big( \psi_\alpha-\psi_0 + \Div(\dGGa\psixi) - \dxia\psixi - \dxichia\psixi) \quad \text{in } V_0$ \\ 
+    & $\quad \text{for } 0<\xia<1$\\
+    Interface energy: & $\dGGa\psixi \cdot \NN = \bar{\tilde\Xi}_\alpha$ \quad on $\partial V_{0\xi}$ \\
+    Short notations: & $\GG=\Grad\xichi$ \quad $\tilde\eta_\alpha=\etaa-\eta_0$ \\
+    \hline
+  \end{tabular}
+  \label{tab:optCond2}
+\end{table}
+
+\newpage
+
+
+\subsection{Results} \label{sec:results}
+In this section we present the qualitative behavior of the given model and prove the highly coupled interactions between the different fields. We start with two single finite element examples where the coupling between displacements, electric potentials, chemical reactions, concentrations and phase transformations is proven. Then we show the formation and growth of a degradation layer, where we successively increase the complexity, starting with a purely chemical case, followed by including mechanics and finally electrics. All simulations use hexahedral elements with trilinear shape functions. At this point the material parameters are not supposed to represent any specific material but are chosen such that the coupling behavior is qualitatively observable. 
+
+\subsubsection{Coupling of Electric Fields and Mechanical Deformation}
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=\textwidth]{Publications/Corrosion//SingleBlock_MechElec.pdf}
+  \caption[]{Coupling of electric field and mechanical deformation}
+  \label{fig:SingleBlock_MechElec}
+\end{figure}
+In this example we show an interaction between the mechanics and electrics. In dielectric materials, electric fields will cause a mechanical stress (known as Maxwell stress), which means that an applied voltage will cause a deformation of the material. The coupling of an applied electric field and the corresponding mechanical response for a single hexahedral finite element is depicted in Fig.~\ref{fig:SingleBlock_MechElec}. Note that in this example only the mechanical and electrical free energies are considered for a single phase. The chemical part is deactivated and the conductivity for electrons is zero. 
+
+
+\subsubsection{Coupling of Pressure, Chemical Reactions and Phase Field}
+In this example, we show some of the interactions between mechanics, chemistry and phases. We assume a chemical reaction of two arbitrary species 
+\begin{align}
+  A + B \rightleftharpoons AB
+\end{align}
+and a chemically favorable phase for the reaction product which is different from the one of the reaction educts. We start at standard conditions in equilibrium. The molar volume at standard conditions $\Omeganord$ of a species is related to its partial pressure and thus couples concentrations and displacements. Concentrations are linked to the chemical potentials and thus to the chemical reactions and displacements lead to mechanical stresses and mechanical pressure. Therefore the pressure is an additional driving force for chemical reactions. For a single finite element we show in Fig.~\ref{fig:SingleMechChemPhase} how  pressure shifts the equilibrium concentrations, which in turn causes a phase transformation. The parameters for the simulation are summarized in Tab.~{\ref{tab:singleBlockMechChemPhase}}.
+\begin{table}[h!]
+  \caption{Simulation parameters}
+  \centering
+  \begin{tabular}{  l c c c | l c c  }
+    \hline
+    \rowcolor{gray2}
+                        \textbf{Phase} & $\alpha=0$  & $\alpha=1$ & & \multicolumn{3}{c}{\textbf{All phases}} \\
+    \rowcolor{gray1}
+    $\munord_A$         & $0$    & $50$   & $\unit{[J/mol]}$     & $M_A$    & $10$   & $\unit[g/mol]$ \\ 
+    $\munord_B$         & $0$    & $50$   & $\unit{[J/mol]}$     & $M_B$    & $10$   & $\unit[g/mol]$ \\
+    \rowcolor{gray1}
+    $\munord_{AB}$      & $100$  & $ 0$   & $\unit{[J/mol]}$     & $M_{AB}$ & $20$   & $\unit[g/mol]$ \\
+    $\Omeganord_A$      & $100$  & $100$  & $\unit{[cm^3/mol]}$  & $B_{01}$ & $0$    & $\unit[J/mm^3]$ \\ 
+    \rowcolor{gray1}
+    $\Omeganord_B$      & $100$  & $100$  & $\unit{[cm^3/mol]}$  & $\Hchi $ & $10^7$ & $\unit[J/mm^3]$ \\ 
+    $\Omeganord_{AB}$   & $100$  & $100$  & $\unit{[cm^3/mol]}$  & & & \\ 
+    \rowcolor{gray1}
+    $E^{\rm Young}$     & $10$   & $10$   & $\unit{[GPa]}$       & & & \\
+    $\nu^{\rm Poisson}$ & $0.29$ & $0.29$ & $ [-] $              & & & \\
+    \rowcolor{gray1}
+    $k$                 & $1000$ & $1000$ & $\unit{[s^{-1}]}$    & & & \\
+    $\eta$              & $0.1$  & $0.1$  & $\unit{[mJ \ s/mm^3]}$ & & & \\
+    \hline
+  \end{tabular} 
+  \label{tab:singleBlockMechChemPhase}
+\end{table}
+For simplicity the properties of species $A$ and $B$ are chosen to be identical and the mechanical properties as well as the reaction rate are the same for both phases. Additionally, for this example, all species have the same molar volumes in both phases, which means that the reaction of $A$ and $B$ to $AB$ will reduce the volume at standard conditions by 50\%. The standard free energies of formation $\munord$ are different for the two phases. While in the initial phase (index $\alpha=0$) the equilibrium concentration is shifted towards higher concentration of the educts $A$ and $B$, the second phase (index $\alpha=1$) favors a higher concentration of the product $AB$. As soon as the pressure increases the equilibrium concentration is shifted and chemical reaction starts. The reaction constant $k$ is chosen high enough that there is no observable delay and the whole process is almost at equilibrium. As soon as the concentrations have reached a critical value phase transformation becomes favorable. The phase transformation viscosity $\eta$ causes the small delay observable in the evolution of the phase field parameter $\xi$. As soon as the pressure is released we can observe that the process is reversed and reaches the initial equilibrium again. 
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=\textwidth]{Publications/Corrosion//SingleBlock_MechChemPhase.pdf}
+  \caption[]{Pressure induces volume change which shifts the chemical equilibrium, causes chemical reactions and finally induces phase transformation.}
+  \label{fig:SingleMechChemPhase}
+\end{figure}
+
+\subsubsection{Formation and Growth of a Degradation Layer}
+These examples show the formation of a degradation layer, where we assume that two species $A$ and $B$ are present in two separate phases and react with each other to form a third phase consisting of the reaction product $AB$. We start with the simple purely chemical case, then include mechanics and finally electric charges. The simulation results are depicted in Fig.~\ref{fig:BarChem}-\ref{fig:BarChemMechElec}. The domain consists of a bar embedded in a free space box. On the boundary of the free space box the electrical potential is prescribed as $\varphi=0$ as shown in \cref{fig:BCs}. Additionally, in the second case including mechanics case the displacement in axis direction of the bar is constrained as depicted in \cref{fig:BCs}b.
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.8\textwidth]{Publications/Corrosion//Bar_BC_mesh.pdf}
+  \caption{Boundary conditions for (a) chemical, and electro-chemo-mechanical case and (b) for chemo-mechanical case.}
+  \label{fig:BCs}
+\end{figure}
+The mesh of the bar consists of $6\times6\times120$ hexahedral elements with linear shape functions as depicted in \cref{fig:Bar_mesh}.
+\begin{figure}[h!]
+  \centering
+  \includegraphics[trim=10cm 12cm 10cm 12cm,clip,width=0.95\textwidth]{Publications/Corrosion//Bar_mesh.png}
+  \caption{Mesh - 6x6x120 hexahedral elements with trilinear shape functions}
+  \label{fig:Bar_mesh}
+\end{figure}
+The first phase ($\alpha$=$1$, red) has a high equilibrium concentration of the species $A$ and a low concentration of the species $B$ and $AB$. For the second phase ($\alpha$=$2$, blue) we have a high equilibrium concentration of species $B$ and a low concentration of $A$ and $AB$. The third phase ($\alpha$=$0$, gray) has a high equilibrium concentration of $AB$ and is not present in the beginning, however chemical reactions and simultaneous phase transformation is energetically favorable and is therefore the driving force for the formation of the degradation layer. Since in the interface region the abundance of both species $A$ and $B$ is highest and we additionally have the additional interface energy, the phase transformation takes place in this regime and creates the degradation layer. This layer continues to grow while diffusion supplies the sites of chemical reactions continuously with reaction educts $A$ and $B$ respectively. Note, that the site where the reactions take place is not specified but is a result of the model and the choice of material parameters and initial conditions. Mechanical and electrical interactions are not explicitly deactivated but do not have any effect, since the chemical reactions do not change the volume and the diffusing species do not carry any charge. The result, depicted in Fig.~\ref{fig:BarChem}, is that the degradation layer fully consumes the two initial phases and then finally reaches equilibrium.
+
+
+\begin{table}[h!]
+  \caption{Simulation parameters degradation layer (purely chemical)}
+  \centering
+  \begin{tabular}{ l c c c c | l c c  }
+    \hline
+    \rowcolor{gray2}
+                        \textbf{Phase}& $\alpha=0$  & $\alpha=1$ & $\alpha=2$ & &\multicolumn{3}{c}{\textbf{All phases}} \\
+    \rowcolor{gray1}
+    $\munord_A$         & $7.5$  & $12.5$ & $0$    & $\unit{[kJ/mol]}$      & $M_A$    & $10$   & $\unit[g/mol]$ \\ 
+    $\munord_B$         & $7.5$  & $0$    & $12.5$ & $\unit{[kJ/mol]}$      & $M_B$    & $10$   & $\unit[g/mol]$ \\
+    \rowcolor{gray1}
+    $\munord_{AB}$      & $0$    & $12.5$ & $12.5$ & $\unit{[kJ/mol]}$      & $M_{AB}$ & $20$   & $\unit[g/mol]$ \\
+    $\Omeganord_A$      & $1.1$  & $1.1$  & $1.1$  & $\unit{[cm^3/mol]}$    & $z_{A}$  & $0$    & $\unit{[-]}$  \\
+    \rowcolor{gray1}
+    $\Omeganord_B$      & $1.1$  & $1.1$  & $1.1$  & $\unit{[cm^3/mol]}$    & $z_{B}$  & $0$    & $\unit{[-]}$  \\
+    $\Omeganord_{AB}$   & $2.2$  & $2.2$  & $2.2$  & $\unit{[cm^3/mol]}$    & $z_{AB}$ & $0$    & $\unit{[-]}$  \\ 
+    \rowcolor{gray1}
+    $E^{\rm Young}$     & $25$   & $25$   & $25$   & $\unit{[GPa]}$         & $B_{\alpha\beta}$ & $30$    & $\unit[mJ/mm^3]$ \\
+    $\nu^{\rm Poisson}$ & $0.25$ & $0.25$ & $0.25$ & $ [-] $                & $K_{\alpha\beta}$ & $100$   & $\unit[mJ/mm]$ \\
+    \rowcolor{gray1}
+    $k$                 & $0.1$  & $0.1$  & $0.1$  & $\unit{[s^{-1}]}$      & $\Hchi $ & $10^7$ & $\unit[mJ/mm^3]$ \\
+    $\eta$              & $0.1$  & $0.1$  & $0.1$  & $\unit{[mJ \cdot s/mm^3]}$ & & & \\
+    \rowcolor{gray1}
+    $\epsilon_r$        & $10 $  & $10^5$ & $10^5$ & $\unit{[-]}$           & & & \\
+    $\sigmae$           & $0$    & $10^5$ & $10^5$ & $\unit{[S]}$ & & & \\
+    \rowcolor{gray1}
+    $D_{ij}$           & $1$    & $1$    & $1$    & $\unit{[mol^2/J \cdot m \cdot s]}$ & & & \\
+    \hline
+  \end{tabular} 
+  \label{tab:BarChem}
+\end{table}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=\textwidth]{Publications/Corrosion//Bar_Chem_plots.pdf}
+  \caption{Formation of a degradation layer (purely chemical). Two initial phases A (red) and B (blue) mainly consist of the two species $A$ and $B$, respectively. The reaction and simultaneous phase transformation to species $AB$ and phase AB (gray) is energetically favorable and starts at the interface. The degradation layer grows due to diffusion until the educts $A$ and $B$ are and their corresponding phases are consumed and equilibrium is reached.}
+  \label{fig:BarChem}
+\end{figure}
+
+Now we change the standard volume of the reaction product in all phases to $\Omeganord_{AB}=2.7$ and constrain the displacement at the ends of the bar parallel to the long axis. This results in a volume expansion upon chemical reaction, which in turn leads to a mechanical compression stress. Due to the constraint, the stress increases while the degradation layer grows until the reduction in chemical energy is compensated by the increase in mechanical energy. At this point, the growth of the degradation layer is stopped, showing the influence of the mechanics on the chemistry.  
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=\textwidth]{Publications/Corrosion//Bar_ChemMech_plots.pdf}
+  \caption{Formation of a degradation layer including expansion of the degradation layer. The formation of the degradation layer now leads to an expansion and thus to mechanical stresses. The displacement at the ends of the bar is constrained parallel to the axis direction, which leads to compressive stresses building up and counteracting and finally stopping the chemical reactions and phase transformation.}
+  \label{fig:BarChemMech}
+\end{figure}
+
+Finally, we include charges by changing the reaction equation to 
+\begin{align}
+  A^- + B^+ \rightleftharpoons AB,
+\end{align}
+which means we change the charge numbers to $z_A=-1$ and $z_B=1$. In this example the displacements are again unconstrained. Since the degradation layer is only conduction for ions, the diffusion causes the formation of an electric field across the degradation layer. This time the electric field counteracts the chemical driving force for diffusion and thus stops the growth of the degradation layer. We can see that in equilibrium $\tilde\mu_1-F\varphi=0$ across the whole bar.  
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=\textwidth]{Publications/Corrosion/Bar_ChemMechElec_plots.pdf}
+  \caption{Formation of a degradation layer with charged species $A^-$ and $B^+$ and electrically insulating degradation layer. The diffusion of the oppositely charged ions leads to a formation of an electric field over the non-conduction degradation layer. This electric field counteracts the chemical driving force for diffusion and finally stops the diffusion and thus the growth of the degradation layer.}
+  \label{fig:BarChemMechElec}
+\end{figure}
+
+\subsection{Conclusion}
+In this work we presented the framework for a fully coupled electro-chemo-mechanical multi-component and multi-phase-field continuum model. The model uses the variational generalized standard materials (GSM) approach and fulfills the balances of mass, charge, particles and momentum as well as the second law. It couples finite mechanical deformations and stresses, chemical volume changes, Maxwell-Stefan type multi-component diffusion, chemical reactions, electric fields, electric currents and phase transformations of multiple phases. The coupling behavior was qualitatively tested with different 3D finite element simulations and an exemplary application was given by the formation and growth of a degradation layer.
+
+
+\subsection{Appendices}
+\subsubsection{Maxwell-Stefan Diffusion} \label{app:MS} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+The dissipation per unit current volume $\Diss$ for the Maxwell-Stephan diffusion (compare \cite{taylor_multicomponent_1993}) is reformulated as follows:
+\begin{align}
+  \begin{split}
+    \Diss &= \half\ct\RT\sumiOto{\Nchi}\sumjOto{\Nchi} \frac{\chi_i\chi_j}{\DiffMS_{ij}} \norm{\vv_i-\vv_j}^2 \\
+    &= \half\ct\RT\sumiOto{\Nchi}\sumjOto{\Nchi}\frac{\chi_i\chi_j}{\DiffMS_{ij}} \Big(\norm{\vv_i-\bar\vv}^2+\norm{\vv_j-\bar\vv}^2 - 2(\vv_i-\bar\vv)\cdot(\vv_j-\bar\vv) \Big) \\
+    &= \half\ct\RT\sumiOto{\Nchi}\sumjOto{\Nchi}\frac{\chi_i\chi_j}{\DiffMS_{ij}} \Big(2\norm{\vv_i-\bar\vv}^2 - 2(\vv_i-\bar\vv)\cdot(\vv_j-\bar\vv)\Big) \\
+    &= \sumiOto{\Nchi} \underbrace{\ct \chi_i(\vv_i-\bar\vv)}_{\jj_i} \cdot \underbrace{\sumjOto{\Nchi} \RT \frac{\chi_j}{\DiffMS_{ij}} (\vv_i-\vv_j)}_{\mm_i}
+  \end{split}
+\end{align}
+where we used $\DiffMS_{ij}=\DiffMS_{ji}$ and define $\bar\vv=\dot\uu$ as the average mass velocity. This also leads to the following properties of $\jj_i$ and $\mm_i$:
+\begin{align}
+  \sumiOto{\Nchi} M_i\jj_i = 0; \qquad \sumiOto{\Nchi} \chi_i \mm_i = 0. 
+\end{align}
+Eliminating the index $i=0$ we get:
+\begin{align}
+  \Diss = \sumiOto{\Nchi} \jj_i \cdot \mm_i = \sumito{\Nchi} \jj_i \cdot \Big(\mm_i-\frac{M_i}{M_0}\mm_0\Big) = \sumito{\Nchi} \jj_i \cdot \tilde\mm_i
+\end{align}
+Further, we can reformulate $\mm_i$ as follows:
+\begin{align}
+  \begin{split}
+    \mm_i &= \RT \sumjOto{\Nchi} \frac{\chi_j}{\DiffMS_{ij}} (\vv_i-\vv_j) \\
+          &= \Big(\frac{\RT}{\ct\chi_i} \underbrace{\ct\chi_i(\vv_i-\bar\vv)}_{\jj_i} \sumjOto{\Nchi} \frac{\chi_j}{\DiffMS_{ij}} \Big)
+          - \Big(\frac{\RT}{\ct}\sumjOto{\Nchi} \frac{1}{\DiffMS_{ij}} \underbrace{\ct\chi_j(\vv_j-\bar\vv)}_{\jj_j} \Big) \\
+          &= \frac{\RT}{\ct} \sumjOto{\Nchi} \Big(-\frac{1}{\DiffMS_{ij}} + \delta_{ij} \sumkOto{\Nchi} \frac{\chi_k}{\chi_i} \frac{1}{\DiffMS_{ik}} \Big) \, \jj_j \\
+          &= \frac{\RT}{\ct} \sumjto{\Nchi} \Big(-\frac{1}{\DiffMS_{ij}} + \frac{M_j}{M_0}\frac{1}{\DiffMS_{i0}} + \delta_{ij} \sumkOto{\Nchi} \frac{\chi_k}{\chi_i} \frac{1}{\DiffMS_{ik}} - \frac{M_j}{M_0} \delta_{i0} \sumkOto{\Nchi} \frac{\chi_k}{\chi_0}\frac{1}{\DiffMS_{0k}}\Big) \, \jj_j,
+  \end{split}
+\end{align}
+where $\delta_{ij}$ denotes the Kronecker delta.
+
+With this we can calculate $\tilde\mm_i$ as follows:
+\begin{align}
+  \begin{aligned}
+    \tilde\mm_i &= \mm_i-\frac{M_i}{M_0}\mm_0  \\
+                & 
+                \begin{aligned}
+                  =\frac{\RT}{\ct} \sumjto{\Nchi} \bigg( \ &  
+                    -\Big(\frac{1}{\DiffMS_{ij}} - \frac{M_i}{M_0}\frac{1}{\DiffMS_{0j}} \Big) 
+                    +\Big(\frac{M_j}{M_0}\frac{1}{\DiffMS_{i0}} - \frac{M_i M_j}{M_0 M_0}\frac{1}{\DiffMS_{00}} \Big) \\
+                  & + \sumkOto{\Nchi} \Big( 
+                          \delta_{ij}\frac{\chi_k}{\chi_i}\frac{1}{\DiffMS_{ik}} 
+                        - \delta_{0j}\frac{M_i}{M_0}\frac{\chi_k}{\chi_0}\frac{1}{\DiffMS_{0k}}
+                      \Big)  \\
+                  & - \sumkOto{\Nchi}\Big(
+                          \delta_{i0}\frac{M_j}{M_0}\frac{\chi_k}{\chi_0}\frac{1}{\DiffMS_{0k}}
+                        - \delta_{00}\frac{M_i M_j}{M_0 M_0}\frac{\chi_k}{\chi_0}\frac{1}{\DiffMS_{0k}}\Big) \ \bigg) \ \jj_j
+                \end{aligned}  \\
+                &
+                \begin{aligned}   
+                  = \sumjto{\Nchi} \frac{\RT}{\ct} \bigg(  
+                  &- \frac{1}{\DiffMS_{ij}} 
+                  + \frac{M_i}{M_0}\frac{1}{\DiffMS_{0j}} 
+                  + \frac{M_j}{M_0}\frac{1}{\DiffMS_{i0}}  
+                  + \delta_{ij}\frac{\chi_0}{\chi_i}\frac{1}{\DiffMS_{i0}} \\
+                  &+ \sumkto{\Nchi} \Big( \delta_{ij} \frac{\chi_k}{\chi_i}\frac{1}{\DiffMS_{ik}} + \frac{\chi_k}{\chi_0}\frac{M_i M_j}{M_0 M_0} \frac{1}{\DiffMS_{0k}} \Big) 
+                  \bigg) \ \jj_j.
+                \end{aligned} \\
+                &=\sumjto{\Nchi} J (\inv{D})_{ij} \ \jj_j 
+  \end{aligned}
+\end{align}
+Using $J\ct = \Ct$ and  $\jj = J^{-1} \FF\JJ$, we finally reformulate the dissipation per unit current volume to the dissipation per unit reference volume:
+\begin{align}
+  J\Diss = \sumito{\Nchi}\sumjto{\Nchi} \Dijinv \ \JJ_i \cdot (\CC \, \JJ_j)
+\end{align}
+which motivates the choice for the dissipation potential:
+\begin{align}
+  \begin{aligned}
+  \phiJJ &= \quarter\Ct\RT\sumiOto{\Nchi}\sumjOto{\Nchi} \frac{\chi_i\chi_j}{\DiffMS_{ij}} \norm{\vv_i-\vv_j}^2 \\
+         &= \half\sumito{\Nchi}\sumjto{\Nchi} \Dijinv \ \JJ_i \cdot (\CC \, \JJ_j)
+  \end{aligned}
+\end{align}
+with 
+\begin{align}
+  \begin{aligned}
+  \Dijinv = \frac{\RT}{\Ct} 
+  \bigg(  
+    &- \frac{1}{\DiffMS_{ij}} 
+    + \frac{M_i}{M_0}\frac{1}{\DiffMS_{0j}} 
+    + \frac{M_j}{M_0}\frac{1}{\DiffMS_{i0}}  
+    + \delta_{ij}\frac{\chi_0}{\chi_i}\frac{1}{\DiffMS_{i0}} \\
+    &+ \sumkto{\Nchi} \Big( \delta_{ij} \frac{\chi_k}{\chi_i}\frac{1}{\DiffMS_{ik}} + \frac{\chi_k}{\chi_0}\frac{M_i M_j}{M_0 M_0} \frac{1}{\DiffMS_{0k}} \Big) 
+  \bigg)
+  \end{aligned}
+\end{align}
+
+\subsubsection{Constraints} \label{app:constraints}
+
+The particle balances of all species but the one with index 0, and the reduced mass balance
+\begin{align}
+  \dot C_i  =  - \Div \JJ_i + \sumrIto{N_r} \nuir R_r; \qquad \dot C_0= -\sumito{\Nchi} \frac{M_i}{M_0} \dot C_i
+\end{align}
+can be combined to obtain
+\begin{align}
+  \dot C_0 = \sumito{\Nchi} \frac{M_i}{M_0} \Div\JJ_i - \sumito{\Nchi} \frac{M_i}{M_0} \sumrIto{N_r}\nuir R_r. 
+\end{align}
+Including the assumptions of mass conserving diffusion and mass conserving chemical reactions
+\begin{align}
+  \sumito{\Nchi} \frac{M_i}{M_0} \Div\JJ_i = -\Div\JJ_0; \qquad -\sumito{\Nchi} \frac{M_i}{M_0} \sumrIto{N_r}\nuir R_r = \sumrIto{N_r} \nu_{0r}R_r 
+\end{align}
+we obtain the particle balance for the species with index 0.
+
+\subsubsection{Optimizations (Single Phase)} \label{app:Opt}
+\paragraph{Optimization in $\uu$} \label{sec:optU}%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Considering only terms dependent on the displacement $\uu$ we have:
+\begin{align}
+  \inf_\uu \bigg[ \intVO \big(\ \psim+\phiJJDelta+\psie+\phieDelta \ \big) \dV - \intdVOx{t} \bar\tt \cdot \uu \dA \bigg].
+\end{align}
+The optimality condition obtained by the variation of $\uu$ reads:
+\begin{align}
+  \begin{split}
+    &\intVO \FF \ \underbrace{2\dCC(\psim+\phiJJDelta+\psie+\phieDelta)}_{\SSv} \ \FFT: \sym(\grad{\delta\uu}) \dV - \intdVOt \bar\tt \cdot \delta \uu \dA \ \stackrel{!}{=} \ 0 \\
+    \Leftrightarrow \ &\intVO -\Div\PP \cdot \delta \uu \dV - \intdVOx{t} (\bar\tt-\PP\NN) \cdot \delta\uu \dA \stackrel{!}{=} 0
+  \end{split}
+\end{align}
+which leads for $\Delta t \rightarrow 0$ to:
+\begin{align}
+    \SSv=2\dCC(\psim+\psie); \quad \SSv=\sym(\SSv); \quad \Div\PP=0 \quad \text{in} \ V_0; \quad \PP\NN = \bar\tt \quad \text{on} \ \partial V_{0t}.
+    \label{eq:optU}
+\end{align}
+From Eq.(\ref{eq:optU}) we see that the optimality conditions are consistent with the momentum balances.
+
+\paragraph{Optimization in $\JJul$} \label{sec:optJ}%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Considering only terms dependent on the diffusion currents $\JJul$ we have:
+\begin{align}
+  \inf_{\JJulDelta} \bigg[\intVO \big( \phiJJDelta - \muuletilde \cdot \Div \JJulDelta \big) \dV 
+  + \intdVOx{I} \hat\muultilde^\rme \cdot (\JJulDelta \NN) \dA 
+  - \intdVOx{\mu} \bar\muultilde^\rme \cdot (\JJulDelta\NN)\dA\bigg]
+  \label{eq:infJJ}
+\end{align}
+The optimality condition obtained by the variation of $\JJul$ reads:
+\begin{align}
+  \begin{aligned}
+  \intVO (\dJJul\phiJJDelta-\MMuletilde):\delta\JJulDelta \dV  
+  &- \intdVOx{I} (\muuletilde - \hat{\tilde\muul}^{\rme})\cdot(\delta\JJulDelta\NN)\dA \\
+  &- \intdVOx{\mu} (\muuletilde - \tilde\muul^{\rme}) \cdot(\delta\JJulDelta\NN)\dA \ \stackrel{!}{=} \ 0,
+  \end{aligned}
+\end{align}
+which gives
+\begin{align}
+  \dJJul \phiJJDelta = \MMuletilde \quad\text{in} \ V_0; \qquad 
+  \hat{\tilde\muul}^\rme = \muuletilde \quad \text{on} \ \partial V_{0\rm I} ; \qquad 
+  \bar{\tilde\muul}^\rme = \muuletilde \quad \text{on} \ \partial V_{0\mu}.
+\end{align}
+With these relations Eq.(\ref{eq:infJJ}) can be reformulated to obtain:
+\begin{align}
+   \intVO -\sup_{\JJulDelta} \big[ \MMuletilde:\JJulDelta - \phiJJDelta \big] \dV.
+\end{align}
+This allows us to define the dual dissipation potential: 
+\begin{align}
+  \phiJJs(\CC,\MMuletilde,\Cul) \ = \ \sup_{\JJ}\big[\MMuletilde:\JJul - \phiJJ \big] \ = \ \frac{1}{2}\Dull:\MMuletilde (J\CCinv)\trans{(\MMuletilde)}.
+\end{align}
+Finally, for the diffusion current densities in the current configuration $\jjul$ we have the relations:
+\begin{align}
+  \jjul\nn\,\rmd a = \JJul\NN\dA; \qquad \jjul = -\Dull \, \grad\muuletilde.
+\end{align}
+
+\paragraph{Optimization in $\Rul$} \label{sec:optR} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Considering only terms dependent on the reaction rates $\Rul$ we have:
+\begin{align}
+  \inf_{\RulDelta} \bigg[ \intVO \big( \phiRDelta - \muultilde \cdot (-\nuull\,\RulDelta) \big) \dV \bigg].
+  \label{eq:optR}
+\end{align}
+Using the short notation $\Delta_R\muultilde=-\trans{\nuull}\muultilde$, the optimality condition obtained by the variation of $\Rul$ reads:
+\begin{align}
+  \big[\dRulDelta\phiRDelta-\Delta_R\muultilde\big] \cdot\delta\RulDelta \ \stackrel{!}{=} 0,
+\end{align}
+which gives
+\begin{align}
+  \Delta_R\muultilde = \dRul \phiRDelta \quad \text{in} \ V_0.
+\end{align}
+As before, it is possible to reformulate Eq. (\ref{eq:optR}) to obtain:
+\begin{align}
+  \intVO -\sup_{\RulDelta}\big[ \Delta_R \muultilde \cdot \RulDelta - \phiRDelta \big]\dV
+\end{align}
+and define the dual dissipation potential 
+\begin{align}
+  \phiRs(\muultilde) \ = \ \sup_{\Rul}\big[\Delta_R \muultilde \cdot \Rul-\phiR\big] \ = \ \sumrIto{N_r} \RT \,k_r\sinh\bigg(\frac{(\Delta_R\tilde\mu)_r}{\RT}\bigg).
+\end{align}
+The reaction rates $\Rul$ are therefore given by:
+\begin{align}
+  R_r = k_r \sinh\bigg(\frac{(\Delta_R\tilde\mu)_r}{\RT}\bigg).
+\end{align}
+
+\paragraph{Optimization in $\DD$} \label{sec:optD} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  Considering only terms dependent on the electric displacement $\DD$ we have:
+  \begin{align}
+    \inf_\DD \bigg[ \intVO \big( \psie - \varphi \,\Div \DD \big) \dV 
+    + \intdVOx{I} \hat\varphi \, \DD\cdot\NN\dA 
+    + \intdVOx{\mu} \bar\varphi\,\DD\cdot\NN \dA \bigg]
+    \label{eq:optD}
+  \end{align}
+  The optimality condition obtained by the variation of $\DD$ reads:
+  \begin{align}
+    \intVO (\dDD\psie-\EE) \cdot \delta\DD \dV - \intdVOx{I} (\varphi-\hat\varphi) \delta\DD\cdot\NN\dA - \intdVOx{\mu} (\varphi-\bar\varphi)\delta\DD\cdot\NN\dA  \ \stackrel{!}{=} \ 0
+  \end{align}
+  which gives
+  \begin{align}
+    \dDD\psie=\EE \quad \text{in} \ V_0; \qquad \varphi=\hat\varphi \quad \text{on} \ \partial V_{0\rm I}; \qquad \varphi=\bar\varphi \quad \text{on} \ \partial V_{0\mu}.
+  \end{align}
+  We reformulate Eq.~(\ref{eq:optD}) to obtain
+  \begin{align}
+    \sup_{\varphi}\bigg[ \intVO -\sup_\DD \big[ \EE\cdot\DD - \psie \big]\dV \bigg]
+  \end{align}
+  and define the dual potential
+  \begin{align}
+    \psies(\CC,\EE) \ = \ \sup_{\DD} \big[ \EE\cdot\DD - \psie \big] \ = \ \frac{1}{2}\epsilon \ \EE \cdot (J\CCinv)\EE.
+  \end{align}
+  Finally, for the electric displacement in the current configuration $\dd$ we have the relations:
+  \begin{align}
+    \dd \cdot \nn\,\rmd a = \DD\cdot\NN\dA; \qquad \dd = -\epsilon\,\grad\varphi 
+  \end{align}
+
+\paragraph{Optimization in $\JJe$} \label{sec:optJe} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  Considering only terms dependent on the electric displacement $\JJe$ we have:
+  \begin{align}
+    \inf_{\JJeDelta} \bigg[ \intVO \big( \phieDelta + \varphi \Div\JJeDelta \big) \dV 
+    - \intdVOx{I} \hat\varphi \, \JJeDelta\cdot\NN \dA 
+    - \intdVOx{\mu} \bar\varphi \, \JJeDelta\cdot\NN \dA \bigg]
+    \label{eq:optJe}
+  \end{align}
+  The optimality condition obtained by the variation of $\JJe$ reads:
+  \begin{align}
+    \intVO \big[\dJJe\phie+\EE\big]\cdot\delta\JJeDelta \dV + \intdVOx{I} (\varphi-\hat\varphi) \delta\JJeDelta\cdot\NN\dA + \intdVOx{\mu} (\varphi-\bar\varphi)\delta\JJeDelta\cdot\NN\dA  \ \stackrel{!}{=} \ 0  
+  \end{align}
+  which gives
+  \begin{align}
+    \dJJe\phie = -\EE \quad \text{in} \ V_0; \qquad \varphi=\hat\varphi \quad \text{on} \ \partial V_{0\rm I}; \qquad \varphi=\bar\varphi \quad \text{on} \ \partial V_{0\mu};
+  \end{align}
+  We reformulate Eq.~(\ref{eq:optJe}) to obtain
+  \begin{align}
+    \intVO -\sup_{\JJeDelta} \big[ -\EE\cdot\JJeDelta - \phieDelta \big]\dV
+  \end{align}
+  and define the dual potential
+  \begin{align}
+    \phies(\CC,\EE) \ = \ \sup_{\JJe} \big[ -\EE\cdot\JJe - \phie \big] \ = \ \frac{1}{2} \sigmae \ \EE \cdot (J\CCinv)\EE.
+  \end{align}
+  For the electron current in the current configuration $\jje$ we have the relations:
+  \begin{align}
+    \jje\cdot\nn\,\rmd a = \JJe\cdot\NN\dA; \qquad \jje = \sigmae\,\grad\varphi
+  \end{align}
+
+\paragraph{Optimization in $\Ct$, $\chiul$} \label{sec:optC} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  Considering only terms dependent on total concentration $\Ct$ and molar fractions $\chiul$ we have:
+  \begin{align}
+    \inf_{\Ct} \inf_{\chiul} \bigg[ \intVO \big( \psim + \psic + \phiJJDelta - \muultilde \cdot \Cul - \lambda \rho_\circ \big) \dV \bigg]
+    \label{eq:optC}
+  \end{align} 
+  Introducing $\tilde M_i=M_i-M_0$, the optimality conditions obtained by the variations of $\Ct$ and $\chiul$ read:
+  \begin{align}
+    & \big[\dCt(\psim+\psic+\phiJJDelta)-(\tilde\muul+\lambda\tilde\Mul)\cdot\chiul-\lambda M_0 \big] \, \delta\Ct \ \stackrel{!}{=} \ 0 \\
+    & \big[\dchiul(\psim+\psic+\phiJJDelta)-(\tilde\muul+\lambda\tilde\Mul)\Ct \big] \cdot \delta\chiul \ \stackrel{!}{=} \ 0 
+  \end{align}
+  which leads for $\Delta t \rightarrow 0$ to:
+  \begin{align}
+    \dCt(\psic+\psim) = (\tilde\muul+\lambda\Multilde)\cdot\chiul + \lambda M_0 \quad \text{in} \ V_0 \label{eq:dCt_PsicPsim} \\
+    \dchiul(\psic+\psim) = \Ct(\tilde\muul+\lambda\Multilde) \quad \text{in} \ V_0. \label{eq:dchi_PsicPsim} 
+  \end{align}
+  Rearranging \cref{eq:dchi_PsicPsim} for $\muultilde+\lambda\Multilde$ and inserting into \cref{eq:dCt_PsicPsim} one obtains:
+  \begin{align}
+    \lambda M_0 = \dCt(\psic+\psim) - \frac{\dchiul(\psic+\psim)\cdot\chiul}{\Ct} \label{eq:lambdaM0}
+  \end{align}
+  Inserting \cref{eq:lambdaM0} back into \cref{eq:dchi_PsicPsim} we obtain
+  \begin{align}
+    \tilde\mu_i = \frac{\partial_{\chii}(\psic+\psim)}{\Ct} + \Big(1-\frac{M_i}{M_0}\Big) \frac{\dchiul(\psic+\psim)\cdot\chiul}{\Ct} - \Big(1-\frac{M_i}{M_0}\Big) \dCt(\psic+\psim).
+  \end{align}
+  Inserting the derivatives (see appendix \ref{app:derivatives}) we obtain
+  \begin{align}
+    \lambda M_0 = \mu_0 + \Omeganord_0 \Je p
+  \end{align}
+  and 
+  \begin{align}
+    \tilde\mu_i &= \Big(\mu_i-\frac{M_i}{M_0}\mu_0\Big) + \Ct\Big(\Omeganordi-\frac{M_i}{M_0} \Omeganord_0 \Big) \Je p = \dCi(\psic+\psim). 
+  \end{align}
+  We reformulate Eq.~(\ref{eq:optC}) to obtain:
+  \begin{align}
+    \intVO -\sup_{\Ct}\sup_{\chiul} \big[ \muultilde\cdot\Cul + \lambda \rho - \psim - \psic - \phiJJDeltas \big]\dV.
+  \end{align}
+
+
+
+
+
+
+
+
+
+
+  \subsubsection{Optimizations (Multi-Phase)} \label{app:Opt2}
+
+  \paragraph{Optimization in $\uu$} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  Considering only terms dependent on the displacement $\uu$ we have:
+  \begin{align}
+    \inf_\uu \bigg[ \intVO \sumalphaOto{\Nxi} \xia (\psima+\phiJJDeltaa+\psiea+\phieDeltaa) \dV - \intdVOx{t} \bar\tt \cdot \uu \dA \bigg].
+  \end{align}
+  which leads to the same result as in the single phase potential (section \ref{sec:optU}) with the difference that the stress is now given by (for $\Delta t\rightarrow 0$):
+  \begin{align}
+    \SSv = 2\sumalphaOto{\Nxi} \xia\dCC(\psima+\psiea).
+  \end{align}
+
+\paragraph{Optimization in $\JJull$} \label{sec:optJ2}%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  Considering only terms dependent on the diffusion currents in each phase $\JJull$ we have:
+  \begin{align}
+    \begin{aligned}
+      \inf_{\JJullDelta} \sumalphaOto{\Nxi} \bigg[\intVO  \xia\phiJJDeltaa - \muuletilde \cdot \Div (\xia\JJulDeltaa) \dV 
+      &+ \intdVOx{I} \hat\muultilde^\rme \cdot (\xia\JJulDeltaa \NN) \dA \\
+      &- \intdVOx{\mu} \bar\muultilde^\rme \cdot (\xia\JJulDeltaa\NN)\dA\bigg].
+    \end{aligned}
+    \label{eq:infJJ2}
+  \end{align}
+  In complete analogy to section~\ref{sec:optJ} we end up with the dual dissipation potentials:
+  \begin{align}
+    \phiJJs_\alpha(\CC,\MMuletilde,\Cula) \ = \ \sup_{\JJula}\big[\MMuletilde:\JJula - \phiJJa \big] \ = \ \frac{1}{2}\smash{\Dull}_{\alpha}:\MMuletilde (J\CCinv)\trans{(\MMuletilde)}.
+  \end{align}
+  and the diffusion current density in the current configuration $\smash{\jjul}$:
+  \begin{align}
+    \smash{\jjul} = -\sumalphaOto{\Nxi}\xia\smash{\Dull}_{\alpha} \, \grad\muule.
+  \end{align}
+
+\paragraph{Optimization in $\Rull$} \label{sec:optR2} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  Considering only terms dependent on the reaction rates in each phase $\Rull$ we have:
+  \begin{align}
+    \inf_{\RullDelta} \sumalphaOto{\Nxi} \bigg[ \intVO \xia\phiRDeltaa + \muultilde \cdot (\nuull\,\xia\RulDeltaa) \dV \bigg]
+    \label{eq:optR2}
+  \end{align}
+  and obtain in analogy to section~\ref{sec:optR} the dual potentials:
+  \begin{align}
+    \phiRs_\alpha(\muultilde) \ = \ \sup_{\Rula}\big[\Delta_R \muultilde \cdot \Rula-\phiRa\big] \ = \ \sumrIto{N_r} \RT \,k_{\alpha r}\cosh\bigg(\frac{(\Delta_R\tilde\mu)_r}{\RT}\bigg).
+  \end{align}
+  The reaction rates $\Rul$ are given by:
+  \begin{align}
+    R_r = \sumalphaOto{\Nxi} \xia k_{\alpha r} \sinh\bigg(\frac{(\Delta_R\tilde\mu)_r}{\RT}\bigg).
+  \end{align}
+
+  \paragraph{Optimization in $\DDul$} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  Considering only terms dependent on the electric displacements in each phase $\DDul$ we have:
+  \begin{align}
+    \inf_{\DDul} \sumalphaOto{\Nxi}\bigg[ \intVO \Big(\xia\Delta\psiea - \varphi \, \Div(\xia\DDa)\Big) \dV 
+    + \intdVOx{I} \hat\varphi \, \xia\DDa\cdot\NN\dA 
+    + \intdVOx{\mu} \bar\varphi\,\xia\DDa\cdot\NN \dA \bigg]
+    \label{eq:optD2}
+  \end{align}
+  and in analogy to section~\ref{sec:optD} we obtain the dual potentials:
+  \begin{align}
+    \psies_\alpha(\CC,\EE) \ = \ \sup_{\DDa} \big[ \EE\cdot\DDa - \psiea \big] \ = \ \frac{1}{2}\epsilon_\alpha \ \EE \cdot (J\CCinv)\EE.
+  \end{align}
+  The electric displacement in the current configuration $\tilde\DD$ is given by:
+  \begin{align}
+    \tilde\DD = -\sumalphaOto{\Nxi} \xia\epsilon_\alpha\,\grad\varphi.
+  \end{align}
+
+\paragraph{Optimization in $\JJul^\rme$} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  Considering only terms dependent on the electric displacement $\JJe$ we have:
+  \begin{align}
+    \inf_{\JJul^\rme} \sumalphaOto{\Nxi}\bigg[ \intVO \Big(\xia\phieDeltaa + \varphi \Div(\xia\JJe_\alpha) \Big) \dV 
+    - \intdVOx{I} \hat\varphi \xia\JJe_{\alpha}\cdot\NN \dA 
+    - \intdVOx{\mu} \bar\varphi \xia\JJe_\alpha\cdot\NN \dA \bigg]
+    \label{eq:optJe2}
+  \end{align}
+  and in analogy to section~\ref{sec:optJe} obtain the dual potential
+  \begin{align}
+    \phies_\alpha(\CC,\EE) \ = \ \sup_{\JJe_\alpha} \big[ \EE\cdot(-\JJe_\alpha) - \phiea \big] \ = \ \frac{1}{2} \sigmae_\alpha \ \EE \cdot (J\CCinv)\EE.
+  \end{align}
+  For the electron current in the current configuration $\jje$ we have:
+  \begin{align}
+    \qquad \jje = \sumalphaOto{\Nxi}\xia\sigmae_\alpha\,\grad\varphi
+  \end{align}
+
+  \paragraph{Optimization in $\Ctul$, $\chiull$} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  Considering only terms dependent on the molar fractions in each phase $\chiull$ and total concentrations in each phase $\Ctul$ we have:
+  \begin{align}
+    \inf_{\Ctul} \inf_{\chiull} \ \sumalphaOto{\Nxi} \xia \ \bigg[ \intVO  \psima + \psica + \phiJJDeltaa - \muultilde\cdot\Cula - \lambda\rho_{\circ\alpha} \dV \bigg]
+    \label{eq:optchi2}
+  \end{align}
+  The optimality conditions obtained by the variations of $\chiula$ and $\Cta$ read:
+  \begin{align}
+    & \xia [\dchiula(\psima+\psica+\phiJJDeltaa)-(\muultilde+\lambda\Multilde)\Cta] \cdot \delta\chiula \ \stackrel{!}{=} \ 0 \\
+    & \xia [\dCta(\psima+\psica+\phiJJDeltaa)-\muultilde\cdot\chiula - \lambda(\Multilde\cdot\chiula + M_0 )] \ \delta\Cta \ \stackrel{!}{=} \ 0
+  \end{align}
+  which leads for arbitrary $\xia$ and $\Delta t \rightarrow 0$ to:
+  \begin{align}
+    \dchiula(\psica+\psima) &= \Cta(\muultilde+\lambda\Multilde) \quad \text{in} \ V_0; 
+    \label{eq:MuLambda1}\\
+    \dCta(\psica+\psima) &= \muultilde\cdot\chiula+\lambda(\Multilde\cdot\chiula+M_0) \quad \text{in} \ V_0.
+    \label{eq:MuLambda2}
+  \end{align}
+  Rearranging \cref{eq:MuLambda1} for $\lambda\tilde\Mul$ and inserting into \cref{eq:MuLambda2} one obtains:
+  \begin{align}
+    \lambda M_0 = \dCta(\psic+\psim) - \frac{\dchiula(\psica+\psima)\cdot\chiula}{\Cta}
+  \end{align}
+  % Inserting \cref{eq:lambdaM0} back into \cref{eq:dchi_PsicPsim} we obtain
+  \begin{align}
+    \tilde\mu_i = \frac{\partial_{\chiai}(\psica+\psima)}{\Cta} + \Big(1-\frac{M_i}{M_0}\Big) \frac{\dchiula(\psica+\psima)\cdot\chiula}{\Cta} - \Big(1-\frac{M_i}{M_0}\Big) \dCta(\psica+\psima) 
+  \end{align}
+  % Inserting the derivatives (see appendix \ref{app:derivatives}) we obtain
+  With summation over all phases $\sumalphaOto{\Nxi}\xia \lambda M_0$ and $\sumalphaOto{\Nxi}\xia \muultilde$ one obtains the same relation as for the single phase:
+  \begin{align}
+    \lambda M_0 = \mu_0 + \Omeganord_0 \Je p
+  \end{align}
+  and 
+  \begin{align}
+    \tilde\mu_i &= \Big(\mu_i-\frac{M_i}{M_0}\mu_0\Big) + \Ct\Big(\Omeganordi-\frac{M_i}{M_0} \Omeganord_0 \Big) \Je p = \dCi(\psic+\psim) 
+  \end{align}
+  We reformulate Eq.~(\ref{eq:optC}) to obtain:
+  \begin{align}
+    \intVO -\sup_{\Ct}\sup_{\chiul} \big[ \muultilde\cdot\Cul + \lambda \rho_\circ - \psim - \psic - \phiJJDeltas \big] \dV.
+  \end{align}
+
+
+  
+  \paragraph{Optimization in $\xichiul$,$\xiul$} \label{sec:optXi} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+  Considering the terms dependent on the volume fractions $\xiul$ we have:
+  \begin{align}
+    \inf_{\xichiul}\inf_{\xiul} \ \bigg[ \intVO  \psixi + \phixiDelta + \sumalphaOto{\Nxi} \xia\piDeltaa \dV + \intdVOx{\xi} \bar{\tilde\Xiul}\cdot \Delta\xichiul \dA \bigg],
+    \label{eq:optxi}
+  \end{align}
+  where $\piDeltaa = \psima + \psica + \phiJJa + \psiea + \phiea$. The optimality condition obtained by the variations with respect to $\xichia$ under the constraint $\sumalphaOto{\Nxi}\xichia=1$ read:
+  \begin{align}
+    \begin{aligned}
+    & \intVO\dxichiul\psixi\cdot\delta\xichiul+\dGGul\psixi : \delta\GGul \dV - \intdVOx{\xi} \bar{\tilde\Xiul}\cdot \delta\xichiul \dA  \stackrel{!}{=} \ 0;  \\
+    \Rightarrow & \intVO \big[\dxichiul\psixi - \Div(\dGGul\psixi)\big]\cdot\delta\xichiul \dV - \intdVOx{\xi} \big[ \bar{\tilde\Xiul} - \dGGul\psixi \, \NN \big] \cdot \delta\xichiul \dA  \stackrel{!}{=} \ 0;
+    \end{aligned}
+  \end{align}
+  from which we find:
+  \begin{align}
+    \dxichiul\psixi - \Div(\dGGul\psixi) = \zeroul \quad \text{in } V_0; \qquad \dGGul\psixi\,\NN=\bar\Xiultilde \quad \text{on } \partial V_{0\xi} .
+    \label{eq:optCondXichi}
+  \end{align}
+  The optimality conditions obtained by the variation of $\xia$ under the constraints $\xia \in [0,1]$ and $\sumalphaOto{\Nxi}\xia=1$ read:
+  \begin{align}
+    & \dxia(\psixi+\phixiDelta)+\piDeltaa-{\piDelta}_{0} \begin{cases} \geq 0 \quad \text{if} \quad \xia = 0  \\ = 0 \quad \text{if} \quad 0<\xia<1 \\ \leq 0 \quad \text{if} \quad  \xia = 1 \end{cases} \quad \text{ in } V_0.
+    \label{eq:optCondXi}
+  \end{align}
+  Adding \cref{eq:optCondXichi} and \cref{eq:optCondXi} we obtain the transformation rate for $\Delta t \rightarrow 0$:
+  \begin{align}
+    \dot \xia = \frac{1}{\etaatilde} \big( \psi_\alpha-\psi_0 + \Div(\dGGa\psixi) - \dxia\psixi - \dxichia\psixi) \quad \text{in } V_0 \quad \text{for } 0<\xia<1,
+  \end{align} 
+  where $\tilde\etaa=\etaa-\eta_0$ (see appendix \ref{app:dphixi}). Note that the term $-\dxichia\psixi$ only eliminates the coupling term and thus gives the Allen-Cahn equation. 
+
+
+\subsubsection{Differentials} \label{app:derivatives}
+
+\paragraph{Differential $\rmd\psim$}
+\begin{align}
+  \psim = \frac{\lambda^{\text{Lam\'e}}}{4}\Big(\det\CCe-1-\ln(\det\CCe)\Big) + \frac{\mu^{\text{Lam\'e}}}{2}\Big(\trace\CCe-3-\ln(\det\CCe)\Big),
+\end{align}
+
+\begin{align}
+  \rmd\psim &= \underbrace{\bigg(\Big(\frac{\lambda^{\text{Lam\'e}}}{4}(\det\CCe-1)-\frac{\mu^{\text{Lam\'e}}}{2}\Big) \inv{(\CCe)} + \frac{\mu^{\text{Lam\'e}}}{2}\II\bigg)}_{\partial_{\CCe}\psim} : \rmd\CCe \\
+  &= \underbrace{\bigg(\Big(\frac{\lambda^{\text{Lam\'e}}}{4}(\det\CCe-1)-\frac{\mu^{\text{Lam\'e}}}{2}\Big) \CCinv + \frac{\mu^{\text{Lam\'e}}}{2}(\Jc)^{-\twothirds}\II\bigg)}_{\dCC\psim}:\rmd\CC \\
+  & \ + \underbrace{\bigg(-\frac{1}{\Jc}\Big(\frac{\lambda^{\text{Lam\'e}}}{2}(\det\CCe-1)-\frac{\mu^{\text{Lam\'e}}}{3}(\trace\CCe-3)\Big)\bigg)}_{\dJc\psim} \ \rmd \Jc
+\end{align}
+With $\Omeganorditilde=(\Omeganord_i-\Omeganord_0)$ we can write for $\Jc$ 
+\begin{align}
+  \Jc = \sumiOto{\Nchi} \Ct\chi_i\Omeganordi = \Ct \Big( \Omeganord_0 + \sumito{\Nchi} \chii (\Omeganordi-\Omeganord_0) \Big) = \Ct \Omeganord_0 + \Omeganordultilde\cdot\chiul
+\end{align}
+which leads to the following differentials:
+\begin{align}
+  \rmd\Jc \ = \  \underbrace{(\Omeganord_0 + \Omeganordultilde\cdot\chiul)}_{\dCt\Jc} \, \rmd\Ct 
+            + \underbrace{(\Ct\Omeganordultilde)}_{\dchiul\Jc}\cdot\rmd\chiul 
+          \ = \ \sumito{\Nchi}\underbrace{\Big(\Omeganord_i - \frac{M_i}{M_0}\Omeganord_0\Big)}_{\dCi\Jc} \, \rmd C_i
+\end{align}
+Defining the mechanical stress as:
+\begin{align}
+  \ssigma^\rmm := \frac{1}{J}\FF\ 2\dCC\psim\ \FFT = \frac{1}{2J}\Big(\lambda^{\text{Lam\'e}}(\det\CCe-1)\II + 2\mu^{\text{Lam\'e}}(\CCe-\II)\Big)
+\end{align}
+and the mechanical pressure $p$ as:
+\begin{align}
+  p := -\third\trace\ssigma^\rmm = -\frac{1}{J}\Big(\frac{\lambda^{\text{Lam\'e}}}{2}(\det\CCe-1)+\frac{\mu^{\text{Lam\'e}}}{3}(\trace\CCe-3)\Big)
+\end{align}
+We also find:
+\begin{align}
+  \dCt\psim - \frac{\dchiul\psim \cdot \chiul}{\Ct} &= \Omeganord_0 \,\Je p \\
+  \dchiul\psim &= \Ct \Omeganordultilde \, \Je p
+\end{align}
+
+\paragraph{Differential $\rmd\psic$} \label{app:dpsic} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Introducing $\mu_i=\munordi+\RT\ln\chii$, we can rewrite the chemical free energy as:
+\begin{align}
+  \psic  = \sumiOto{\Nchi} C_i (\munordi+\RT\ln\chii) = \sumiOto{\Nchi} C_i \mui = \Ct \Big( \mu_0 + \sumito{\Nchi}\chii(\mu_i-\mu_0) \Big)
+\end{align}
+The total differential is given by:
+\begin{align}
+  \begin{split}
+  \rmd\psic &= \sumiOto{\Nchi} \Ct\Big(\munord_i + \RT(\ln{\chii}+1) \Big) \rmd\chii
+           + \sumiOto{\Nchi} \chii(\munordi+\RT\ln\chii) \ \rmd\Ct 
+          \\
+          &= \sumito{\Nchi} \underbrace{\Ct (\mu_i - \mu_0) }_{\partial_{\chii}\psic} \rmd\chii + \underbrace{\Big( \mu_0 + \sumito{\Nchi}\chii(\mu_i-\mu_0) \Big) }_{\dCt\psic} \rmd \Ct
+          \\
+          &= \sumito{\Nchi} \underbrace{\Big(\mu_i - \frac{M_i}{M_0}\mu_0\Big)}_{\dCi\psic} \, \rmd C_i 
+  \end{split}
+\end{align}
+We also find:
+\begin{align}
+  \dCt\psic - \frac{\dchiul\psic\cdot\chiul}{\Ct} = \mu_0.
+\end{align}
+
+
+\paragraph{Differential $\rmd\psixi$} \label{app:dpsixi} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{align}
+  \psixi &= \sumalphaOto{\Nxi} \sumbetaOto{\Nxi} \Big(2\Bab\xia\xib - \quarter \Kab \GGa\cdot\GGb \Big) 
+  + \quarter\Hchi \sumalphaOto{\Nxi}\big(\xichia-\xia\big)^2
+\end{align}
+
+\begin{align}
+  \begin{aligned}
+    \rmd\psixi &= \sumalphaOto{\Nxi} \Big(\sumbetaOto{\Nxi} 4 \Bab \xib  - \half \Hchi (\xichia-\xia) \Big) \rmd \xia 
+    - \sumalphaOto{\Nxi} \sumbetaOto{\Nxi}\half\Kab\GGb \cdot \rmd \GGa \\
+    & + \half \Hchi \sumalphaOto{\Nxi}(\xichia-\xia) \rmd \xichia\\
+    &= \sumalphato{\Nxi} \underbrace{\Big(\sumbetaOto{\Nxi} 4 (\Bab-B_{0\beta}) \xib - \half \Hchi(\xichia-\xichi_0-\xia+\xi_0)\Big)}_{\dxia\psixi} \, \rmd \xia \\
+    &- \sumalphato{\Nxi} \underbrace{\sumbetaOto{\Nxi} \half(\Kab-K_{0\beta})\GGb}_{\dGGa\psixi} \cdot\,\rmd\GGa + \sumalphato{\Nxi} \underbrace{\half \Hchi (\xichia-\xichi_0-\xia+\xi_0)}_{\dxichia\psixi} \, \rmd\xichia
+  \end{aligned}
+\end{align}
+
+\paragraph{Differential $\rmd\phixi_\Delta$} \label{app:dphixi} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{align}
+  \phixiDelta = \sumalphaOto{\Nxi} \frac{\etaa}{2\Delta t} (\Delta\xia)^2 
+\end{align}
+\begin{align}
+  \rmd\phixiDelta = \sumalphaOto{\Nxi} \Big(\etaa \frac{\Delta\xia}{\Delta t}\Big)\, \rmd\xia = \sumalphato{\Nxi} \underbrace{\Big((\etaa-\eta_0 ) \frac{\Delta \xia}{\Delta t}\Big)}_{\dxia\phixiDelta} \, \rmd \xia
+\end{align}
+
