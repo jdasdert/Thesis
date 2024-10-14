@@ -3,14 +3,14 @@
 \normalsize
 \vspace{0.3cm}
 \hrule
-\section*{\Large \centering Framework for an Electro-Chemo-Mechanical Multi-Component Multi-Phase-Field Model}
+\section*{\Large \centering Electro-Chemo-Mechanical Multi-Component Multi-Phase-Field Modelling Framework}
 \addcontentsline{toc}{section}{\protect5 \hspace{0.15cm} Article 3 - Framework for an Electro-Chemo-Mechanical Multi-Component Multi-Phase-Field Model}
 \hrule
 \vspace{1.5cm}
 
 This Chapter presents the framework for an electro-chemo-mechanical model coupled with a multi-phase-field approach which sets the basis for modelling the formation and dissolution of a corrosion layer in metallic implant materials. The framework ensures conservation of mass, balance of particles, charge and momentum and consistency with the second law of thermodynamics and couples mechanical deformation, chemical swelling, multi-component diffusion, chemical reactions, electric fields, electric currents and phase transformations with a potential based variational approach. The potential approach easily enables the adaption of the model since the individual potentials can be easily expanded, reduced or tailored for the specific problem. The behavior for an exemplary choice of potentials is qualitatively tested with in various 3D finite element simulations.  \\
 
-The manuscript is ready for submission \\
+The manuscript is ready for submission and preliminarily made public as: \textbf{Jan Dittmann}, Hamzeh Beiranvand, Stephan Wulfinghoff. Electro-Chemo-Mechanical Multi-Component Multi-Phase-Field Modelling Framework. \textit{TechRxiv} (2024). \\
 
 \textbf{Own contribution to the presented article:}
 \begin{itemize}
@@ -502,10 +502,10 @@ The equations obtained by the optimality conditions are summarized in Tab.~{\ref
     Free energy: & $\psixi = \sumalphaOto{\Nxi} \sumbetaOto{\Nxi} \Big(2\Bab\xia\xib - \quarter \Kab \GGa\cdot\GGb \Big)$ \\
            & \qquad $+ \sumalphaOto{\Nxi}\quarter\Hchi\big(\xichia-\xia\big)^2$ \\
     Diss. pot: & $\phixi = \sumalphaOto{\Nxi}\frac{1}{2}\etaa\smash{(\dot\xia)}^2$ \\
-    Transformation rate: & $\dot \xia = \frac{1}{\etaatilde} \big( \psi_\alpha-\psi_0 + \Div(\dGGa\psixi) - \dxia\psixi - \dxichia\psixi) \quad \text{in } V_0$ \\ 
-    & $\quad \text{for } 0<\xia<1$\\
+    Transformation rate: & $\etaa\xiadot-\eta_0\dot\xi_0 = \big( \psi_\alpha-\psi_0 + \Div(\dGGa\psixi) - \dxia\psixi - \dxichia\psixi)$ \\ 
+    & $\quad \text{in } V_0 \quad \text{for } 0<\xia<1$\\
     Interface energy: & $\dGGa\psixi \cdot \NN = \bar{\tilde\Xi}_\alpha$ \quad on $\partial V_{0\xi}$ \\
-    Short notations: & $\GG=\Grad\xichi$ \quad $\tilde\eta_\alpha=\etaa-\eta_0$ \\
+    Short notations: & $\GG=\Grad\xichi$\\
     \hline
   \end{tabular}
   \label{tab:optCond2}
@@ -1087,9 +1087,9 @@ The reaction rates $\Rul$ are therefore given by:
   \end{align}
   Adding \cref{eq:optCondXichi} and \cref{eq:optCondXi} we obtain the transformation rate for $\Delta t \rightarrow 0$:
   \begin{align}
-    \dot \xia = \frac{1}{\etaatilde} \big( \psi_\alpha-\psi_0 + \Div(\dGGa\psixi) - \dxia\psixi - \dxichia\psixi) \quad \text{in } V_0 \quad \text{for } 0<\xia<1,
+    \etaa\xiadot-\eta_0\dot\xi_0 = \big( \psi_\alpha-\psi_0 + \Div(\dGGa\psixi) - \dxia\psixi - \dxichia\psixi) \quad \text{in } V_0 \quad \text{for } 0<\xia<1,
   \end{align} 
-  where $\tilde\etaa=\etaa-\eta_0$ (see appendix \ref{app:dphixi}). Note that the term $-\dxichia\psixi$ only eliminates the coupling term and thus gives the Allen-Cahn equation. 
+ Note that the term $-\dxichia\psixi$ only eliminates the coupling term and thus gives the Allen-Cahn equation. 
 
 
 \subsubsection{Differentials} \label{app:derivatives}
@@ -1173,6 +1173,6 @@ We also find:
   \phixiDelta = \sumalphaOto{\Nxi} \frac{\etaa}{2\Delta t} (\Delta\xia)^2 
 \end{align}
 \begin{align}
-  \rmd\phixiDelta = \sumalphaOto{\Nxi} \Big(\etaa \frac{\Delta\xia}{\Delta t}\Big)\, \rmd\xia = \sumalphato{\Nxi} \underbrace{\Big((\etaa-\eta_0 ) \frac{\Delta \xia}{\Delta t}\Big)}_{\dxia\phixiDelta} \, \rmd \xia
+  \rmd\phixiDelta = \sumalphaOto{\Nxi} \Big(\etaa\frac{\Delta\xia}{\Delta t}\Big)\, \rmd\xia = \sumalphato{\Nxi} \underbrace{\Big(\frac{1}{\Delta t}(\etaa \Delta\xia-\eta_0\Delta\xiO )\Big)}_{\dxia\phixiDelta} \, \rmd \xia
 \end{align}
 

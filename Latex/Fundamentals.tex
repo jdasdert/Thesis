@@ -137,7 +137,7 @@ Using the definition for free energy densitiy $\psi=\rho_0(e-sT)$, for chemical 
   \label{eq:dissipation}
 \end{align}
 
-At this point it is necessary to define functions for the expressions given in the dissipation equation. These functions will define the material behavior and are therefore called material laws. 
+The functions for the expressions given in the dissipation equation are defined by the material laws which describe the material behavior. The material laws used in this thesis are shortly motivated and summarized in the following section. 
 
 \subsection{Material Models}
 \subsubsection{Diffusion Controlled Drug Delivery System}
@@ -182,14 +182,14 @@ The equations of the crystal plasticity model follow the standard arguments of c
   \label{eq:LLpCrystalPlas}
 \end{align}
 This description is used for both slip and twinning, which means that although the two mechanisms are profoundly different, mathematically they are treated similar. The direction and plane are combined to the deformation system \mbox{$\MM=\dd\otimes\nn$}. A~schematic interpretation of \cref{eq:LLpCrystalPlas} is depicted in \cref{fig:CrystalPlasticity1}. \\
-\begin{figure}[h!]
+\begin{figure}[H]
   \centering
   \includegraphics[width=0.8\textwidth]{Figs/CrystalPlasticity1/CrystalPlasticity1.pdf}
   \caption{Slip and twinning can be describes mathematically similar by a shear, a direction $\dd$ and a plane with normal $\nn$.}
   \label{fig:CrystalPlasticity1}
 \end{figure}
 
-However, one key difference is that slip preserves the lattice orientation and can result in arbitrary deformation angles, whereas twinning results in a rotation of the lattice through a well-defined angle. This means that the slip and twinning systems inside a twinned region are also rotated by this angle as shown in \cref{fig:CrystalPlasticity2}. \\
+However, one key difference between slip and twinning is that slip preserves the lattice orientation and can result in arbitrary deformation angles, whereas twinning results in a rotation of the lattice through a well-defined angle. This means that the slip and twinning systems inside a twinned region are also rotated by this angle as shown in \cref{fig:CrystalPlasticity2}. \\
 \begin{figure}[h!]
   \centering
   \includegraphics[width=0.55\textwidth]{Figs/CrystalPlasticity2/CrystalPlasticity2.pdf}
@@ -197,11 +197,11 @@ However, one key difference is that slip preserves the lattice orientation and c
   \label{fig:CrystalPlasticity2}
 \end{figure}
 
-The overall deformation rate is therefore obtained by a summation over the deformation rates on all existing slip and twinning systems, multiplied by the volume fraction of the respective twin orientation\supercite{kalidindi1998incorporation}:  
+The overall deformation rate is therefore assumed to be given by a summation over the deformation rates on all existing slip and twinning systems, multiplied by the volume fraction of the respective twin orientation\supercite{kalidindi1998incorporation}:  
 \begin{equation}
   \LLp = \underbrace{\sumbO \cb \sumaI \nuab \MMab}_{\text{slip}} + \underbrace{\sumbI \nub \MMb}_{\text{twinning}}.
 \end{equation}
-Twinning does not only lead to a deformation but also changes the volume fraction~$\cb$ of the respective twin, which is referred to as volume fraction transfer scheme:
+Furthermore, twinning does not only lead to a deformation but also changes the volume fraction~$\cb$ of the respective twin, which is in the following referred to as volume fraction transfer scheme:
 \begin{align}
   \cbdot = \frac{\nu_\beta}{\gammatw_\beta}.
 \end{align}
@@ -219,7 +219,7 @@ The deformation rate depends on a reference rate $\nu_0$, the projection of the 
 \begin{align}
   \tauc = \tauc(\gammaacc) \qquad \text{with} \qquad \gammaacc = \int_t \nu \, \rmd t
 \end{align}
-Finally, he dissipation equation for the purely mechanical case reads:
+Finally, the dissipation equation for the purely mechanical case reads:
 \begin{align} 
   \mathcal{D} = \PP:\dot\FF - \dot\psi \geq 0
 \end{align}
