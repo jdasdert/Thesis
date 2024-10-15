@@ -151,7 +151,7 @@ The choice of the material law for the drug delivery system is based on a few as
 
 The systems has a drug loaded reservoir which is connected to the outside by a microchannel interpenetrated membrane. It is assumed that the channels can be approximated by a network of tubes, where each tube has a constant cross sectional area. With these assumptions it is possible to describe the microchannels as a three dimensional network of one dimensional interconnections. Further it is assumed that diffusion is the only release mechanism and that the diffusion can be described by Fick's law which is explained in more detail elsewhere\supercite{taylor_multicomponent_1993}. In one dimension it is given by: 
 \begin{align}
-  j = -D \ \frac{\partial c}{\partial x},
+  j = -D \ \frac{\partial c}{\partial x}, \label{eq:jFick}
 \end{align}
 where $c$ is the concentration, $j$ is the current density, $x$ is the position and $D$ is the material dependent diffusion coefficient. Since deformations are not considered in this case, the current configuration is equivalent to the reference configuration. Inserting the material law into the balance equation for the diffusing species (compare \cref{eq:balanceC})
 \begin{align}
@@ -161,19 +161,19 @@ Fick's second law is obtained:
 \begin{align}
   \dot c = D \frac{\partial^2 c}{\partial x^2}.
 \end{align}
-The solution of this partial differential equation is obtained by the finite element method (FEM) and given in detail in the article in \cref{sec:Article1}. Since it is not discussed in the article, it should be said here that of course Fickean diffusion also satisfies the dissipation equation (compare \cref{eq:dissipation}) which reads for one dimension considering only diffusion of one species.
+The solution of this partial differential equation is obtained by the finite element method (FEM) and given in detail in the article in \cref{sec:Article1}. Since it is not discussed in the article, it should be noted that Fickean diffusion also satisfies the dissipation equation (compare \cref{eq:dissipation}) which reads for one dimension considering only diffusion of one species:
 \begin{align}
-  \mathcal{D} = \mu \dot c - \frac{\partial \mu}{\partial x} \, j - \dot \psi \geq 0
+  \mathcal{D} = \mu \dot c - \frac{\partial \mu}{\partial x} \, j - \dot \psi \geq 0 \label{eq:dissFick}
 \end{align} 
-Assuming the total concentration of particles to be approximately constant and the free energy to be a function for a dilute ideal mixture, where only of the concentration of the diffusing species is considered, one has:
+Assuming the total concentration of particles to be approximately constant and the free energy to be a function for a dilute ideal mixture, where only the concentration of the diffusing species is considered relevant, one obtains:
 \begin{align}
-  \partial_c \psi = \mu = \mu^{\circ} + R T \ln{\chi} \qquad \Rightarrow \qquad \frac{\partial \mu}{\partial x} = \frac{R T}{\chi} \frac{\partial \chi}{\partial x} \approx \frac{RT}{c} \frac{\partial c}{\partial x}
+  \partial_c \psi = \mu = \mu^{\circ} + R T \ln{\chi} \qquad \Rightarrow \qquad \frac{\partial \mu}{\partial x} = \frac{R T}{\chi} \frac{\partial \chi}{\partial x} \approx \frac{RT}{c} \frac{\partial c}{\partial x} \label{eq:gradMuFick}
 \end{align}
-where, $\munord$ is the standard Gibb's free energy of formation, $R$ is the gas constant and $\chi$ is the molar fraction we obtain
+where, $\munord$ is the standard Gibb's free energy of formation, $R$ is the gas constant and $\chi$ is the molar fraction. Inserting \cref{eq:jFick,eq:gradMuFick} into \cref{eq:dissFick} we obtain
 \begin{align}
   \mathcal{D} = \frac{RTD}{c} \bigg(\frac{\partial c}{\partial x}\bigg)^2 \geq 0
 \end{align}
-which is always true since $R$, $T$, $D$ and $c$ are always positive.
+which is true since $R$, $T$, $D$ and $c$ are non-negative.
 
 \subsubsection{Crystal plasticity including twinning}
 The equations of the crystal plasticity model follow the standard arguments of crystal plasticity modelling\supercite{roters_crystal_2010}. The plastic deformation rate is given by the velocity gradient in the intermediate configuration $\LLp$ (explained in \cref{sec:kinematics}) and is defined by a shear deformation rate $\nu$, a deformation direction $\dd$ and a plane with normal $\nn$:
@@ -181,11 +181,11 @@ The equations of the crystal plasticity model follow the standard arguments of c
   \LLp = \nu \, \dd\otimes\nn = \nu\MM.
   \label{eq:LLpCrystalPlas}
 \end{align}
-This description is used for both slip and twinning, which means that although the two mechanisms are profoundly different, mathematically they are treated similar. The direction and plane are combined to the deformation system \mbox{$\MM=\dd\otimes\nn$}. A~schematic interpretation of \cref{eq:LLpCrystalPlas} is depicted in \cref{fig:CrystalPlasticity1}. \\
+This description is used for both slip and twinning, which means that although the two mechanisms are profoundly different, mathematically they are treated similarly. The direction and plane are combined to the deformation system \mbox{$\MM=\dd\otimes\nn$}. A~schematic interpretation of \cref{eq:LLpCrystalPlas} is depicted in \cref{fig:CrystalPlasticity1}. \\
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.8\textwidth]{Figs/CrystalPlasticity1/CrystalPlasticity1.pdf}
-  \caption{Slip and twinning can be describes mathematically similar by a shear, a direction $\dd$ and a plane with normal $\nn$.}
+  \caption{Slip and twinning can be described mathematically similarly by a shear, a direction $\dd$ and a plane with normal $\nn$.}
   \label{fig:CrystalPlasticity1}
 \end{figure}
 
@@ -193,7 +193,7 @@ However, one key difference between slip and twinning is that slip preserves the
 \begin{figure}[h!]
   \centering
   \includegraphics[width=0.55\textwidth]{Figs/CrystalPlasticity2/CrystalPlasticity2.pdf}
-  \caption{Twinning leads to a rotation of the lattice in the intermediate configuration, which rotates also the deformation systems.}
+  \caption{Twinning leads to a rotation of the lattice in the intermediate configuration, which rotates the deformation systems.}
   \label{fig:CrystalPlasticity2}
 \end{figure}
 
@@ -205,7 +205,7 @@ Furthermore, twinning does not only lead to a deformation but also changes the v
 \begin{align}
   \cbdot = \frac{\nu_\beta}{\gammatw_\beta}.
 \end{align}
-Here, $\gammatw_\beta$ defines the constant well-defined shear for a twinning system. The material dependence now comes into play by the slip and twinning systems, and the deformation rates which are assumed to follow a power law (neglecting the indices $\alpha$,$\beta$):
+Here, $\gammatw_\beta$ defines the constant well-defined shear for a twinning system. The material dependence now comes into play through the slip and twinning systems, and the deformation rates, which are assumed to follow a power law (neglecting the indices $\alpha$,$\beta$):
 \begin{align}
   \nu = \nu_0 \, \sign{\tau} \left( \frac{\abs{\tau}}{\tau^\rmc} \right)^{p}.
   \label{eq:powerlaw}
@@ -227,22 +227,22 @@ and is in detail discussed in the article in \cref{sec:Article2}. A possible sch
 \begin{figure}[h!]
   \centering
   \includegraphics*[width=0.93\textwidth]{Figs/MgPlas_schematic/MgPlas_schematic.pdf}
-  \caption{Schematic stress-strain curve for anisotropic metal with loading direction favorable for easily activated twinning systems. Twinning can only occur until 100 \% has transformed which results in a second elastic regime followed by deformation due to slip. }
+  \caption{Schematic stress-strain curve for anisotropic metal with loading direction favorable for easily activated twinning systems. Twinning can only occur until 100 \% has transformed, which results in a second elastic regime followed by deformation due to slip. }
   \label{fig:MgPlas}
 \end{figure}
 
-For this example we assume a single twinning system and a single slip system. Furthermore, creep is assumed negligible which corresponds to a very large exponent $p$ in the power law. Initially, in the elastic regime Hooke's law describes the linear increase in stress $\SSe$. If the stress projection $\tau$ reaches the critical stress~$\tauc$ of the twinning systems, irreversible plastic deformation starts. In case of twinning as the deformation mechanism, this plastic deformation can only continue until 100~\% of the material has twinned (\mbox{$\cb=1$}). At this point, the stress increases again according to Hooke's law. Note that the slope will in general be different since the crystal lattice is now rotated. Finally, upon reaching the critical stress for slip deformation, again plastic flow occurs. Both deformation mechanisms in general will lead to hardening but may have different impacts.
+For this example, we assume a single twinning system and a single slip system. Furthermore, creep is assumed negligible, which corresponds to a very large exponent $p$ in the power law. Initially, in the elastic regime, Hooke's law describes the linear increase in stress $\SSe$. If the stress projection $\tau$ reaches the critical stress~$\tauc$ of the twinning systems, irreversible plastic deformation starts. In case of twinning as the deformation mechanism, this plastic deformation can only continue until 100~\% of the material has twinned (\mbox{$\cb=1$}). At this point, the stress increases again according to Hooke's law. Note that the slope will in general be different since the crystal lattice is now rotated. Finally, upon reaching the critical stress for slip deformation, again plastic flow occurs. Both deformation mechanisms in general will lead to hardening but may have different impacts.
 
 \subsubsection{Electro-Chemo-Mechanical Degradation}
 The processes considered for the degradation of a metallic material in a corrosive medium are schematically depicted in \cref{fig:Corrosion}.
 \begin{figure}[h!]
   \centering
   \includegraphics*[width=0.95\textwidth]{Figs/Corrosion/Corrosion.pdf}
-  \caption{Schematic representation of processes considered in electro-chemo-mechanical model. Different phases have different properties. Chemical reactions may cause phase transformations, which can cause mechanical stresses. Diffusion of ions leads to a electric fields which can cause electric currents due to electrons.}
+  \caption{Schematic representation of processes considered in electro-chemo-mechanical model. Different phases have different properties. Chemical reactions may cause phase transformations, which can cause mechanical stresses. Diffusion of ions leads to electric fields, which are the driving forces for electron currents.}
   \label{fig:Corrosion}
 \end{figure}
 
-In the beginning the metal and medium are in contact and chemical reactions can take place at the interface. A corrosion layer forms which separates the medium and metal from each other. This corrosion layer is assumed to be a new phase with different properties. In general it does not have the same volume which may lead to mechanical stresses. Further it is assumed to be permeable for ions but in general can be non-conducting for electrons, which means that diffusion of ions through the membrane may lead to electric fields forming across the interface. Finally, the degradation of the implant can take place by the corrosion layer growing into the metal while dissolving into the medium. The driving force for the multi-component diffusion are given by the gradient in electro-chemical potential:
+In the beginning the metal and medium are in contact and chemical reactions can take place at the interface. A corrosion layer forms which separates the medium and metal from each other. This corrosion layer is assumed to be a new phase with different properties. In general it does not have the same volume, which may lead to mechanical stresses. Further, it is assumed to be permeable for ions but in general can be non-conducting for electrons, which means that diffusion of ions through the membrane may lead to electric fields forming across the interface. Finally, the degradation of the implant can take place by the corrosion layer growing into the metal while dissolving into the medium. The driving force for the multi-component diffusion are given by the gradient in electro-chemical potential:
 \begin{align}
   \jj_i = -\sum_j D_{ij} \, \grad{\mu_j^\rme}
 \end{align}
@@ -265,7 +265,7 @@ The electric part is given by the Maxwell-Stress tensor:
 \end{align}
 The electric displacement field in the current configuration $\tilde \DD$ is assumed to take the commonly known form: 
 \begin{align}
-  \tilde\DD = -\epsilon \, \grad \varphi
+  \dd = -\epsilon \, \grad \varphi
 \end{align}
 where $\epsilon$ is the material dependent permittivity and $\varphi$ is the electric potential. For electric currents due to electrons $\jj^\rme$ Ohm's law is assumed:
 \begin{align}
