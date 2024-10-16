@@ -215,7 +215,7 @@ The deformation rate depends on a reference rate $\nu_0$, the projection of the 
   \SSe &= \CCCC:\EEe,  \label{eq:HookesLaw} \\[3pt]
   \tau &= (\CCe\SSe):\MM.
 \end{align}
-\cref{eq:HookesLaw} is the three dimensional Hooke's law where $\CCCC$ is the fourth order material dependent stiffness tensor. Furthermore, hardening is accounted for by assuming the critical stress to depend on the previous plastic deformation history given by $\gamma_{\rm acc}$.
+\cref{eq:HookesLaw} is the three dimensional Hooke's law where $\CCCC$ is the material dependent fourth order stiffness tensor. Furthermore, hardening is accounted for by assuming the critical stress to depend on the previous plastic deformation history given by $\gamma_{\rm acc}$.
 \begin{align}
   \tauc = \tauc(\gammaacc) \qquad \text{with} \qquad \gammaacc = \int_t \nu \, \rmd t
 \end{align}
@@ -234,7 +234,7 @@ and is in detail discussed in the article in \cref{sec:Article2}. A possible sch
 For this example, we assume a single twinning system and a single slip system. Furthermore, creep is assumed negligible, which corresponds to a very large exponent $p$ in the power law. Initially, in the elastic regime, Hooke's law describes the linear increase in stress $\SSe$. If the stress projection $\tau$ reaches the critical stress~$\tauc$ of the twinning systems, irreversible plastic deformation starts. In case of twinning as the deformation mechanism, this plastic deformation can only continue until 100~\% of the material has twinned (\mbox{$\cb=1$}). At this point, the stress increases again according to Hooke's law. Note that the slope will in general be different since the crystal lattice is now rotated. Finally, upon reaching the critical stress for slip deformation, again plastic flow occurs. Both deformation mechanisms in general will lead to hardening but may have different impacts.
 
 \subsubsection{Electro-Chemo-Mechanical Degradation}
-The processes considered for the degradation of a metallic material in a corrosive medium are schematically depicted in \cref{fig:Corrosion}.
+The processes considered in the model of the degradation of a metallic material in a corrosive medium are schematically depicted in \cref{fig:Corrosion}.
 \begin{figure}[h!]
   \centering
   \includegraphics*[width=0.95\textwidth]{Figs/Corrosion/Corrosion.pdf}
@@ -242,28 +242,28 @@ The processes considered for the degradation of a metallic material in a corrosi
   \label{fig:Corrosion}
 \end{figure}
 
-In the beginning the metal and medium are in contact and chemical reactions can take place at the interface. A corrosion layer forms which separates the medium and metal from each other. This corrosion layer is assumed to be a new phase with different properties. In general it does not have the same volume, which may lead to mechanical stresses. Further, it is assumed to be permeable for ions but in general can be non-conducting for electrons, which means that diffusion of ions through the membrane may lead to electric fields forming across the interface. Finally, the degradation of the implant can take place by the corrosion layer growing into the metal while dissolving into the medium. The driving force for the multi-component diffusion are given by the gradient in electro-chemical potential:
+It is assumed that in the beginning the metal and medium are in contact and chemical reactions can take place at the interface. This leads to the formation of a corrosion layer, which separates the medium and metal from each other. This corrosion layer is assumed to be a new phase with different properties. In general it does not have the same volume, which may lead to mechanical stresses. Further, it is assumed to be permeable for ions but in general might be non-conducting for electrons, which means that diffusion of ions through the membrane may lead to electric fields forming across the interface. In this scenario, the degradation of the implant can take place by the corrosion layer growing into the metal while dissolving into the medium. The driving force for the multi-component diffusion are given by the gradient in electro-chemical potential:
 \begin{align}
   \jj_i = -\sum_j D_{ij} \, \grad{\mu_j^\rme}
 \end{align}
-where $D_{ij}$ are diffusion components consistent with the Maxwell Stefan diffusion. The chemical potential $\mu_i$ is assumed to be given by the law for an ideal mixture: 
+where $D_{ij}$ are diffusion components consistent with the Maxwell Stefan diffusion. In a stress free state, the chemical potential $\mu_i$ is assumed to be given by the law for an ideal mixture: 
 \begin{align}
   \mu_i = \munordi + RT \ln{\chi_i}
 \end{align}
-Chemical reactions are assumed to always have a forward and a backward reaction. 
+Chemical reactions rates $R$ are assumed to depend exponentially on the reaction formation energy $\Delta_R\mu$ and in this model always have a forward and a backward reaction:
 \begin{align}
-  R = k\,\sinh\bigg(\frac{\Delta_R \mu}{\RT}\bigg)
+  R = k\,\sinh\bigg(\frac{\Delta_R \mu}{\RT}\bigg),
 \end{align}
-The Cauchy stress $\ssigma=\ssigma^\rmm+\ssigma^\rme$ has a mechanical contribution and an electrical contribution. Since the material is assumed to be isotropic, the mechanical stress $\ssigma^\rmm$ is given by the isotropic Neo-Hookean model: 
+where $k$ is a reaction rate constant and $\bar R$ is the ideal gas constant. The Cauchy stress $\ssigma=\ssigma^\rmm+\ssigma^\rme$ has a mechanical contribution and an electrical contribution. Since the material is assumed to be isotropic, the mechanical stress $\ssigma^\rmm$ is given by the isotropic Neo-Hookean model: 
 \begin{align}
-  \ssigma^\rmm = \frac{1}{2J} \Big( \lambda^{\text{Lam\'e}}(\det\CCe-1)\II+2\mu^{\text{Lam\'e}}(\CCe-\II))
+  \ssigma^\rmm = \frac{1}{2J} \Big( \lambda^{\text{Lam\'e}}(\det\CCe-1)\II+2\mu^{\text{Lam\'e}}(\CCe-\II)\Big)
 \end{align}
 where $\lambda^{\text{Lam\'e}}$ and $\mu^{\text{Lam\'e}}$ are the first and second Lam\'e constants.
 The electric part is given by the Maxwell-Stress tensor:
 \begin{align}
   \ssigma^\rme = \epsilon \Big(\grad\varphi \otimes \grad\varphi + \half (\grad\varphi \cdot \grad\varphi) \II \Big)
 \end{align}
-The electric displacement field in the current configuration $\tilde \DD$ is assumed to take the commonly known form: 
+The electric displacement field in the current configuration $\dd$ is assumed to take the commonly known form: 
 \begin{align}
   \dd = -\epsilon \, \grad \varphi
 \end{align}
@@ -271,5 +271,4 @@ where $\epsilon$ is the material dependent permittivity and $\varphi$ is the ele
 \begin{align}
   \jj^\rme = -\sigma^\rme \, \grad \varphi
 \end{align}
-where $\sigma^\rme$ is the material specific conductivity.
-The dissipation equation is ensured by using the potential based variational framework of generalized standard materials.  
+where $\sigma^\rme$ is the material specific conductivity. The dissipation equation is ensured by using the potential based variational framework of generalized standard materials. The potential is chosen such that the optimality conditions yield the above given laws. 
