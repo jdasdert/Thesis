@@ -46,7 +46,7 @@
   \renewcommand{\arraystretch}{1.3}
 
 % bibliography and referencing and including
-  \usepackage[autocite=superscript,style=numeric-comp,backend=biber,sorting=none,isbn=false,url=false,eprint=false,doi=false,date=year]{biblatex}
+  \usepackage[autocite=superscript,style=numeric-comp,backend=biber,sorting=none,isbn=false,url=false,eprint=false,doi=false,date=year,giveninits=true]{biblatex}
   \usepackage[hidelinks]{hyperref}
   \usepackage[english,noabbrev,capitalize]{cleveref}
   \usepackage{pdfpages}
@@ -107,21 +107,23 @@
 \newcommand \Faculty {Faculty of Engineering\ }
 \newcommand \Uni {Kiel University\ }
 \newcommand \CorrectorA {Prof. Dr. Stephan Wulfinghoff\ }
-\newcommand \CorrectorB {TBD }
-\newcommand \DateOfSubmission {TBD }
+\newcommand \CorrectorB { }
+\newcommand \DateOfSubmission {}
 
 \begin{document}
 
   % title page
+    \newgeometry{top=3cm, bottom=3cm, inner=3cm,outer=3cm}
     \pagestyle{empty}
     \input{titlepage.tex}
     \blankpage
     \blankpage
+    \section*{Declaration}
     \input{Declaration.tex}
     \blankpage
 
   % default geometry for the thesis
-    \newgeometry{top=3cm, bottom=3cm, inner=4cm,outer=2cm}
+    \newgeometry{top=3cm, bottom=3cm, inner=3.5cm,outer=2.5cm}
     \pagestyle{fancy}
     \renewcommand{\headrulewidth}{0.2pt}
 
